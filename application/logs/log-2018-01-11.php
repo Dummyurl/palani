@@ -1,0 +1,18 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2018-01-11 08:00:58 --> Query error: Unknown column 'logged_by' in 'field list' - Invalid query: UPDATE `applicants` SET `logged_in` = 1, `logged_by` = 'web'
+WHERE `id` = '3'
+ERROR - 2018-01-11 08:01:32 --> Query error: Unknown column 'logged_by' in 'field list' - Invalid query: UPDATE `applicants` SET `logged_in` = 1, `logged_by` = 'web'
+WHERE `id` = '8'
+ERROR - 2018-01-11 02:42:56 --> Query error: Unknown column 'logged_by' in 'field list' - Invalid query: UPDATE `applicants` SET `logged_in` = 1, `logged_by` = 'web'
+WHERE `id` = '32'
+ERROR - 2018-01-11 03:06:38 --> Query error: Unknown column 'logged_by' in 'field list' - Invalid query: UPDATE `applicants` SET `logged_in` = 0, `logged_by` = 'mobile'
+WHERE `id` = '32'
+ERROR - 2018-01-11 03:06:58 --> Query error: Unknown column 'logged_by' in 'field list' - Invalid query: UPDATE `applicants` SET `logged_in` = 1, `logged_by` = 'web'
+WHERE `id` = '34'
+ERROR - 2018-01-11 10:26:48 --> Query error: Unknown column 'logged_by' in 'field list' - Invalid query: UPDATE `applicants` SET `logged_in` = 1, `logged_by` = 'web'
+WHERE `id` = '3'
+ERROR - 2018-01-11 15:42:06 --> Query error: Unknown column 'logged_by' in 'field list' - Invalid query: UPDATE `applicants` SET `logged_in` = 1, `logged_by` = 'web'
+WHERE `id` = '3'
+ERROR - 2018-01-11 15:42:50 --> Query error: Unknown column 'logged_by' in 'field list' - Invalid query: UPDATE `applicants` SET `logged_in` = 1, `logged_by` = 'web'
+WHERE `id` = '8'

@@ -1,0 +1,10 @@
+1. time issue is still there, we were unable to get a proper demo today
+2. 9am to 12am not working
+3. attachments not working fine in messages
+4. top right hand corner search should search everything
+5. if its 30mins over with the call its not showing the call
+
+most important is to have the timing correctly
+
+
+

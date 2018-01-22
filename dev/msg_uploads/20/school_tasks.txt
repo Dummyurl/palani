@@ -1,0 +1,11 @@
+Pending Tasks 
+
+1) Screen share 
+2) Search Algorithm 
+3) Video Call Stability 
+4) Notification before call end 
+5) Stripe/ Paypal Payment Support 
+
+
+
+
