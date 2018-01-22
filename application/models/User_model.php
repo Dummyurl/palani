@@ -482,7 +482,7 @@ LEFT JOIN country_list ON country_list.country_id = applicants_profile.country w
     
     public function get_chat_list_search($id,$keyword)
     {
-       $query = $this->db->query("select t2.logged_in,t2.username,t1.invite_id,t1.message,t1.invite_date,t1.invite_time,t3.picture_url,t2.id as app_id,t2.first_name,t2.last_name,t2.profile_img from invite t1 left join applicants t2 on t2.id=t1.invite_from LEFT JOIN social_applicant_user t3 ON t3.reference_id = t2.id where t1.invite_to='$id' and (t2.first_name like '%$keyword%') OR (t2.last_name like '%$keyword%') OR (CONCAT(t2.first_name,' ',t2.last_name) like '%$keyword%') group by t1.invite_from");
+       $query = $this->db->query("select t2.logged_in,t2.username,t1.invite_id,t1.message,t1.invite_date,t1.invite_time,t3.picture_url,t2.id as app_id,t2.first_name,t2.last_name,t2.profile_img from invite t1 left join applicants t2 on t2.id=t1.invite_from LEFT JOIN social_applicant_user t3 ON t3.reference_id = t2.id where t1.invite_to='$id' and((t2.first_name like '%$keyword%') OR (t2.last_name like '%$keyword%') OR (CONCAT(t2.first_name,' ',t2.last_name) like '%$keyword%')) group by t1.invite_from");
        $result = $query->result_array();
        return $result;
     }
