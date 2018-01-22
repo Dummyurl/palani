@@ -5,9 +5,9 @@ class Applicant extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		if(!$this->session->userdata('role')==2){
-			redirect('login');
-		}
+		// if(!$this->session->userdata('role')==2){
+		// 	redirect('login');
+		// }
 		$this->load->model('applicant_model','applicant');
 	}
 
@@ -144,6 +144,132 @@ class Applicant extends CI_Controller {
        );
                 //output to json format
         echo json_encode($output);
+      }
+
+
+
+      Public function update_profile()
+      {
+
+        $this->validate();
+        $this->load->model('applicant_modal');
+
+          // echo '<pre>';
+          // print_r($_POST);
+          // exit;    
+
+        $applicant_id     = $this->session->userdata('applicant_id'); 
+              $profile_data=array(                  
+                  'applicant_phone' => $_POST['applicant_phone'],
+                  'applicant_personal_mess' => $_POST['applicant_personal_mess'],
+                  'applicant_school_apply' => $_POST['applicant_school_apply'],
+                  'applicant_school_apply_sts' => $_POST['applicant_school_apply_sts'],
+                  'applicant_out_of_conversation' => $_POST['applicant_out_of_conversation'],
+                  'applicant_out_of_conversation_sts' => $_POST['applicant_out_of_conversation_sts'],
+                  'applicant_extracurricular' => $_POST['applicant_extracurricular'],
+                  'applicant_extracurricular_sts' => $_POST['applicant_extracurricular_sts'],
+                  'applicant_hs' => $_POST['applicant_hs'],
+                  'applicant_hs_sts' => $_POST['applicant_hs_sts'],
+                  'applicant_from' => $_POST['applicant_from'],
+                  'applicant_from_sts' => $_POST['applicant_from_sts'],
+                  'applicant_live_and_work' => $_POST['applicant_live_and_work'],
+                  'applicant_live_and_work_sts' => $_POST['applicant_live_and_work_sts'],
+                  'applicant_language_speak' => $_POST['applicant_language_speak'],
+                  'applicant_language_speak_sts' => $_POST['applicant_language_speak_sts'],
+                  'applicant_favourites' => $_POST['applicant_favourites'],
+                  'applicant_favourites_sts' => $_POST['applicant_favourites_sts'],
+                  'applicant_hobbies' => $_POST['applicant_hobbies'],
+                  'applicant_hobbies_sts' => $_POST['applicant_hobbies_sts'],
+                  'applicant_quotes' => $_POST['applicant_quotes'],
+                  'applicant_quotes_sts' => $_POST['applicant_quotes_sts'],
+                  'address_line1' => $_POST['address_line1'],
+                  'address_line2' => $_POST['address_line2'],
+                  'country' => $_POST['country'],
+                  'state' => $_POST['state'],
+                  'city' => $_POST['city'],
+                  'postal_code'    => $_POST['postal_code'],
+            );
+            $result = $this->applicant_modal->update_profile($applicant_id,$profile_data);
+            if($result == 0){
+              $this->session->set_flashdata('success_message','Profile has been updated.'); 
+             }
+             echo json_encode(array('status'=>TRUE));
+      }
+
+
+
+      Public function validate()
+       {
+        $data = array();
+        $data['error_string'] = array();
+        $data['inputerror'] = array();
+        $data['status'] = TRUE;
+
+        if(empty($_POST['applicant_first_name'])){
+
+          $data['inputerror'][] = 'applicant_first_name';
+          $data['error_string'][] = 'Enter first name';
+          $data['status'] = FALSE;
+        }
+        if(empty($_POST['applicant_last_name'])){
+
+          $data['inputerror'][] = 'applicant_last_name';
+          $data['error_string'][] = 'Enter last name';
+          $data['status'] = FALSE;
+        }
+        if(empty($_POST['applicant_phone'])){
+
+          $data['inputerror'][] = 'applicant_phone';
+          $data['error_string'][] = 'Enter phone no';
+          $data['status'] = FALSE;
+        }      
+        if(empty($_POST['address_line1'])){
+
+          $data['inputerror'][] = 'address_line1';
+          $data['error_string'][] = 'Enter address line 1';
+          $data['status'] = FALSE;
+        }
+        if(empty($_POST['address_line2'])){
+
+          $data['inputerror'][] = 'address_line2';
+          $data['error_string'][] = 'Enter address line 2';
+          $data['status'] = FALSE;
+        }
+        if(empty($_POST['country'])){
+
+          $data['inputerror'][] = 'country';
+          $data['error_string'][] = 'Enter country';
+          $data['status'] = FALSE;
+        }
+        if(empty($_POST['state'])){
+
+          $data['inputerror'][] = 'state';
+          $data['error_string'][] = 'Enter state';
+          $data['status'] = FALSE;
+        }
+        if(empty($_POST['city'])){
+
+          $data['inputerror'][] = 'city';
+          $data['error_string'][] = 'Enter city';
+          $data['status'] = FALSE;
+        }
+        if(empty($_POST['postal_code'])){
+
+          $data['inputerror'][] = 'postal_code';
+          $data['error_string'][] = 'Enter postal code';
+          $data['status'] = FALSE;
+        }
+
+        if($data['status'] === FALSE)
+        {
+          echo json_encode($data);
+          exit();
+        }
+
+
+
+
+
       }
 
 

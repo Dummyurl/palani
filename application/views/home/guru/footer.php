@@ -256,29 +256,6 @@
       }); 
             return false; 
 
-
-  // if($(this).val()) {
-
-  //   $('#chat_form').ajaxSubmit({ 
-  //     target:   '#targetLayer', 
-  //     beforeSubmit: function() {
-  //       $("#progress-bar").width('0%');
-  //     },
-  //     uploadProgress: function (event, position, total, percentComplete){ 
-  //       $(".progress-bar").width(percentComplete + '%');
-  //       $(".progress-bar").html('<div id="progress-status">' + percentComplete +' %</div>')
-  //     },
-  //     success:function (res){ 
-
-
-
-
-
-  //                     },
-  //                     resetForm: true 
-  //                   }); 
-  //   return false; 
-  // }
 });
 </script>
 
@@ -287,11 +264,11 @@
     if($(this).parent('li').hasClass("btn-success")){
       $(this).parent('li').removeClass("btn-success").addClass('btn-danger');
       $('#incoming').prop('muted', true);   
-      console.log('muted');
+      // console.log('muted');
     }else{
       $(this).parent('li').removeClass("btn-danger").addClass('btn-success');
       $('#incoming').prop('muted', false);        
-      console.log('unmuted');
+      // console.log('unmuted');
     }
   });  
   (function($){
@@ -338,7 +315,7 @@
   }
   
  //datatables
- var  table = $('#datatable').DataTable({ 
+ var  table = $('#datatable').DataTable({
 
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -359,136 +336,8 @@
           ],
 
         });
- $('.countries,.states,.cities').chosen();
- $('.countries,.states,.cities').chosen({
-  allow_single_deselect: true
-});
 
 
- /*Get the country list */
-
- $.ajax({
-  type: "POST",
-  url: "<?php echo base_url();?>category/get_countries",
-  data:{
-    countryid:$('#country_id').val(),
-    stateid:$('#state_id').val()
-
-  }, 
-  beforeSend :function(){
-    $('.countries').find("option:eq(0)").html("Please wait..");
-  },                         
-  success: function (data) {
-    /*get response as json */
-    $('.countries').find("option:eq(0)").html("Select Country");
-    var obj=jQuery.parseJSON(data);
-
-
-    $(obj.country).each(function(){
-     var option = $('<option />');
-     option.attr('value', this.value).text(this.label);           
-     $('.countries').append(option);
-   });  
-
-    $(obj.state).each(function(){
-      var option = $('<option />');
-      option.attr('value', this.value).text(this.label);           
-      $('.states').append(option);
-    }); 
-
-    $(obj.city).each(function(){          
-      var option = $('<option />');
-      option.attr('value', this.value).text(this.label);
-      $('.cities').append(option);
-    }); 
-
-    $('.countries').trigger("chosen:updated");
-
-    /*ends */
-
-  }
-});
-
- /*Get the state list */
-
- $('.countries').change(function(){
-  $.ajax({
-    type: "POST",
-    url: "<?php echo base_url();?>category/get_states",
-    data:{id:$(this).val()}, 
-    beforeSend :function(){
-      $(".states option:gt(0)").remove(); 
-      $(".cities option:gt(0)").remove(); 
-      $('.states').find("option:eq(0)").html("Please wait..");
-
-    },                         
-    success: function (data) {
-      /*get response as json */
-      $('.states').find("option:eq(0)").html("Select State");
-      var obj=jQuery.parseJSON(data);
-      $(obj).each(function()
-      {
-       var option = $('<option />');
-       option.attr('value', this.value).text(this.label);           
-       $('.states').append(option);
-     });  
-      /*ends */
-      $('.states').trigger("chosen:updated");
-
-    }
-  });
-});
-
- /*Get the state list */
-
-
- $('.states').change(function(){
-  $.ajax({
-    type: "POST",
-    url: "<?php echo base_url();?>category/get_cities",
-    data:{id:$(this).val()}, 
-    beforeSend :function(){
-      $(".cities option:gt(0)").remove(); 
-      $('.cities').find("option:eq(0)").html("Please wait..");
-
-    },  
-
-    success: function (data) {
-      /*get response as json */
-      $('.cities').find("option:eq(0)").html("Select City");
-      var obj=jQuery.parseJSON(data);
-      $(obj).each(function()
-      {
-       var option = $('<option />');
-       option.attr('value', this.value).text(this.label);
-       $('.cities').append(option);
-     });  
-      /*ends */
-      $('.cities').trigger("chosen:updated");
-
-    }
-  });
-});
-
- setTimeout(function() {
-
-  var country_id = $('#country_id').val();
-  var state_id = $('#state_id').val();
-  var city_id = $('#city_id').val();
-
-  if(country_id!=''){
-    $('#country').val(country_id);
-  }
-  if(state_id !=''){
-    $('.states').val(state_id);
-  }
-  if(city_id !=''){
-    $('.cities').val(city_id);
-  }
-  $('.countries').trigger("chosen:updated");
-  $('.states').trigger("chosen:updated");
-  $('.cities').trigger("chosen:updated");
-}, 2000);
 });       
 </script>
 <?php } ?>

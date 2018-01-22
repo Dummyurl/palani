@@ -25,7 +25,8 @@ class Category extends CI_Controller {
 			
 		}
 		$datas['country'] = $json;
-
+		$json1 = array();
+		$json2=array();
 		if(!empty($_POST['countryid'])){
 		$data=array();
 
@@ -34,6 +35,7 @@ class Category extends CI_Controller {
 		->result();
 
 		$data=array();
+	
 		foreach($result as $r){
 		$data['value']=$r->id;
 		$data['label']=$r->statename;

@@ -370,7 +370,7 @@ else{
             </div>
           </div>
           <div class="col-md-9">
-            <form id="mentor_profile_form">
+            <form id="mentor_profile_form" method="post" novalidate>
               <div class="profile-right">
                 <div class="education-details">
                   <h4>Build your profile</h4>
@@ -379,12 +379,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">Username <span>*</span></label>
                         <input type="text" class="form-control" name="username" id="username" value="<?php echo $mentor_user_name; ?>" required readonly>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Email <span>*</span></label>
                         <input type="text" class="form-control" name="email" id="email" value="<?php echo $mentor_email; ?>" required readonly>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -393,12 +395,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">First Name <span>*</span></label>
                         <input type="text" class="form-control" name="first_name" id="first_name" value="<?php echo $mentor_first_name; ?>" required>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Last Name <span>*</span></label>
                         <input type="text" class="form-control" name="last_name" id="last_name" value="<?php  echo $mentor_last_name; ?>" required>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -407,6 +411,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">Phone Number <span>*</span></label>
                         <input type="text" class="form-control" name="mentor_phone" id="mentor_phone" value="<?php echo $mentor_phone; ?>" required >
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
@@ -417,6 +422,7 @@ else{
                           <option value="1" <?php if($mentor_gender==1){ echo "selected";} ?> >Male</option>
                           <option value="2" <?php if($mentor_gender==2){ echo "selected";} ?> >Female</option>
                         </select>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -425,6 +431,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">What school are you in now? <span>*</span></label>
                         <input type="text" class="form-control" name="mentor_school" id="mentor_school" value="<?php echo $mentor_school; ?>"  required>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
@@ -437,6 +444,7 @@ else{
                           <option value="3" <?php if($mentor_current_year==3){ echo "selected";} ?> >Third Year</option>
                           <option value="4" <?php if($mentor_current_year==4){ echo "selected";} ?> >Fourth Year</option>
                         </select>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -445,12 +453,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">What schools did you apply to? <span>*</span></label>
                         <input type="text" class="form-control" name="mentor_schools_applied" id="mentor_schools_applied" value="<?php echo $mentor_schools_applied; ?>" required>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">What clubs are you part of? <span>*</span></label>
                         <input type="text" class="form-control" name="mentor_clubs" id="mentor_clubs" value="<?php echo $mentor_clubs; ?>" required>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -459,12 +469,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">What was your undergrad school? <span>*</span></label>
                         <input type="text" class="form-control" name="mentor_undergrad_school" id="mentor_undergrad_school" value="<?php echo $mentor_undergrad_school; ?>" required >
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">What executive positions in clubs do you hold at your school? <span>*</span></label>
                         <input type="text" class="form-control" name="mentor_executive_positions" id="mentor_executive_positions" value="<?php echo $mentor_executive_positions; ?>" required>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -476,6 +488,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">Charge (per hour in dollar) <span>*</span></label>
                         <input type="text" class="form-control" name="mentor_charge" id="mentor_charge" value="<?php echo $mentor_charge; ?>" required min="1">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6"></div>
@@ -488,12 +501,15 @@ else{
                       <div class="form-group">
                         <label class="control-label">Title</label>
                         <input type="text" class="form-control" name="mentor_job_title" id="mentor_job_title" value="<?php echo $mentor_job_title; ?>" >
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Company Name</label>
-                        <input type="text" class="form-control" name="mentor_job_company" id="mentor_job_company" value="<?php echo $mentor_job_company; ?>" >
+                        <input type="text" class="form-control" name="mentor_job_company" id="mentor_job_company" value="<?php echo $mentor_job_company; 
+                        ?>" >
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -502,12 +518,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">Department</label>
                         <input type="text" class="form-control" name="mentor_job_dept" id="mentor_job_dept" value="<?php echo $mentor_job_dept; ?>" >
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Location</label>
                         <input type="text" class="form-control" name="mentor_job_location" id="mentor_job_location" value="<?php echo $mentor_job_location; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -516,6 +534,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">Description</label>
                         <textarea class="form-control" rows="3" name="mentor_job_desc" id="mentor_job_desc" ><?php echo $mentor_job_desc; ?></textarea>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6"> From
@@ -537,11 +556,13 @@ else{
                               <option value="11" <?php if($mentor_job_from_month==11){ echo "selected";} ?> >November</option>
                               <option value="12" <?php if($mentor_job_from_month==12){ echo "selected";} ?> >December</option>
                             </select>
+                            <span class="help-block"></span>
                           </div>
                         </div>
                         <div class="col-xs-6">
                           <div class="form-group">
                             <input type="text" name="mentor_job_from_year" class="form-control" id="mentor_job_from_year" value="<?php echo $result['mentor_job_from_year']; ?>">
+                            <span class="help-block"></span>
                            <!-- <select class="form-control from_year" name="mentor_job_from_year" id="mentor_job_from_year" >
                               <option value="">Year</option>
                               <?php
@@ -579,11 +600,13 @@ else{
                               <option value="11" <?php if($mentor_job_to_month==11){ echo "selected";} ?> >November</option>
                               <option value="12" <?php if($mentor_job_to_month==12){ echo "selected";} ?> >December</option>
                             </select>
+                            <span class="help-block"></span>
                           </div>
                         </div>
                         <div class="col-xs-6">
                           <div class="form-group">
                             <input type="text" name="mentor_job_to_year" class="form-control" id="mentor_job_to_year" value="<?php echo $result['mentor_job_to_year'] ?>" >
+                            <span class="help-block"></span>
                           <!--   <select class="form-control" name="mentor_job_to_year" id="mentor_job_to_year">
                               <option value="">Year</option>
                               <?php
@@ -612,6 +635,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">About Yourself</label>
                         <textarea class="form-control" name="mentor_about" id="mentor_about" rows="3"><?php echo $mentor_about; ?></textarea>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -620,12 +644,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">A personal statement</label>
                         <input type="text" class="form-control" name="mentor_personal_message" id="mentor_personal_message" value="<?php echo $mentor_personal_message; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">What schools did you get accepted to?</label>
                         <input type="text" class="form-control" name="mentor_school_accepted" id="mentor_school_accepted" value="<?php echo $mentor_school_accepted; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -635,12 +661,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">Did you read the guides, which ones?</label>
                         <input type="text" class="form-control" name="mentor_read_guide" id="mentor_read_guide" value="<?php echo $mentor_read_guide; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Did you hire a consultant?</label>
                         <input type="text" class="form-control" name="mentor_hire_consult" id="mentor_hire_consult" value="<?php echo $mentor_hire_consult; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -649,12 +677,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">Did you visit schools applied to?</label>
                         <input type="text" class="form-control" name="mentor_visit_school" id="mentor_visit_school" value="<?php echo $mentor_visit_school; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Did you take tours?</label>
                         <input type="text" class="form-control" name="mentor_tour" id="mentor_tour" value="<?php echo $mentor_tour; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -662,7 +692,9 @@ else{
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Other?</label>
-                        <input type="text" class="form-control" name="mentor_other_extra" id="mentor_other_extra" value="<?php echo $mentor_other_extra; ?>">
+                        <input type="text" class="form-control" name="mentor_other_extra" id="mentor_other_extra" value="<?php echo $mentor_other_extra; 
+                        ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6"></div>
@@ -672,6 +704,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">What other extracurricular activities are you involved in? Were involved in undergrad?</label>
                         <textarea class="form-control" rows="3" name="mentor_extracurricular_activities" id="mentor_extracurricular_activities"><?php echo $mentor_extracurricular_activities; ?></textarea>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -680,12 +713,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">What HS did you go to?</label>
                         <input type="text" class="form-control" name="mentor_hs" id="mentor_hs" value="<?php echo $mentor_hs; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Where are you from?</label>
                         <input type="text" class="form-control" name="mentor_from" id="mentor_from" value="<?php echo $mentor_from; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -694,12 +729,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">What countries did you live and work in?</label>
                         <input type="text" class="form-control" name="mentor_live_work" id="mentor_live_work" value="<?php echo $mentor_live_work; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">What languages do you speak?</label>
                         <input type="text" class="form-control" name="mentor_languages_speak" id="mentor_languages_speak" value="<?php echo $mentor_languages_speak; ?>" >
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -708,6 +745,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">You Favorite Book, Movie, Business Book, Business Publication, Business Leader, Personal Role Model</label>
                         <textarea class="form-control" rows="3" name="mentor_favourite" id="mentor_favourite"><?php echo $mentor_favourite; ?></textarea>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -716,12 +754,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">Hobbies</label>
                         <input type="text" class="form-control" name="mentor_hobbies" id="mentor_hobbies" value="<?php echo $mentor_hobbies; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Quotes</label>
                         <input type="text" class="form-control" name="mentor_quotes" id="mentor_quotes" value="<?php echo $mentor_quotes; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -733,36 +773,32 @@ else{
                       <div class="form-group">
                         <label class="control-label">Address Line 1<span> *</span></label>
                         <input type="text" class="form-control" name="address_line1" id="mentor_quotes" value="<?php echo $address_line1; ?>" required>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Address Line 2</label>
                         <input type="text" class="form-control" name="address_line2" id="mentor_quotes" value="<?php echo $address_line2; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
-                  </div>
-
-                  <!-- Country  Master -->
-                  <input type="hidden" id="country_id" value="<?php echo $result['country_id']; ?>" disabled>
-                  <input type="hidden" id="state_id" value="<?php echo $result['state_id']; ?>" disabled>
-                  <input type="hidden" id="city_id" value="<?php echo $result['city_id']; ?>" disabled>
+                  </div>                 
 
                   <div class="row">                     
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label class="control-label">Country<span> *</span></label>
-                        <select class="form-control countries" name="country" id="country" required data-placeholder="Choose a Country"  tabindex="2">
-                          <option value="">Select Country</option>                      
-                        </select>
+                        <label class="control-label">Country<span> *</span></label>                        
+                        <input type="text" name="country" class="form-control" id="country" value="<?php echo $country; ?>">
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label class="control-label">State<span> *</span></label>
-                        <select class="form-control states" name="state" id="state" required>
-                          <option value="">Select State</option>
-                        </select>
+                        <label class="control-label">State 
+                          <span> *</span></label>
+                        <input type="text" name="state" class="form-control" id="state" value="<?php echo $result['state']; ?>">                        
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -770,16 +806,15 @@ else{
                    <div class="col-sm-6">
                     <div class="form-group">
                       <label class="control-label">City<span> *</span></label>
-                      <!-- <input type="text" class="form-control cities" name="city" id="city" value="<?php echo $city; ?>" required> -->
-                      <select class="form-control cities" name="city" id="city" required>
-                        <option value="">Select City</option>
-                      </select>
+                      <input type="text" class="form-control" name="city" id="city" value="<?php echo $city; ?>" required>                      
+                      <span class="help-block"></span>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label class="control-label">Postal Code<span> *</span></label>
                       <input type="text" class="form-control" name="postal_code" id="postal_code" value="<?php echo $postal_code; ?>" required>
+                      <span class="help-block"></span>
                     </div>
                   </div>
                   <div class="col-sm-6"></div>

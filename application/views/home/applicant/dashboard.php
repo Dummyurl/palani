@@ -303,7 +303,7 @@ else{
           </div>
           <div class="col-md-9">
             <div class="profile-right">
-              <form id="applicant_profile_form">
+              <form id="applicant_profile_form" method="post" novalidate>
                 <div class="education-details">
                   <h4>Please update your details</h4>
                   <div class="row">
@@ -311,12 +311,15 @@ else{
                       <div class="form-group">
                         <label class="control-label">Username <span>*</span></label>
                         <input type="text" class="form-control" name="username" id="username" value="<?php echo $user_name; ?>" required readonly>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Email <span>*</span></label>
-                        <input type="email" class="form-control" name="applicant_email" id="applicant_email" value="<?php echo $email; ?>" required readonly>
+                        <input type="email" class="form-control" name="applicant_email" id="applicant_email" value="<?php echo $email; ?>" required 
+                        readonly>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -325,12 +328,14 @@ else{
                       <div class="form-group">
                         <label class="control-label">First Name <span>*</span></label>
                         <input type="text" class="form-control" name="applicant_first_name" id="applicant_first_name" value="<?php echo $first_name; ?>" required >
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label class="control-label">Last Name <span>*</span></label>
                         <input type="text" class="form-control" name="applicant_last_name" id="applicant_last_name" value="<?php echo $last_name; ?>" required >
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -339,6 +344,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">Phone Number <span>*</span></label>
                         <input type="text" class="form-control" name="applicant_phone" id="applicant_phone" value="<?php echo $applicant_phone; ?>" required>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                     <div class="col-sm-6"></div>
@@ -350,6 +356,7 @@ else{
                       <div class="form-group">
                         <label class="control-label">A personal message</label>
                         <textarea class="form-control" rows="3" name="applicant_personal_mess" id="applicant_personal_mess" ><?php echo $applicant_personal_mess; ?></textarea>
+                        <span class="help-block"></span>
                       </div>
                     </div>
                   </div>
@@ -623,35 +630,30 @@ else{
                                           <div class="form-group">
                                             <label class="control-label">Address Line 1</label>
                                             <input type="text" class="form-control" name="address_line1" id="mentor_quotes" value="<?php echo $address_line1; ?>">
+                                            <span class="help-block"></span>
                                           </div>
                                         </div>
                                         <div class="col-sm-6">
                                           <div class="form-group">
                                             <label class="control-label">Address Line 2</label>
                                             <input type="text" class="form-control" name="address_line2" id="mentor_quotes" value="<?php echo $address_line2; ?>">
+                                            <span class="help-block"></span>
                                           </div>
                                         </div>
                                       </div>
-                                      <!-- Country  Master -->
-                                      <input type="hidden" id="country_id" value="<?php echo $result['country_id']; ?>" disabled>
-                                      <input type="hidden" id="state_id" value="<?php echo $result['state_id']; ?>" disabled>
-                                      <input type="hidden" id="city_id" value="<?php echo $result['city_id']; ?>" disabled>
-
                                       <div class="row">                     
                                         <div class="col-sm-6">
                                           <div class="form-group">
                                             <label class="control-label">Country<span> *</span></label>
-                                            <select class="form-control countries" name="country" id="country" required data-placeholder="Choose a Country"  tabindex="2" chosen-select>
-                                              <option value="">Select Country</option>                      
-                                            </select>
+                                            <input type="text" name="country" value="<?php echo $country ?>" class="form-control">
+                                            <span class="help-block"></span>
                                           </div>
                                         </div>
                                         <div class="col-sm-6">
                                           <div class="form-group">
                                             <label class="control-label">State<span> *</span></label>
-                                            <select class="form-control states" name="state" id="state" required>
-                                              <option value="">Select State</option>
-                                            </select>
+                                            <input type="text" name="state" value="<?php echo $result['state'] ?>" class="form-control">
+                                            <span class="help-block"></span>
                                           </div>
                                         </div>
                                       </div>
@@ -659,15 +661,15 @@ else{
                                        <div class="col-sm-6">
                                         <div class="form-group">
                                           <label class="control-label">City<span> *</span></label>
-                                          <select class="form-control cities" name="city" id="city" required>
-                                            <option value="">Select City</option>
-                                          </select>
+                                          <input type="text" name="city" value="<?php echo $city ?>" class="form-control">
+                                          <span class="help-block"></span>
                                         </div>
                                       </div>
                                       <div class="col-sm-6">
                                         <div class="form-group">
                                           <label class="control-label">Postal Code<span> *</span></label>
                                           <input type="text" class="form-control" name="postal_code" id="postal_code" value="<?php echo $postal_code; ?>" required>
+                                          <span class="help-block"></span>
                                         </div>
                                       </div>
                                       <div class="col-sm-6"></div>

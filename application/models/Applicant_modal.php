@@ -225,20 +225,13 @@ WHERE applicants.id=$applicant_id";
     
     public function update_profile($applicant_id,$profile_details)
     {
-        $sts = 1 ;
-        unset($profile_details['avatar_src']);
-        unset($profile_details['avatar_data']);        
-        $user_profile['first_name']  = $profile_details['applicant_first_name'];
-        $user_profile['last_name']   = $profile_details['applicant_last_name'];
-        $user_profile['email']       = $profile_details['applicant_email'];
-        $user_profile['username']       = $profile_details['username'];
+        $sts = 1 ;        
+        $user_profile['first_name']  = $_POST['applicant_first_name'];
+        $user_profile['last_name']   = $_POST['applicant_last_name'];
         $this->db->where('id',$applicant_id);
         if($this->db->update('applicants',$user_profile))
         {               
-            unset($profile_details['applicant_first_name']);
-            unset($profile_details['applicant_last_name']);
-            unset($profile_details['applicant_email']);
-            unset($profile_details['username']);
+            
             $check_profile_exist = $this->db->query(" SELECT * FROM `applicants_profile` WHERE `applicant_id` =  ".$applicant_id)->row_array();
             $profile_details['applicant_id'] = $applicant_id;            
             if(isset($check_profile_exist['id'])&&!empty($check_profile_exist['id']))

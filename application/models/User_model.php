@@ -358,18 +358,15 @@ LEFT JOIN country_list ON country_list.country_id = applicants_profile.country w
      public function update_profile($mentor_id,$profile_details)
     {
         $sts = 1 ;
-        $user_profile['first_name']  = $profile_details['first_name'];
-        $user_profile['last_name']   = $profile_details['last_name'];
-        $user_profile['email']       = $profile_details['email'];
-       // $user_profile['username']       = $profile_details['username'];
-           unset($profile_details['username']);
+        $user_profile['first_name']  = $_POST['first_name'];
+        $user_profile['last_name']   = $_POST['last_name'];
+        $user_profile['email']       = $_POST['email'];       
+           
         $this->db->where('id',$mentor_id);
         if($this->db->update('applicants',$user_profile))
         {               
-            unset($profile_details['first_name']);
-            unset($profile_details['last_name']);
-            unset($profile_details['email']);
-            unset($profile_details['username']);
+            
+
             $check_profile_exist = $this->db->query(" SELECT * FROM `mentor_details` WHERE `mentor_id` =  ".$mentor_id)->row_array();
             $profile_details['mentor_id'] = $mentor_id;            
             if(isset($check_profile_exist['id'])&&!empty($check_profile_exist['id']))

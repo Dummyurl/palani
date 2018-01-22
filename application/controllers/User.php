@@ -3733,7 +3733,8 @@ Public function get_call()
 	$user_id = $this->session->userdata('applicant_id');
 	$where = array('call_to'=>$user_id,'status'=>1);
 	$result =  $this->db->get_where('call_details',$where)->row();
-
+  $dat['html'] = '';
+  $dat['status'] = false;
 
 	if(isset($result->status)==1){
 
@@ -3785,17 +3786,10 @@ Public function get_call()
   </div>';      
 
 
-
   $dat['html'] = $html;
   $dat['status'] = true;
-  echo json_encode($dat);
-
-
-
-
-
-
 }
+  echo json_encode($dat);
 }
 
 Public function set_call_status()

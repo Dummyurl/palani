@@ -4,39 +4,39 @@ $(document).ready(function() {
 
 
     $('#search_by_subject1').submit(function(){
-       var keyword =  $('#subject_keyword').val();       
-       if(keyword==''){        
-          $('.subject_error').html('<font style="color:red;">Please Enter Subject</font>');
-          setTimeout(function() {
-             $('.help-block').html('');
-         }, 3000);
-          return false;
-      }
-
-
-  }); $('#search_by_university1').submit(function(){
-   var keyword =  $('#keyword').val();       
-   if(keyword==''){        
-      $('.university_error').html('<font style="color:red;">Please Enter University</font>');
+     var keyword =  $('#subject_keyword').val();       
+     if(keyword==''){        
+      $('.subject_error').html('<font style="color:red;">Please Enter Subject</font>');
       setTimeout(function() {
-         $('.help-block').html('');
-     }, 3000);
+       $('.help-block').html('');
+   }, 3000);
       return false;
   }
 
 
+}); $('#search_by_university1').submit(function(){
+ var keyword =  $('#keyword').val();       
+ if(keyword==''){        
+  $('.university_error').html('<font style="color:red;">Please Enter University</font>');
+  setTimeout(function() {
+   $('.help-block').html('');
+}, 3000);
+  return false;
+}
+
+
 });
 
-  $('#subject_keyword,#keyword').blur(function(){
+$('#subject_keyword,#keyword').blur(function(){
 
     setTimeout(function() {
-     $('.keyword_result').html('');
-     $('.keyword_result').css('display','none');
- }, 100);
+       $('.keyword_result').html('');
+       $('.keyword_result').css('display','none');
+   }, 100);
     
 });
 
-  $( "#subject_keyword" ).keyup(function(){   
+$( "#subject_keyword" ).keyup(function(){   
     var  keyword =  $.trim($(this).val());  
     if(keyword!=''){
         $.ajax({
@@ -63,13 +63,13 @@ $(document).ready(function() {
                                 }
                             });
     }else{
-     $('.keyword_result').html('');
-     $('.keyword_result').css('display','none');
- }   
+       $('.keyword_result').html('');
+       $('.keyword_result').css('display','none');
+   }   
 });
 
 
-  $( "#keyword" ).keyup(function(){   
+$( "#keyword" ).keyup(function(){   
     var  keyword =  $.trim($(this).val());  
     if(keyword!=''){
         $.ajax({
@@ -96,16 +96,16 @@ $(document).ready(function() {
                                 }
                             });
     }else{
-     $('.keyword_result').html('');
-     $('.keyword_result').css('display','none');
- }   
+       $('.keyword_result').html('');
+       $('.keyword_result').css('display','none');
+   }   
 });
 
 
 
 
-  var global_username = '';
-  var handleError = function(error) {
+var global_username = '';
+var handleError = function(error) {
     $('button#createUser').prop('disabled', false);
     $('button#loginUser').prop('disabled', false);
     $('div.error').text(error.message);
@@ -177,13 +177,13 @@ $('#applicant_signup_form').bootstrapValidator({
                                             {
                                                 if(response==0)
                                                 {
-                                                   setInterval(function(){
+                                                 setInterval(function(){
                                                     window.location = base_url+'welcome/mobile_verify';
                                                 },2000);
 
-                                               }
-                                               else
-                                               {
+                                             }
+                                             else
+                                             {
                                                 $('.preloader').html('');
                                                 $('.preloader').css('display','none');
                                                 $('#form-registeration-error').html("Error While Registering !");
@@ -265,7 +265,7 @@ $('#general_feedback').bootstrapValidator({
     
     
     $('#guru_forgot_password_form').bootstrapValidator({
-       fields: {                
+     fields: {                
         email: {
             validators: {                    
                 regexp: {
@@ -314,10 +314,10 @@ $('#general_feedback').bootstrapValidator({
 
 
 $('#guru_login_form').bootstrapValidator({
-   fields: {                
+ fields: {                
     email: {
         validators: {                    
-         notEmpty: {
+           notEmpty: {
             message: ''
         },
         regexp: {
@@ -360,197 +360,243 @@ password: {
                                             data:formData,
                                             success:function(response)
                                             {                                                 
-                                                if(response==0)
-                                                {   
+                                                if(response==0){   
                                                     $('#guru_login_error').html("");
-
                                                 }
-                                                else
-                                                {
+                                                else{
                                                     $('#guru_login_error').html(" Wrong Credentials !");                                                    
                                                 }
-
                                             }
                                         });
 
                                     });
 
 
-
-var check_username_path = base_url+"user/check_username";
-$('#mentor_profile_form')
-.find('[name="country"]')
-.chosen()
-            // Revalidate the color when it is changed
-            .change(function(e) {
-                $('#applicant_profile_form').bootstrapValidator('revalidateField', 'country');
-            })
-            .end()
-            .bootstrapValidator({
-                excluded: ':disabled',
-                feedbackIcons: {               
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                }, 
-
-                fields: {                
-                    email: {
-                        validators: {                    
-                            regexp: {
-                              regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
-                              message: 'The value is not a valid email address'
-                          } 
-                      }
-                  },
-                  mentor_phone: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Phone Number is required'
-                        },
-                        numeric: {
-                            message:'Please enter numeric value'
-                        }
-                    }
-                },
-                username: {                
-                    validators: {
-                        notEmpty: {
-                            message: 'The username is required'
-                        },
-                        remote: {
-                            message: 'The Username is not available',
-                            url: check_username_path
-                        }
-                    }
-                },    
-                mentor_gender: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Gender is required'
-                        }
-                    }
-                }
-                ,
-                mentor_school: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The School is required'
-                        }
-                    }
-                }  
-                ,
-                mentor_current_year: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Year is required'
-                        }
-                    }
-                }
-                ,
-                mentor_schools_applied: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Schools Applied is required'
-                        }
-                    }
-                },
-                mentor_clubs: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Part of Clubs is required'
-                        }
-                    }
-                }
-                ,
-                mentor_executive_positions: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Positions in clubs is required'
-                        }
-                    }
-                },
-                mentor_charge: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Mentor Charge is required'
-                        },
-                        numeric: {
-                            message:'Please enter numeric value'
-                        }
-                    }
-                },  
-                mentor_undergrad_school: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Undergrad School is required'
-                        }
-                    }
-                },
-                address_line1: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Address Line1 is required'
-                        }
-                    }
-                },                                
-                postal_code: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The Postal Code is required'
-                        }
-                    }
-                },
-                country: {
-                    validators: {                    
-                        notEmpty: {
-                            message: 'Select country'
-                        }
-                    }
-                }, state: {
-                    validators: {                    
-                        notEmpty: {
-                            message: 'Select state'
-                        }
-                    }
-                }, city: {
-                    validators: {                    
-                        notEmpty: {
-                            message: 'Select city'
-                        }
-                    }
-                }
+$('#mentor_profile_form').submit(function(){    
+ $.ajax({
+    url : base_url+'guru/update_profile',
+    type: "POST",
+    data: $('#mentor_profile_form').serialize(),
+    dataType: "JSON",
+    success: function(data)
+    {       
+            if(data.status == true) //if success close modal and reload ajax table
+            {
+                setInterval(function(){ window.location = base_url+'dashboard?notify=true'; }, 1000);
             }
-        }) .on('success.form.bv', function(e) {
-                                        // Prevent form submission                                        
-                                        e.preventDefault();
-                                        var url = base_url+"guru/update_profile";
-                                        var formData = $('#mentor_profile_form').serialize(); 
+            else
+            {
+                for (var i = 0; i < data.inputerror.length; i++) 
+                {
+                    $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                    $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
+                }
+            }   
 
-                                        $.ajax({
-                                            type:'POST',
-                                            url:url,
-                                            data:formData,
-                                            success:function(response)
-                                            {                                                 
-                                                if(response==0)
-                                                {   
-                                                    $.post(base_url+'guru/update_profile_status',{formData:formData},function(res){
-                                                          //$('#verified').text('1');
-                                                          setInterval(function(){ window.location = base_url+'dashboard'; }, 1000);
-                                                      });
-                                                    $("#profile_update_error").html("");
-                                                    $("#profile_update_error").css("display","none");
-                                                }
-                                                else
-                                                {
-                                                    $("#profile_update_error").html(' Error While Updating '); 
-                                                    //setTimeout(function(){ window.location = base_url+'dashboard'; }, 1000);
-                                                }
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error adding / update data');
+            
+        }
+    });
+     //set input/textarea/select event when change value, remove class error and remove text help block 
+    $("input").keyup(function(){
+        $(this).parent().parent().removeClass('has-error');
+        $(this).next().empty();
+    });
+    $("textarea").keyup(function(){
+        $(this).parent().parent().removeClass('has-error');
+        $(this).next().empty();
+    });
+    $("select").change(function(){
+        $(this).parent().parent().removeClass('has-error');
+        $(this).next().empty();
+    });
+            $('#btnSave').text('save'); //change button text
+            $('#btnSave').attr('disabled',false); //set button enable 
 
-                                            }
-                                        })
+            return false;
+        });
 
-                                    });
+
+
+
+
+// var check_username_path = base_url+"user/check_username";
+// $('#mentor_profile_form')
+// .find('[name="country"]')
+// .chosen()
+//             // Revalidate the color when it is changed
+//             .change(function(e) {
+//                 $('#applicant_profile_form').bootstrapValidator('revalidateField', 'country');
+//             })
+//             .end()
+//             .bootstrapValidator({
+//                 excluded: ':disabled',
+//                 feedbackIcons: {               
+//                     invalid: 'glyphicon glyphicon-remove',
+//                     validating: 'glyphicon glyphicon-refresh'
+//                 }, 
+
+//                 fields: {                
+//                     email: {
+//                         validators: {                    
+//                             regexp: {
+//                               regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+//                               message: 'The value is not a valid email address'
+//                           } 
+//                       }
+//                   },
+//                   mentor_phone: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Phone Number is required'
+//                         },
+//                         numeric: {
+//                             message:'Please enter numeric value'
+//                         }
+//                     }
+//                 },
+//                 username: {                
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The username is required'
+//                         },
+//                         remote: {
+//                             message: 'The Username is not available',
+//                             url: check_username_path
+//                         }
+//                     }
+//                 },    
+//                 mentor_gender: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Gender is required'
+//                         }
+//                     }
+//                 }
+//                 ,
+//                 mentor_school: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The School is required'
+//                         }
+//                     }
+//                 }  
+//                 ,
+//                 mentor_current_year: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Year is required'
+//                         }
+//                     }
+//                 }
+//                 ,
+//                 mentor_schools_applied: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Schools Applied is required'
+//                         }
+//                     }
+//                 },
+//                 mentor_clubs: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Part of Clubs is required'
+//                         }
+//                     }
+//                 }
+//                 ,
+//                 mentor_executive_positions: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Positions in clubs is required'
+//                         }
+//                     }
+//                 },
+//                 mentor_charge: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Mentor Charge is required'
+//                         },
+//                         numeric: {
+//                             message:'Please enter numeric value'
+//                         }
+//                     }
+//                 },  
+//                 mentor_undergrad_school: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Undergrad School is required'
+//                         }
+//                     }
+//                 },
+//                 address_line1: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Address Line1 is required'
+//                         }
+//                     }
+//                 },                                
+//                 postal_code: {
+//                     validators: {
+//                         notEmpty: {
+//                             message: 'The Postal Code is required'
+//                         }
+//                     }
+//                 },
+//                 country: {
+//                     validators: {                    
+//                         notEmpty: {
+//                             message: 'Select country'
+//                         }
+//                     }
+//                 }, state: {
+//                     validators: {                    
+//                         notEmpty: {
+//                             message: 'Select state'
+//                         }
+//                     }
+//                 }, city: {
+//                     validators: {                    
+//                         notEmpty: {
+//                             message: 'Select city'
+//                         }
+//                     }
+//                 }
+//             }
+//         }) .on('success.form.bv', function(e) {
+//                                         // Prevent form submission                                        
+//                                         e.preventDefault();
+//                                         var url = base_url+"guru/update_profile";
+//                                         var formData = $('#mentor_profile_form').serialize(); 
+
+//                                         $.ajax({
+//                                             type:'POST',
+//                                             url:url,
+//                                             data:formData,
+//                                             success:function(response)
+//                                             {                                                 
+//                                                 if(response==0)
+//                                                 {   
+//                                                     $.post(base_url+'guru/update_profile_status',{formData:formData},function(res){
+//                                                           //$('#verified').text('1');
+//                                                           setInterval(function(){ window.location = base_url+'dashboard'; }, 1000);
+//                                                       });
+//                                                     $("#profile_update_error").html("");
+//                                                     $("#profile_update_error").css("display","none");
+//                                                 }
+//                                                 else
+//                                                 {
+//                                                     $("#profile_update_error").html(' Error While Updating '); 
+//                                                     //setTimeout(function(){ window.location = base_url+'dashboard'; }, 1000);
+//                                                 }
+
+//                                             }
+//                                         })
+
+//                                     });
 
 //$('#send_message button').on("click",function(){
 //    alert('hii');
@@ -621,10 +667,10 @@ $("#results-list-view").click(function(){
 });
 
 $("#results-grid-view").click(function(){
- $("#results-list-view").removeClass("active");
- $(this).addClass('active');
- var grid_url = base_url +'user/gurus_grid_view'; 
- $.post(grid_url,function(value){
+   $("#results-list-view").removeClass("active");
+   $(this).addClass('active');
+   var grid_url = base_url +'user/gurus_grid_view'; 
+   $.post(grid_url,function(value){
     $('#guru-list').html(value);
 });
 });      
@@ -639,11 +685,11 @@ $(document).on('click','.loadmore',function () {
           page:$(this).data('page'),
       },
       success: function(response){
-       if(response){
-         ele.hide();
-         $(".news_list").append(response);
-     }
- }
+         if(response){
+           ele.hide();
+           $(".news_list").append(response);
+       }
+   }
 });
 });
 
@@ -667,14 +713,14 @@ $(document).on('click','.loadmore_search',function () {
           page:$(this).data('page'),mentor_gender:$('#mentor_gender_hidden').val(),mentor_school:$('#mentor_school_hidden').val(),mentor_schools_applied:$('#mentor_schools_applied_hidden').val(),mentor_current_year:$('#mentor_current_year_hidden').val(),mentor_extracurricular_activities:$('#mentor_extracurricular_activities_hidden').val(),mentor_job_company:$('#mentor_job_company_hidden').val(),mentor_job_title:$('#mentor_job_title_hidden').val(),mentor_job_from_year:$('#mentor_job_from_year_hidden').val(),mentor_about:$('#mentor_about_hidden').val(),mentor_languages_speak:$('#mentor_languages_speak_hidden').val()
       }, 
       success: function(response){
-       if(response){
-        ele.remove();
-        $('.overlay').fadeIn(1000 , function(){
-          $(this).css("display","none");
-      });
-        $("#guru-list").append(response);
+         if(response){
+            ele.remove();
+            $('.overlay').fadeIn(1000 , function(){
+              $(this).css("display","none");
+          });
+            $("#guru-list").append(response);
+        }
     }
-}
 });
 });
 
@@ -688,14 +734,14 @@ $(document).on('click','.loadmore-g',function () {
           page:$(this).data('page'),mentor_gender:$('#mentor_gender_hidden').val(),mentor_school:$('#mentor_school_hidden').val(),mentor_schools_applied:$('#mentor_schools_applied_hidden').val(),mentor_current_year:$('#mentor_current_year_hidden').val(),mentor_extracurricular_activities:$('#mentor_extracurricular_activities_hidden').val(),mentor_job_company:$('#mentor_job_company_hidden').val(),mentor_job_title:$('#mentor_job_title_hidden').val(),mentor_job_from_year:$('#mentor_job_from_year_hidden').val(),mentor_about:$('#mentor_about_hidden').val(),mentor_languages_speak:$('#mentor_languages_speak_hidden').val()
       }, 
       success: function(response){
-       if(response){
-        ele.remove();
-        $('.overlay').fadeIn(1000 , function(){
-           $(this).css("display","none");
-       });
-        $("#guru-list").append(response);
+         if(response){
+            ele.remove();
+            $('.overlay').fadeIn(1000 , function(){
+             $(this).css("display","none");
+         });
+            $("#guru-list").append(response);
+        }
     }
-}
 });
 });
 
@@ -709,21 +755,21 @@ $(document).on('click','.loadmore-guru',function () {
           page:$(this).data('page'),keyword:$('#old_keyword').val(),gender:$('#gender').val(),admitted_school:$('#admitted_school').val(),school_offer:$('#school_offer').val(),school_year:$('#school_year').val()
       },
       success: function(response){
-       if(response){
-        ele.remove();
-        $('.overlay').fadeIn(1000 , function(){
-           $(this).css("display","none");
-       });
-        $("#guru-list").append(response);
+         if(response){
+            ele.remove();
+            $('.overlay').fadeIn(1000 , function(){
+             $(this).css("display","none");
+         });
+            $("#guru-list").append(response);
+        }
     }
-}
 });
 });
 
 
 
 $('#activity_search').bind('keypress', function(e) {
-   if (e.keyCode === 13) return false;
+ if (e.keyCode === 13) return false;
 });
 
 
@@ -737,14 +783,14 @@ $(document).on('click','.loadmore-applicant',function () {
           page:$(this).data('page')
       },
       success: function(response){
-       if(response){
-        ele.remove();
-        $('.overlay').fadeIn(1000 , function(){
-          $(this).css("display","none");
-      });
-        $("#guru-list").append(response);
+         if(response){
+            ele.remove();
+            $('.overlay').fadeIn(1000 , function(){
+              $(this).css("display","none");
+          });
+            $("#guru-list").append(response);
+        }
     }
-}
 });
 });
 
@@ -799,11 +845,11 @@ $(document).on('click','.timingsnav li a',function(){
             if(ivalue != parseInt(value.time_end)){
                 if(ivalue.toString().length == 1)
                 {
-                 validate = '0'+ivalue+':00:00';
-             }else{
-                 validate = ivalue+':00:00';
-             }
-         }
+                   validate = '0'+ivalue+':00:00';
+               }else{
+                   validate = ivalue+':00:00';
+               }
+           }
          // console.log(validate);
          $('#from_time option[value="'+validate+'"]').remove();
          $('#to_time option[value="'+validate+'"]').remove();
@@ -837,8 +883,8 @@ $(document).on('change','#from_time',function(){
     timeString = h + timeString.substr(2, 3) + ampm;
 
     if(time_digit != i && time_digit < i){
-     select_html += '<option value="'+timeval+'">'+timeString+'</option>';
- }
+       select_html += '<option value="'+timeval+'">'+timeString+'</option>';
+   }
 
 
 
@@ -857,10 +903,10 @@ $(document).on('click','.delete_schedule',function(){
     var c = confirm('Are you sure to delete?');
     if(c){
         $.post(base_url+'user/delete_schedule_time',{delete_value:delete_value},function(res){
-         if(res == 1){
-           $('#'+append_html+'_link').click();
-       }
-   });
+           if(res == 1){
+             $('#'+append_html+'_link').click();
+         }
+     });
     }
 }); 
 
@@ -905,11 +951,11 @@ $('#mobile_verify_form').bootstrapValidator({
 
                                                 if(response=='0')
                                                 {
-                                                   $('#mobile_first_verify').css("display","none");
-                                                   $('#mobile_first_verify_code').css("display","block");
-                                               }
-                                               else
-                                               {
+                                                 $('#mobile_first_verify').css("display","none");
+                                                 $('#mobile_first_verify_code').css("display","block");
+                                             }
+                                             else
+                                             {
                                                 $('#error_msg').html("Error While Submitting Mobile Number !");
                                                 $('#error_msg').css('display','block');
                                             }
@@ -961,16 +1007,16 @@ $('#schedule_mentor_form').bootstrapValidator({
                                           return false;
                                       }
                                       if(to_time == ''){
-                                       bv.updateStatus('to_time', 'INVALID', 'callback');
-                                       return false;
-                                   }
-                                   var shedule = $.ajax({
-                                    type:'POST',
-                                    url:url,
-                                    data:{selected_value:selected_value,selected_day:selected_day,from_time:from_time,to_time:to_time},
+                                         bv.updateStatus('to_time', 'INVALID', 'callback');
+                                         return false;
+                                     }
+                                     var shedule = $.ajax({
+                                        type:'POST',
+                                        url:url,
+                                        data:{selected_value:selected_value,selected_day:selected_day,from_time:from_time,to_time:to_time},
 
-                                    success:function(response)
-                                    {
+                                        success:function(response)
+                                        {
                                                 //console.log(response);
 
                                                 if(response==1)
@@ -987,7 +1033,7 @@ $('#schedule_mentor_form').bootstrapValidator({
                                         });
 
 
-                               });
+                                 });
 
 
 $('#mobile_verify_code_form').bootstrapValidator({
@@ -1013,13 +1059,13 @@ $('#mobile_verify_code_form').bootstrapValidator({
                                             {
                                              //   console.log(response);
                                              if(response == '0'){
-                                                 $('#mobile_first_verify_code').css("display","none");
-                                                 $('#mobile_first_verify_success').css("display","block");
-                                                 setTimeout(function(){
+                                               $('#mobile_first_verify_code').css("display","none");
+                                               $('#mobile_first_verify_success').css("display","block");
+                                               setTimeout(function(){
                                                   window.location= base_url+'dashboard';
                                               },2000);
-                                             }else{
-                                                 swal({
+                                           }else{
+                                               swal({
                                                   title: 'Oops!',
                                                   text: "Wrong OTP you entered!",
                                                   type: 'warning',
@@ -1128,27 +1174,27 @@ $('#search_by_university').bootstrapValidator({
             $('.overlay').css("display","block");
         },
         success: function(response){
-           $('.overlay').css("display","none");
-           if(response == 0){
+         $('.overlay').css("display","none");
+         if(response == 0){
 
-             $(".widget-title").html('0 Matches for your search');
-             $("#guru-list").html('<p>Mentors not found</p>');
-         }else{
+           $(".widget-title").html('0 Matches for your search');
+           $("#guru-list").html('<p>Mentors not found</p>');
+       }else{
 
-             $("#right-search-content").html(response);
-         }
-     }
- });
+           $("#right-search-content").html(response);
+       }
+   }
+});
     });
 
     $(document).on('change','.ordering',function(){
 
-       var gender = $('#gender').val();
-       var admitted_school = $('#admitted_school').val();
-       var school_offer = $('#school_offer').val();
-       var school_year = $('#school_year').val();
-       var school_year = $('#school_year').val();
-       var order_by = $('.ordering').val();
+     var gender = $('#gender').val();
+     var admitted_school = $('#admitted_school').val();
+     var school_offer = $('#school_offer').val();
+     var school_year = $('#school_year').val();
+     var school_year = $('#school_year').val();
+     var order_by = $('.ordering').val();
 
   //    if(gender == '' && admitted_school == '' && school_offer == '' && school_year == '')
   //    {
@@ -1157,21 +1203,21 @@ $('#search_by_university').bootstrapValidator({
   // }
   $('#search-error').html('');
   $.ajax({
-     url:  base_url +'welcome/search_left',
-     type: 'POST',
-     data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year,order_by:order_by},
-     beforeSend:function(){
-        $('.overlay').css("display","block");
-    },
-    success: function(response){
-        $('.overlay').css("display","none");
-        if(response == 0){
-         $(".widget-title").html('0 Matches for your search');
-         $("#guru-list").html('<p>Mentors not found</p>');
-     }else{
-         $("#right-search-content").html(response);
-     }
- }
+   url:  base_url +'welcome/search_left',
+   type: 'POST',
+   data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year,order_by:order_by},
+   beforeSend:function(){
+    $('.overlay').css("display","block");
+},
+success: function(response){
+    $('.overlay').css("display","none");
+    if(response == 0){
+       $(".widget-title").html('0 Matches for your search');
+       $("#guru-list").html('<p>Mentors not found</p>');
+   }else{
+       $("#right-search-content").html(response);
+   }
+}
 });
 });
 
@@ -1189,14 +1235,14 @@ $('#search_by_university').bootstrapValidator({
           data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year },
           success: function(response){
             if(response !== 'false'){
-             $("#right-search-content").html(response);
+               $("#right-search-content").html(response);
                                  //$(".widget-title").html('0 Matches for your search');
                              }else{
-                                 $(".widget-title").html('0 Matches for your search');
-                                 $("#guru-list").html('');
-                             }
-                         }
-                     });
+                               $(".widget-title").html('0 Matches for your search');
+                               $("#guru-list").html('');
+                           }
+                       }
+                   });
     });
 
 
@@ -1246,14 +1292,14 @@ $('#search_by_university').bootstrapValidator({
                       $('.load-more-btn').html('<button class="btn btn-default">Please wait . . </button>');
                       var total = $(this).attr('total');
                       if(total>0 || total == 0 ){                        
-                       load_more(total);   
-                       var total = total - 1;
-                       $(this).attr('total',total); 
-                   }else{
-                    $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
-                }
+                         load_more(total);   
+                         var total = total - 1;
+                         $(this).attr('total',total); 
+                     }else{
+                        $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
+                    }
 
-            });                    
+                });                    
                 });
               });
 
@@ -1261,43 +1307,6 @@ $('#search_by_university').bootstrapValidator({
 
     $('.chat-send-btn').click(function(){
         $('.no_message').html('');
-        var time = $('#time').val();
-        var img = $('#img').val();
-        var input_message = $.trim($('#input_message').val());
-        if(input_message!=''){
-           var content ='<div class="chat">'+
-           '<div class="chat-avatar">'+
-           '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="June Lane">'+
-           '<img  src="'+img+'" class="img-responsive img-circle">'+
-           '</a>'+
-           '</div>'+
-           '<div class="chat-body">'+
-           '<div class="chat-content">'+
-           '<p>'+input_message+
-           '</p>'+
-           '<span class="chat-time">'+time+'</span>'+
-           '</div>'+
-           '</div>'+
-           '</div>';
-           $('#ajax').append(content);               
-           $(".slimscrollleft.chats").mCustomScrollbar("update");
-           $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
-           message();
-           $('#chat_form')[0].reset();
-       }
-       return false;
-
-
-
-       return false;
-   });
-
-
-
-    // Submitting the chat form 
-    $('#chat_form').submit(function(){
-        $('.no_message').html('');
-
         var time = $('#time').val();
         var img = $('#img').val();
         var input_message = $.trim($('#input_message').val());
@@ -1321,10 +1330,47 @@ $('#search_by_university').bootstrapValidator({
          $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
          message();
          $('#chat_form')[0].reset();
-
      }
      return false;
+
+
+
+     return false;
  });
+
+
+
+    // Submitting the chat form 
+    $('#chat_form').submit(function(){
+        $('.no_message').html('');
+
+        var time = $('#time').val();
+        var img = $('#img').val();
+        var input_message = $.trim($('#input_message').val());
+        if(input_message!=''){
+           var content ='<div class="chat">'+
+           '<div class="chat-avatar">'+
+           '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="June Lane">'+
+           '<img  src="'+img+'" class="img-responsive img-circle">'+
+           '</a>'+
+           '</div>'+
+           '<div class="chat-body">'+
+           '<div class="chat-content">'+
+           '<p>'+input_message+
+           '</p>'+
+           '<span class="chat-time">'+time+'</span>'+
+           '</div>'+
+           '</div>'+
+           '</div>';
+           $('#ajax').append(content);               
+           $(".slimscrollleft.chats").mCustomScrollbar("update");
+           $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
+           message();
+           $('#chat_form')[0].reset();
+
+       }
+       return false;
+   });
 
 
 // sinchClient = new SinchClient({
@@ -1357,12 +1403,12 @@ function load_more(total){
 
     $.post(base_url+'user/get_old_messages',{selected_user_id:selected_user_id,total:total},function(res){  
         if(res){        
-           $('.load-more-btn').html('<button class="btn btn-default" data-page="2"><i class="fa fa-refresh"></i> Load More</button>');               
-           $('#ajax_old').prepend(res);
-       }else{
-           $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
-       }
-   }); 
+         $('.load-more-btn').html('<button class="btn btn-default" data-page="2"><i class="fa fa-refresh"></i> Load More</button>');               
+         $('#ajax_old').prepend(res);
+     }else{
+         $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
+     }
+ }); 
 }
 
 
@@ -1372,10 +1418,10 @@ function message()
 
 
 
- var msg = $.trim($('#input_message').val());
- var to_username = $('#recipients').val();
- var sender_id = $('#sender_id').val();
- var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
+   var msg = $.trim($('#input_message').val());
+   var to_username = $('#recipients').val();
+   var sender_id = $('#sender_id').val();
+   var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
 
 
         // Get the messageClient
@@ -1405,13 +1451,13 @@ function message()
               return false; 
           }
           if(message.textBody =='DISABLE_STREAM'){
-           $('#muted_image_me').hide();               
-           return false;
-       }
-   }
+             $('#muted_image_me').hide();               
+             return false;
+         }
+     }
 
 
-   if(message.direction==false){
+     if(message.direction==false){
 
       if( message.textBody =='ENABLE_STREAM'){
         $('#other0').hide();
@@ -1419,15 +1465,15 @@ function message()
         return false; 
     }
     if(message.textBody =='DISABLE_STREAM'){
-     $('#muted_image').hide();
-     $('#other0').show();
-     return false;
- }
+       $('#muted_image').hide();
+       $('#other0').show();
+       return false;
+   }
 
- var h_url = $('#uri_segment').val();
- var h_urls = $('#uri_segments').val();
+   var h_url = $('#uri_segment').val();
+   var h_urls = $('#uri_segments').val();
 
- if(h_url != 'messages' && h_urls !='incoming_video_call' && h_urls !='conversations' && h_urls !='conversations#'){                   
+   if(h_url != 'messages' && h_urls !='incoming_video_call' && h_urls !='conversations' && h_urls !='conversations#'){                   
     $.notify({                    
         message: message.senderId+'<br><br>'+message.textBody 
     },{                    
@@ -1452,81 +1498,81 @@ function message()
                 if(msg == 'file' && type == 'image'){
 
 
-                 var content ='<div class="chat chat-left">'+
-                 '<div class="chat-avatar">'+
-                 '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
-                 '<img alt="" src="'+image+'" class="img-responsive img-circle">'+
-                 '</a>'+
-                 '</div>'+
-                 '<div class="chat-body">'+
-                 '<div class="chat-content">'+
-                 '<p><img alt="" src="'+file_name+'" class="img-responsive"></p>'+
-                 '<a href="'+file_name+'" target="_blank" download>Download</a>'+
-                 '<span class="chat-time">'+time+'</span>'+
-                 '</div>'+
-                 '</div>'+
-                 '</div>';
-                 $('#ajax').append(content); 
+                   var content ='<div class="chat chat-left">'+
+                   '<div class="chat-avatar">'+
+                   '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
+                   '<img alt="" src="'+image+'" class="img-responsive img-circle">'+
+                   '</a>'+
+                   '</div>'+
+                   '<div class="chat-body">'+
+                   '<div class="chat-content">'+
+                   '<p><img alt="" src="'+file_name+'" class="img-responsive"></p>'+
+                   '<a href="'+file_name+'" target="_blank" download>Download</a>'+
+                   '<span class="chat-time">'+time+'</span>'+
+                   '</div>'+
+                   '</div>'+
+                   '</div>';
+                   $('#ajax').append(content); 
 
-                 setTimeout(function() {
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                   setTimeout(function() {
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
 
-              }, 3000);
-                 setTimeout(function() {
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                  }, 3000);
+                   setTimeout(function() {
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
 
-              }, 1000); 
+                  }, 1000); 
 
-             }else if(msg == 'file' && type == 'others'){
+               }else if(msg == 'file' && type == 'others'){
 
-                 var content ='<div class="chat chat-left">'+
-                 '<div class="chat-avatar">'+
-                 '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
-                 '<img alt="" src="'+image+'" class="img-responsive img-circle">'+
-                 '</a>'+
-                 '</div>'+
-                 '<div class="chat-body">'+
-                 '<div class="chat-content">'+
-                 '<p><img alt="" src="'+base_url+'assets/images/download.png" class="img-responsive"></p>'+
-                 '<a href="'+file_name+'" target="_blank" download>Download</a>'+
-                 '<span class="chat-time">'+time+'</span>'+
-                 '</div>'+
-                 '</div>'+
-                 '</div>';
-                 $('#ajax').append(content); 
+                   var content ='<div class="chat chat-left">'+
+                   '<div class="chat-avatar">'+
+                   '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
+                   '<img alt="" src="'+image+'" class="img-responsive img-circle">'+
+                   '</a>'+
+                   '</div>'+
+                   '<div class="chat-body">'+
+                   '<div class="chat-content">'+
+                   '<p><img alt="" src="'+base_url+'assets/images/download.png" class="img-responsive"></p>'+
+                   '<a href="'+file_name+'" target="_blank" download>Download</a>'+
+                   '<span class="chat-time">'+time+'</span>'+
+                   '</div>'+
+                   '</div>'+
+                   '</div>';
+                   $('#ajax').append(content); 
 
-                 setTimeout(function() {
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                   setTimeout(function() {
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
 
-              }, 3000);
-                 setTimeout(function() {
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                  $(".slimscrollleft.chats").mCustomScrollbar("update");
-                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                  }, 3000);
+                   setTimeout(function() {
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                      $(".slimscrollleft.chats").mCustomScrollbar("update");
+                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
 
-              }, 1000);                    
-             }
+                  }, 1000);                    
+               }
 
 
-             else{
+               else{
 
 
                 var content ='<div class="chat chat-left">'+
@@ -1587,7 +1633,7 @@ function message()
 
 }else{
 
-   $.post(base_url+'user/get_new_message_count',{selected_user:message.senderId},function(res){ 
+ $.post(base_url+'user/get_new_message_count',{selected_user:message.senderId},function(res){ 
     $('#'+message.senderId).text(res);
 
 });
@@ -1628,25 +1674,25 @@ $(document).on('click','.chatclick_search',function(){
                       $('.load-more-btn').html('<button class="btn btn-default">Please wait . . </button>');
                       var total = $(this).attr('total');
                       if(total>0 || total == 0 ){                        
-                       load_more(total);   
-                       var total = total - 1;
-                       $(this).attr('total',total); 
-                   }else{
-                    $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
-                }
+                         load_more(total);   
+                         var total = total - 1;
+                         $(this).attr('total',total); 
+                     }else{
+                        $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
+                    }
 
-            });                    
+                });                    
                 });
               });
 
 
 
 $(document).on('keyup','#activity_search',function(){
- var search_value = $(this).val();
+   var search_value = $(this).val();
 
- $.post(base_url+'user/search_activity_list',{search_value:search_value},function(activity_response){
-   $('.jlist').html(activity_response);
-});
+   $.post(base_url+'user/search_activity_list',{search_value:search_value},function(activity_response){
+     $('.jlist').html(activity_response);
+ });
 });
 
 
@@ -1667,17 +1713,17 @@ $(document).on('keyup','#activity_search',function(){
                                 // count over bell every 5 seconds 
 
                                 setInterval(function(){
-                                 $(".redcircle").load(base_url+'user/notify_applicants', function(response) {
+                                   $(".redcircle").load(base_url+'user/notify_applicants', function(response) {
                                     if(response > 0){
                                         $(".redcircle").css('display','block');
                                         $(".topnotification ul").load(base_url+'user/notify_list');
                                         $('.topnotification').addClass('animate');
                                     }                                                             
                                     setTimeout(function() {
-                                     $('.topnotification').removeClass('animate');
-                                 }, 2000);
+                                       $('.topnotification').removeClass('animate');
+                                   }, 2000);
                                 });
-                             }, 5000);
+                               }, 5000);
 
                                  // redirect to dashboard onclick notificaiton msg 
                                  $(document).on('click',"#see_all_nofify",function(){
@@ -1686,51 +1732,51 @@ $(document).on('keyup','#activity_search',function(){
                               });
 
                                  $('.topnotification').on('click',function(){
-                                     $('.topnotification').addClass('animate');
-                                     $.get(base_url+'user/notify_applicants_viewed', function(response) {
-                                         $(".redcircle").css('display','none');
-                                         $('.topnotification').addClass('animate');
-                                     });
-                                     $('.topnotification').removeClass('animate');
-                                 });
+                                   $('.topnotification').addClass('animate');
+                                   $.get(base_url+'user/notify_applicants_viewed', function(response) {
+                                       $(".redcircle").css('display','none');
+                                       $('.topnotification').addClass('animate');
+                                   });
+                                   $('.topnotification').removeClass('animate');
+                               });
 
                                  setInterval(function(){
 
 
-                                   $.get(base_url+'user/get_call', function(response) {
-                                    var json = jQuery.parseJSON(response);
-                                    if(json.status){
-                                        $('.new_call').html(json.html);                 
-                                        $('audio#ringtone').trigger("play");
-                                        $('.join').click(function(){
-                                            var url  = $(this).attr('href');    
-                                            var call_id  = $(this).attr('call_id');    
+                                     $.get(base_url+'user/get_call', function(response) {
+                                        var json = jQuery.parseJSON(response);
+                                        if(json.status){
+                                            $('.new_call').html(json.html);                 
+                                            $('audio#ringtone').trigger("play");
+                                            $('.join').click(function(){
+                                                var url  = $(this).attr('href');    
+                                                var call_id  = $(this).attr('call_id');    
 
-                                            newpopup = window.open(url,'newwindow','width=1200, height=1200');
-                                            $.post(base_url+'user/attend_call_status',{call_id:call_id},function(res){
+                                                newpopup = window.open(url,'newwindow','width=1200, height=1200');
+                                                $.post(base_url+'user/attend_call_status',{call_id:call_id},function(res){
 
-                                            }) 
-                                            $('.new_call').html('');                
-                                            $('audio#ringtone').trigger("pause");
-                                            return false;
-                                        }); 
+                                                }) 
+                                                $('.new_call').html('');                
+                                                $('audio#ringtone').trigger("pause");
+                                                return false;
+                                            }); 
 
-                                        $('.reject').click(function(){
-                                            $('.new_call').html('');                
-                                            $('audio#ringtone').trigger("pause");
-                                            var call_id = $(this).attr('id');
-                                            $.post(base_url+'user/set_call_status',{call_id:call_id},function(res){
+                                            $('.reject').click(function(){
+                                                $('.new_call').html('');                
+                                                $('audio#ringtone').trigger("pause");
+                                                var call_id = $(this).attr('id');
+                                                $.post(base_url+'user/set_call_status',{call_id:call_id},function(res){
 
-                                            })                   
+                                                })                   
 
-                                        }); 
-
-
-                                    }
+                                            }); 
 
 
-                                });
-                               }, 5000);
+                                        }
+
+
+                                    });
+                                 }, 5000);
 
                                  
 
@@ -1957,13 +2003,13 @@ $(document).on('keyup','#activity_search',function(){
 });
 
 $(document).on('click','a.conv_messages',function(){
-    
 
- $(".conv_messages_box").animate({
+
+   $(".conv_messages_box").animate({
     width: "toggle" 
 });   
 
- 
+
         var selected_user_id = $(this).attr('data-chat-id');  // Id 
         var selected_name = $(this).attr('data-name');  // First & Last name 
         var selected_user_name = $(this).attr('data-username'); // username          
@@ -2036,14 +2082,14 @@ $(document).on('click','a.conv_messages',function(){
                           $('.load-more-btn').html('<button class="btn btn-default">Please wait . . </button>');
                           var total = $(this).attr('total');
                           if(total>0 || total == 0 ){                        
-                           load_more(total);   
-                           var total = total - 1;
-                           $(this).attr('total',total); 
-                       }else{
-                        $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
-                    }
+                             load_more(total);   
+                             var total = total - 1;
+                             $(this).attr('total',total); 
+                         }else{
+                            $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
+                        }
 
-                });
+                    });
 
 
                     });
@@ -2072,9 +2118,9 @@ function show_mobile_modal()
 {
     $(".modal").modal('hide');
     $("#verifymobile").modal({
-       backdrop: 'static',
-       keyboard: false  
-   }); 
+     backdrop: 'static',
+     keyboard: false  
+ }); 
 }
 
 function showMobileData()
@@ -2110,12 +2156,12 @@ function send_otp()
         return false;
     }
     $.post(base_url + 'user/send_otp',{mobile_number:mobile_number},function(response){
-     $(".modal").modal('hide');
-     $("#verify_code").modal({
-       backdrop: 'static',
-       keyboard: false  
-   }); 
- });
+       $(".modal").modal('hide');
+       $("#verify_code").modal({
+         backdrop: 'static',
+         keyboard: false  
+     }); 
+   });
     
 }
 
@@ -2128,27 +2174,27 @@ function send_code()
         return false;
     }
     $.post(base_url + 'user/send_code',{verification_code:verification_code},function(response){
-     $(".modal").modal('hide');
-     $("#verify_success").modal({
-       backdrop: 'static',
-       keyboard: false  
-   }); 
- });
+       $(".modal").modal('hide');
+       $("#verify_success").modal({
+         backdrop: 'static',
+         keyboard: false  
+     }); 
+   });
     
 }
 
 //Starts the AJAX request.
 function searchSuggest() {
- var chat_user = $('#search_suggest').val();
- $.post(base_url+'user/search_chat_users_guru',{keyword:chat_user},function(response){
-     $('.chat-body-left').html(response);
- });
+   var chat_user = $('#search_suggest').val();
+   $.post(base_url+'user/search_chat_users_guru',{keyword:chat_user},function(response){
+       $('.chat-body-left').html(response);
+   });
 }
 
 function CheckSession() {
   $.get(base_url+'welcome/check_session',function(response){
-   return response;
-});
+     return response;
+ });
 }
 
 
@@ -2172,11 +2218,11 @@ function delete_conversation()
         $('.chats').html('<img src="'+base_url+'assets/images/loading.gif" class="loading">');
         var sender_id = $('#receiver_id').val();
         $.post(base_url+'user/delete_conversation',{sender_id:sender_id},function(response){
-         if(response == 1)
-         {
-          $('.chats').html('<div class="no_message">No Record Found</div><div id="ajax"></div><input type="hidden"  id="hidden_id">');
-      }
-  });
+           if(response == 1)
+           {
+              $('.chats').html('<div class="no_message">No Record Found</div><div id="ajax"></div><input type="hidden"  id="hidden_id">');
+          }
+      });
     }
 });
 
@@ -2187,39 +2233,39 @@ function delete_conversation()
 function more_details(id)
 {
   $.post(base_url+'user/more_details',{invite_id:id},function(response){
-     $('.moredetails').html(response);
- });
+   $('.moredetails').html(response);
+});
 }
 
 function checkinner_validation()
 {
 	
- var search_value= $('#old_keyword').val();     
- if(search_value=='')
- {
+   var search_value= $('#old_keyword').val();     
+   if(search_value=='')
+   {
      // $('.error_old').html('<font style="color:red;">Please Enter Subject</font>');
      swal("Warning!",'Please Enter Subject', "error");
      return false;
  }
  $('.overlay').fadeIn(3000 , function(){  
-   $(this).css('display','none'); 
-}); 
+     $(this).css('display','none'); 
+ }); 
 	 //return false;
 	 return true;
     }
 
     function validateSearch()
     {
-     if($('#mentor_gender').val() == '' && $('#mentor_school').val() == '' && $('#mentor_schools_applied').val() == '' && $('#mentor_current_year').val() == '' && $('#mentor_extracurricular_activities').val() == '' && $('#mentor_job_company').val() == '' && $('#mentor_job_title').val() == '' && $('#mentor_job_from_year').val() == '' && $('#mentor_about').val() == '' && $('#mentor_languages_speak').val() == '')
-     {
-      $('#search-advance-error').css('display','block');
-      $('#search-advance-error').html('Please select atleast one.');
-      return false;
+       if($('#mentor_gender').val() == '' && $('#mentor_school').val() == '' && $('#mentor_schools_applied').val() == '' && $('#mentor_current_year').val() == '' && $('#mentor_extracurricular_activities').val() == '' && $('#mentor_job_company').val() == '' && $('#mentor_job_title').val() == '' && $('#mentor_job_from_year').val() == '' && $('#mentor_about').val() == '' && $('#mentor_languages_speak').val() == '')
+       {
+          $('#search-advance-error').css('display','block');
+          $('#search-advance-error').html('Please select atleast one.');
+          return false;
+      }
   }
-}
 
-function range(start, end)
-{
+  function range(start, end)
+  {
     var numbers = [];
     for (; start <= end; start++)
     {

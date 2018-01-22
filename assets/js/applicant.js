@@ -264,134 +264,190 @@ $('#applicant_forgot_password_form').bootstrapValidator({
                                     });
 
 
-var check_username_path = base_url+"user/check_username";                              
-$('#applicant_profile_form')
-.find('[name="country"]')
-.chosen()
-            // Revalidate the color when it is changed
-            .change(function(e) {
-                $('#applicant_profile_form').bootstrapValidator('revalidateField', 'country');
-            })
-            .end()
-            .bootstrapValidator({
-                excluded: ':disabled',
-                feedbackIcons: {               
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },            
-                fields: {                
-                    applicant_first_name: {
-                        validators: {                    
-                            notEmpty: {
-                                message: 'The First Name is required'
-                            }
-                        }
-                    },         
-                    username: {
-                        validators: {                    
-                            notEmpty: {
-                                message: 'The User Name is required'
-                            },
-                            remote: {
-                                message: 'The Username is not available',
-                                url: check_username_path
-                            }
-                        }
-                    },         
-                    applicant_last_name: {
-                        validators: {                    
-                            notEmpty: {
-                                message: 'The Last Name is required'
-                            }
-                        }
-                    },
-                    applicant_phone: {
-                        validators: {                    
-                            notEmpty: {
-                                message: 'The Phone Number is required'
-                            },
-                            numeric: {
-                                message:'Please enter numeric value'
-                            }
-                        }
-                    },
-                    country: {
-                        validators: {                    
-                            notEmpty: {
-                                message: 'Select country'
-                            }
-                        }
-                    }, state: {
-                        validators: {                    
-                            notEmpty: {
-                                message: 'Select state'
-                            }
-                        }
-                    }, city: {
-                        validators: {                    
-                            notEmpty: {
-                                message: 'Select city'
-                            }
-                        }
-                    },
 
+
+$('#applicant_profile_form').submit(function(){    
+   $.ajax({
+    url : base_url+'applicant/update_profile',
+    type: "POST",
+    data: $('#applicant_profile_form').serialize(),
+    dataType: "JSON",
+    success: function(data)
+    {
+        
+            if(data.status == true) //if success close modal and reload ajax table
+            {
+                setInterval(function(){ window.location = base_url+'dashboard?notify=true'; }, 1000);
+            }
+            else
+            {
+                for (var i = 0; i < data.inputerror.length; i++) 
+                {
+                    $('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+                    $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
                 }
-            }) .on('success.form.bv', function(e) {
-                                        // Prevent form submission                                        
-                                        e.preventDefault();
-                                        var url = base_url+"user/update_profile";
-                                        var formData = $('#applicant_profile_form').serialize(); 
-                                        $.ajax({
-                                            type:'POST',
-                                            url:url,
-                                            data:formData,
-                                            success:function(response)
-                                            {                                                 
-                                                if(response==0)
-                                                {   
+            }   
 
-                                                    $("#profile_update_error").html("");
-                                                    $("#profile_update_error").css("display","none");
-                                                /*  $('#applicant_forgot_password_success').html('Password has been sent to mail Id');
-                                                    $('#applicant_forgot_password_success').css('display','block');
-                                                    $('#applicant_forgot_password_error').css('display','none'); */
-                                                    setTimeout(function(){ window.location = base_url+'dashboard'; }, 1000);
-                                                }
-                                                else if(response==1)
-                                                {
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            alert('Error adding / update data');
+            
+        }
+    });
 
-                                                    $("#profile_update_error").html(' Error While Updating '); 
-                                                    $("#profile_update_error").css("display","block");
-                                                    $("#profile_update_error").fadeTo(2000, 500).slideUp(500, function(){
-                                                        $("#profile_update_error").slideUp(500);
-                                                    });
-                                                    setInterval(function(){ location.reload(); }, 1000);
-                                                    /* $('#applicant_forgot_password_error').html('Error While Updating Password !');
-                                                    $('#applicant_forgot_password_success').css('display','none');
-                                                    $('#applicant_forgot_password_error').css('display','block');                                                     */
-                                                }                                                    
-                                                
+      //set input/textarea/select event when change value, remove class error and remove text help block 
+    $("input").keyup(function(){
+        $(this).parent().parent().removeClass('has-error');
+        $(this).next().empty();
+    });
+    $("textarea").keyup(function(){
+        $(this).parent().parent().removeClass('has-error');
+        $(this).next().empty();
+    });
+    $("select").change(function(){
+        $(this).parent().parent().removeClass('has-error');
+        $(this).next().empty();
+    });
 
-                                            }
-                                        })
+     
+            $('#btnSave').text('save'); //change button text
+            $('#btnSave').attr('disabled',false); //set button enable 
 
-                                    });
+            return false;
+        });
 
-            var check_exist_date =  base_url+'user/check_exist_date';                                  
-            $('#schedule_form').bootstrapValidator({
-               fields: {                
-                contact_date: {
-                    validators: {                    
-                        notEmpty: {
-                            message: 'The Date is required'
-                        }
-                    }
-                },         
-                contact_time_start: {
-                    validators: {                    
-                        notEmpty: {
-                            message: 'The Start Time is required'
-                        },
+
+
+// var check_username_path = base_url+"user/check_username";                              
+// $('#applicant_profile_form')
+//             // Revalidate the color when it is changed
+//             .change(function(e) {
+//                 $('#applicant_profile_form').bootstrapValidator('revalidateField', 'country');
+//             })
+//             .end()
+//             .bootstrapValidator({
+//                 excluded: ':disabled',
+//                 feedbackIcons: {               
+//                     invalid: 'glyphicon glyphicon-remove',
+//                     validating: 'glyphicon glyphicon-refresh'
+//                 },            
+//                 fields: {                
+//                     applicant_first_name: {
+//                         validators: {                    
+//                             notEmpty: {
+//                                 message: 'The First Name is required'
+//                             }
+//                         }
+//                     },         
+//                     username: {
+//                         validators: {                    
+//                             notEmpty: {
+//                                 message: 'The User Name is required'
+//                             },
+//                             remote: {
+//                                 message: 'The Username is not available',
+//                                 url: check_username_path
+//                             }
+//                         }
+//                     },         
+//                     applicant_last_name: {
+//                         validators: {                    
+//                             notEmpty: {
+//                                 message: 'The Last Name is required'
+//                             }
+//                         }
+//                     },
+//                     applicant_phone: {
+//                         validators: {                    
+//                             notEmpty: {
+//                                 message: 'The Phone Number is required'
+//                             },
+//                             numeric: {
+//                                 message:'Please enter numeric value'
+//                             }
+//                         }
+//                     },
+//                     country: {
+//                         validators: {                    
+//                             notEmpty: {
+//                                 message: 'Select country'
+//                             }
+//                         }
+//                     }, state: {
+//                         validators: {                    
+//                             notEmpty: {
+//                                 message: 'Select state'
+//                             }
+//                         }
+//                     }, city: {
+//                         validators: {                    
+//                             notEmpty: {
+//                                 message: 'Select city'
+//                             }
+//                         }
+//                     },
+
+//                 }
+//             }) .on('success.form.bv', function(e) {
+//                                         // Prevent form submission                                        
+//                                         e.preventDefault();
+//                                         var url = base_url+"user/update_profile";
+//                                         var formData = $('#applicant_profile_form').serialize(); 
+//                                         $.ajax({
+//                                             type:'POST',
+//                                             url:url,
+//                                             data:formData,
+//                                             success:function(response)
+//                                             {                                                 
+//                                                 if(response==0)
+//                                                 {   
+
+//                                                     $("#profile_update_error").html("");
+//                                                     $("#profile_update_error").css("display","none");
+//                                                 /*  $('#applicant_forgot_password_success').html('Password has been sent to mail Id');
+//                                                     $('#applicant_forgot_password_success').css('display','block');
+//                                                     $('#applicant_forgot_password_error').css('display','none'); */
+//                                                     setTimeout(function(){ window.location = base_url+'dashboard'; }, 1000);
+//                                                 }
+//                                                 else if(response==1)
+//                                                 {
+
+//                                                     $("#profile_update_error").html(' Error While Updating '); 
+//                                                     $("#profile_update_error").css("display","block");
+//                                                     $("#profile_update_error").fadeTo(2000, 500).slideUp(500, function(){
+//                                                         $("#profile_update_error").slideUp(500);
+//                                                     });
+//                                                     setInterval(function(){ location.reload(); }, 1000);
+//                                                     /* $('#applicant_forgot_password_error').html('Error While Updating Password !');
+//                                                     $('#applicant_forgot_password_success').css('display','none');
+//                                                     $('#applicant_forgot_password_error').css('display','block');                                                     */
+//                                                 }                                                    
+
+
+//                                             }
+//                                         })
+
+//                                     });
+
+
+
+
+var check_exist_date =  base_url+'user/check_exist_date';                                  
+$('#schedule_form').bootstrapValidator({
+   fields: {                
+    contact_date: {
+        validators: {                    
+            notEmpty: {
+                message: 'The Date is required'
+            }
+        }
+    },         
+    contact_time_start: {
+        validators: {                    
+            notEmpty: {
+                message: 'The Start Time is required'
+            },
                     /*remote: {
                         message: 'Guru is not available for given time.',
                         url: check_exist_date
@@ -1206,16 +1262,12 @@ $(document).on('click','#second_verify',function(){
                                 });
 
 
-
-
-
-
             // Check call to join every 5 seconds 
             setInterval(function(){
              $.get(base_url+'user/get_call', function(response) {
 
                 var json = jQuery.parseJSON(response);
-                if(json.status){
+                if(json.status == true){
                     $('.new_call').html(json.html);                
                     $('audio#ringtone').trigger("play");
                     $('.join').click(function(){
