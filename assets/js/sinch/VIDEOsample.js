@@ -113,6 +113,12 @@ $(document).on('click','.startVideo', function(event) {
 	newpopup = window.open(url,'newwindow','width=1200, height=790');
 });
 
+$(document).on('click','.startAudio', function(event) {
+	event.preventDefault();
+	var url  = $(this).attr('href');	
+	newpopup = window.open(url,'newwindow','width=1200, height=790');
+});
+
 
 // $(document).on('click','.startVideo', function(event) {
 // 	event.preventDefault();
