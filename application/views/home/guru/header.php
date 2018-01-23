@@ -75,7 +75,7 @@
 			<li class="dropdown search-icon-bg hidden-xs"> <a href="javascript:;" id="open_msg_box" class="" data-toggle="dropdown"><i class="fa fa-search"></i></a>
 				<div class="dropdown-menu pull-right">
 					<form class="titlerightsearch navbar-form"> <input type="search" placeholder="Search" autocomplete="off">
-						<div id="divResult"></div>
+						<!-- <div id="divResult"></div> -->
 					</form>
 				</div>
 			</li>
