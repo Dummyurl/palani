@@ -15,7 +15,7 @@
 <body>
 
     <div class="success-signup" id="signup_applicant_modal">
-       <div class="container">
+     <div class="container">
         <form name="send_messages" id="send_messages">      
             <div class="cong_icon"><i class="fa fa-check"></i></div>
             <h2>Congratulations!</h2>
@@ -262,39 +262,39 @@
                         </select>
                     </div>
                     <div class="col-sm-5">
-                <input type="text" name="mobile_number" id="mobile_number" class="form-control" value="" onKeyUp="check_mobile(this.value);" required   autocomplete="off" onkeypress="return isNumberKey(event)"  />
+                        <input type="text" name="mobile_number" id="mobile_number" class="form-control" value="" onKeyUp="check_mobile(this.value);" required   autocomplete="off" onkeypress="return isNumberKey(event)"  />
                     </div>
-                        <div class="col-sm-3">
-                            <button type="submit" class="btn btn-primary">Send OTP</button>                    
-                        </div>
+                    <div class="col-sm-3">
+                        <button type="submit" class="btn btn-primary">Send OTP</button>                    
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
-
-        <div class="success-signup" id="mobile_first_verify_code" style="display: none;">
-           <div class="container">
-            <p><img src="<?php echo base_url(); ?>assets/images/schoolguru-logo-emailtemplate.png" /></p>
-            <h2>One more step to go!</h2>
-            <h4>Please verify your mobile number</h4>
-            <form method="post" id="mobile_verify_code_form">
-                <div id="error_msg" style="color:red;"></div>
-                <div class="row">
-                   <div class="col-xs-12"><label class="control-label">Enter the verification code</label></div>
-                   <div class="col-sm-9"><input type="text" name="verification_code" id="verification_code" class="form-control" value="" required/></div>
-                   <div class="col-sm-3"><button type="submit" class="btn btn-primary verify" >Verify</button></div>
-               </div>
-           </form>
-       </div>
-   </div>
-
-   <div class="success-signup" id="mobile_first_verify_success" style="display:none;">
-       <div class="container">
-        <div class="cong_icon"><i class="fa fa-check"></i></div>
-        <h2>Verified!</h2>
-        <h4>Your mobile number has been verified successfully.</h4>
-        <a href="<?php echo base_url(); ?>user/dashboard?notify=true" class="btn btn-primary">Get Started!</a>
     </div>
+
+    <div class="success-signup" id="mobile_first_verify_code" style="display: none;">
+     <div class="container">
+        <p><img src="<?php echo base_url(); ?>assets/images/schoolguru-logo-emailtemplate.png" /></p>
+        <h2>One more step to go!</h2>
+        <h4>Please verify your mobile number</h4>
+        <form method="post" id="mobile_verify_code_form">
+            <div id="error_msg" style="color:red;"></div>
+            <div class="row">
+             <div class="col-xs-12"><label class="control-label">Enter the verification code</label></div>
+             <div class="col-sm-9"><input type="text" name="verification_code" id="verification_code" class="form-control" value="" required/></div>
+             <div class="col-sm-3"><button type="submit" class="btn btn-primary verify" >Verify</button></div>
+         </div>
+     </form>
+ </div>
+</div>
+
+<div class="success-signup" id="mobile_first_verify_success" style="display:none;">
+ <div class="container">
+    <div class="cong_icon"><i class="fa fa-check"></i></div>
+    <h2>Verified!</h2>
+    <h4>Your mobile number has been verified successfully.</h4>
+    <a href="<?php echo base_url(); ?>user/dashboard?notify=true" class="btn btn-primary">Get Started!</a>
+</div>
 </div>
 
 <script> var base_url = '<?php echo base_url(); ?>'; </script>
@@ -332,6 +332,12 @@
 </script>
 
 <script src="<?php echo base_url()."assets/" ?>js/guru.js" type="text/javascript"></script>
+<script type = "text/javascript" >
+    history.pushState(null, null, '#');
+    window.addEventListener('popstate', function(event) {
+        history.pushState(null, null, '#');
+    });
+</script>
 
 </body>
 </html>
