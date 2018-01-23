@@ -414,6 +414,11 @@ public function dashboard()
                } // GURU Dashboard 
                elseif($this->session->userdata('type') == 'guru' ){
 
+                $where = array('id'=>$this->session->userdata('applicant_id'));
+                $data = $this->db->get_where('applicants',$where)->row();
+                if($data->mobile_verified == 0){
+                  redirect('welcome/mobile_verify');
+                }
                   // Pagination 
 
                	$total_rows = count($this->user_model->get_dashboard_activity($applicant_id,'',''));
@@ -1974,6 +1979,11 @@ public function messages($id = '')
 		$this->data['applicant_details'] = $this->applicant_modal->get_progress_bar($id);
 		$this->data['activity_list'] = $this->user_model->get_chat_list($id);
 	}
+  
+  // echo '<pre>';
+  // print_r($this->data);
+  // exit;
+
 	$this->load->vars($this->data);
 	$this->load->view('template');    
 }
@@ -3748,6 +3758,12 @@ Public function get_call()
     $call_from = base64_encode($result->call_from);
     $invite_id = base64_encode($result->invite_id);
 
+    if($result->type == 'audio'){
+      $type = 'incoming_audio_call';
+    }else{
+      $type = 'incoming_video_call';
+    }
+
 
     $profile_img = '';
     if(isset($data['profile_img']) && !empty($data['profile_img'])){
@@ -3779,7 +3795,7 @@ Public function get_call()
   </div>
   <div class="col-md-6">
   '.$data['first_name'].' '.$data['last_name'].' Calling you .. <br>        
-  <a class="btn btn-success join" href="'.base_url().'user/incoming_video_call/'.$username.'/'.$channel.'/'.$call_from.'/'.$invite_id.'" call_id="'.$result->call_id.'">Join </a>
+  <a class="btn btn-success join" href="'.base_url().'user/'.$type.'/'.$username.'/'.$channel.'/'.$call_from.'/'.$invite_id.'" call_id="'.$result->call_id.'">Join </a>
   <button class="btn btn-danger reject" id="'.$result->call_id.'">Reject</button>  
 
   </div>
