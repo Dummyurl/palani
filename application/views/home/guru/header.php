@@ -264,3 +264,7 @@
 			<div class="new_call form-group"></div>
 			<audio id="ringback" src='<?php echo base_url();?>assets/css/style/ringback.wav' loop></audio>
 			<audio id="ringtone" src='<?php echo base_url();?>assets/css/style/phone_ring.wav' loop></audio>
+			<!-- Notification bell  -->
+			<audio id="notify_ring" src='<?php echo base_url();?>assets/chime.mp3'></audio>
+			<audio id="message_ring" src='<?php echo base_url();?>assets/notification.mp3'></audio>
+
