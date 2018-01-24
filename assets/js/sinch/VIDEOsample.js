@@ -20,6 +20,10 @@ var showLoginUI = function() {
 	//$('form#userForm').css('display', 'inline');
 }
 
+if(segment == 'messages'){
+	$('.overlay').show();	
+}
+
 
 //*** Set up sinchClient ***/
 
@@ -29,16 +33,20 @@ sinchClient = new SinchClient({
 	capabilities: {calling: true, video: true, messaging: true},
 	supportActiveConnection: true,
 	onLogMessage: function(message) {
+
+		if(message.message == 'Successfully started SinchClient'){
+			$('.overlay').hide();
+		}
 		if(message.code == 4000)
 		{
 			var signInObj = {};
 			signInObj.username = $('#sinch_username').val();
 			signInObj.password = $('#sinch_username').val();
 			sinchClient.start(signInObj, function() {
-					global_username = signInObj.username;
-					localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
+				global_username = signInObj.username;
+				localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
 					//window.location = base_url+"dashboard?notify=true";
-			}).fail(handleError);
+				}).fail(handleError);
 		}
 		//console.log(message);
 	}
@@ -55,24 +63,24 @@ var sessionName = 'sinchSessionVIDEO-' + sinchClient.applicationKey;
 var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
 if(sessionObj.userId) { 
 	sinchClient.start(sessionObj)
-		.then(function() {
-			global_username = sessionObj.userId;
-			showUI();
-			localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
-		})
-		.fail(function() {
-			
-		});
+	.then(function() {
+		global_username = sessionObj.userId;
+		showUI();
+		localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
+	})
+	.fail(function() {
+
+	});
 }
 else {
 	var signUpObj = {};
 	signUpObj.username = $('#sinch_username').val();
 	signUpObj.password = $('#sinch_username').val();
 	sinchClient.newUser(signUpObj, function(ticket) {
-			sinchClient.start(ticket, function() {
-					global_username = signUpObj.username;
-					localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
-			}).fail(handleError);
+		sinchClient.start(ticket, function() {
+			global_username = signUpObj.username;
+			localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
+		}).fail(handleError);
 	}).fail(handleError);
 }
 
@@ -122,7 +130,7 @@ $(document).on('click','.startAudio', function(event) {
 
 // $(document).on('click','.startVideo', function(event) {
 // 	event.preventDefault();
-	
+
 // 	clearError();
 // 	if(typeof localStorage[sessionName] == 'undefined'){
 // 		return false;
@@ -159,8 +167,8 @@ $(document).on('click','.startAudio', function(event) {
 //             call.addEventListener(callListeners);                                                                                                                                                                                
 //             }
 
-            
-            
+
+
 //         }
 
 //     });
@@ -262,7 +270,7 @@ $(document).on('click','.startAudio', function(event) {
 // 	// 	});
 // 	// 	$('#incoming_alert').modal('show');
 
-    
+
 //  //    $('#call_from h2').html(incomingCall.fromId);
 // 	// //Play some groovy tunes 
 // 	// $('audio#ringtone').prop("currentTime",0);
@@ -287,15 +295,15 @@ $(document).on('click','.startAudio', function(event) {
 /*** Make a new data call ***/
 
 $('button#call').click(function(event) {
-    
+
 	callClient.initStream().then(function() { // Directly init streams, in order to force user to accept use of media sources at a time we choose
 		$('div.frame').not('#chromeFileWarning').show();
 	}); 
 	event.preventDefault();
-     
+
 	if(!$(this).hasClass("incall") && !$(this).hasClass("callwaiting")) {
 		clearError();
-     
+
 		$('button').addClass('incall');
 
 		$('video').append('<div id="title">Calling ' + $('input#callUserName').val()+'...</div>');
@@ -303,35 +311,35 @@ $('button#call').click(function(event) {
 //                               backdrop: 'static',
 //                               keyboard: false  
 //                 });
-		console.log('Placing call to: ' + $('input#callUserName').val());
-		call = callClient.callUser($('input#callUserName').val());
+console.log('Placing call to: ' + $('input#callUserName').val());
+call = callClient.callUser($('input#callUserName').val());
 
-		call.addEventListener(callListeners);                                                                                                                                                                                 
-	}
+call.addEventListener(callListeners);                                                                                                                                                                                 
+}
 });
 
 $('button#answer').click(function(event) {
-    
+
 	event.preventDefault();
 
-	 $('#outgoing_call').modal('hide');
+	$('#outgoing_call').modal('hide');
 
-        $('div#title').remove();
-                    $('div#stats').remove();
+	$('div#title').remove();
+	$('div#stats').remove();
 	if($(this).hasClass("callwaiting")) {
 		clearError();
 		try {
 			call.answer();
 			
 			$('button').removeClass('callwaiting');
-                        $('#incoming_alert').modal('hide');
-                       
-                        $('#incoming_call').modal({
-                           backdrop: 'static',
-                           keyboard: false  
-                        });
-                        $('#calling').modal('hide');
-   
+			$('#incoming_alert').modal('hide');
+
+			$('#incoming_call').modal({
+				backdrop: 'static',
+				keyboard: false  
+			});
+			$('#calling').modal('hide');
+
 		}
 		catch(error) {
 			handleError(error);
@@ -345,14 +353,14 @@ $('button#answer').click(function(event) {
 
 $('button#hangup').click(function(event) {
 	event.preventDefault();
-         $('div#title').remove();
-	 $('div#stats').remove();
-         
-         $('#incoming_alert').modal('hide');
-         $('#incoming_call').modal('hide');    
-         $('#outgoing_call').modal('hide');
-        
-         
+	$('div#title').remove();
+	$('div#stats').remove();
+
+	$('#incoming_alert').modal('hide');
+	$('#incoming_call').modal('hide');    
+	$('#outgoing_call').modal('hide');
+
+
 	if($(this).hasClass("incall")) {
 		clearError();
 		
@@ -365,21 +373,21 @@ $('button#hangup').click(function(event) {
 
 $('button#mute').click(function(event) {
 	event.preventDefault();
-	 $(this).attr('id','unmute');
-     $('#newCall li').eq(1).removeClass('btn-danger');
-	 $('#newCall li').eq(1).addClass('btn-primary');
+	$(this).attr('id','unmute');
+	$('#newCall li').eq(1).removeClass('btn-danger');
+	$('#newCall li').eq(1).addClass('btn-primary');
 	 //$('video#outgoing').removeAttr('muted');
-	
-});
+
+	});
 
 $('button#unmute').click(function(event) {
-	 event.preventDefault();
-	 $(this).attr('id','mute');
-         $('#newCall li').eq(1).removeClass('btn-primary');
-	 $('#newCall li').eq(1).addClass('btn-danger');
+	event.preventDefault();
+	$(this).attr('id','mute');
+	$('#newCall li').eq(1).removeClass('btn-primary');
+	$('#newCall li').eq(1).addClass('btn-danger');
 	 //$('video#outgoing').attr('muted','true');
-	
-});
+
+	});
 
 /*** Log out user ***/
 
