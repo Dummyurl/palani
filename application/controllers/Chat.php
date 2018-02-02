@@ -271,9 +271,12 @@ Public function update_channel()
 			'status' =>1,
 			'start_by' =>$this->session->userdata('applicant_id'),
 			'channel' =>$_POST['channel']
-	);
-
-		$this->db->insert('call_details',$data);
+		);
+		if(!empty($_POST['type'])){
+			$data +=array('type' => 'audio');
+		}
+		
+		 $this->db->insert('call_details',$data);
 		 $this->db->insert_id();
 
 

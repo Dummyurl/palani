@@ -9,22 +9,22 @@
                 <div class="col-lg-12">
                     <div class="form-group">
                         <label>Card Number</label>
-                        <input type="text" class="form-control cpy" data-stripe="number" placeholder="Valid Card Number" required>
+                        <input type="text" class="form-control cpy" data-stripe="number" placeholder="Valid Card Number" id="card_number" required>
                     </div>    	
                 </div>
                 <div class="col-xs-7">
                     <div class="form-group">
                         <label>Expiry Date</label>
                         <div class="row">
-                            <div class="col-xs-6"><input type="text" class="form-control cpy" data-stripe="exp_month" placeholder="MM" required></div>
-                            <div class="col-xs-6"><input type="text" class="form-control cpy" data-stripe="exp_year" placeholder="YY" required></div>
+                            <div class="col-xs-6"><input type="text" class="form-control cpy" data-stripe="exp_month" placeholder="MM" required id="month" ></div>
+                            <div class="col-xs-6"><input type="text" class="form-control cpy" data-stripe="exp_year" placeholder="YY" required id="year" ></div>
                         </div>
                     </div> 
                 </div>
                 <div class="col-xs-5">
                     <div class="form-group">
                         <label>CV CODE</label>
-                        <input type="text" class="form-control cpy" data-stripe="cvc" placeholder="CV" required>
+                        <input type="text" class="form-control cpy" data-stripe="cvc" placeholder="CV" required id="cv">
                     </div> 
                 </div>
             </div>
@@ -34,7 +34,7 @@
             Final Amount <span>$<?php echo $amount; ?><input type="hidden" class="form-control" id="amount" data-stripe="amount" required value="<?php echo $amount; ?>"></span>
         </div>
         
-        <div class="paymentbutton"><input type="submit" class="submit btn btn-primary" value="Pay"></div>
+        <div class="paymentbutton"><input type="submit" class="submit btn btn-primary" value="Save Card"></div>
     </form>
     
 </div>
@@ -68,8 +68,12 @@ return false;
 			$('.submit').val('Pay');
 		} else {		 	 	
 			$.ajax({
-				url: '<?=base_url('user/process');?>',
-				data: {access_token: response.id, amount:$('#amount').val()},
+				url: '<?=base_url('user/add_card_details');?>',
+				data: {
+					access_token : response.id,
+				    amount : $('#amount').val(),
+				    card_number : $('#card_number').val()					
+				},
 				type: 'POST',
 				dataType: 'JSON',
 				success: function(response){
@@ -81,7 +85,7 @@ return false;
           type: "success" ,
           icon: 'success',
           showConfirmButton:false,
-          html:'<p>Payment successfully done! <br>Now you can chat with our guru.</p><p><a href="<?php echo base_url(); ?>messages" class="btn btn-primary">Go to Messages</a></p>',
+          html:'<p>Card  details saved successfully! <br>Now you can chat with our guru.</p><p><a href="<?php echo base_url(); ?>messages" class="btn btn-primary">Go to Messages</a></p>',
         });
 
 					setTimeout(function() {

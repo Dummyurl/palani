@@ -152,9 +152,100 @@
 <script type="text/javascript" src="<?php echo base_url('assets/js/jquery.form.min.js') ?>"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>
-<script type="text/javascript">
-	$('#user_file').change(function(e) {   
-		e.preventDefault();   
+
+
+<script src="<?php echo base_url()."assets/" ?>js/jquery.password-validation.js" type="text/javascript"></script>		
+<script>
+	$(document).ready(function() {
+
+		$('.note').hide();
+		$("#password").passwordValidation({"confirmField": "#confirm_password"}, function(element, valid, match, failedCases) {
+			$("#errors").html("<pre>" + failedCases.join("\n") + "</pre>");
+			if(valid){	
+				$('.account-btn').attr('disabled','false');
+				$('.account-btn').removeAttr('disabled');
+			}
+			if(!valid){					
+				$('.account-btn').attr('disabled','true');				
+			}
+
+			if(!valid || !match){							
+				$('.account-btn').attr('disabled','true');				
+			}
+			if(valid && match){							
+				$('.account-btn').removeAttr('disabled');
+			}
+		});
+
+		$('#change_pwd_form').submit(function(){
+			$.ajax({
+				url:'<?php echo base_url(); ?>user/change_password',
+				data:$('#change_pwd_form').serialize(),
+				method:'POST',
+				dataType: "JSON",
+				success: function(data)
+				{
+
+		            if(data.status == true) //if success close modal and reload ajax table
+		            {
+		            	$('#change_pwd_form')[0].reset();
+		            	$('.note').show();
+		            	setTimeout(function() {
+		            		$('.note').hide();
+		            		$('#change_pwd').modal('hide');
+		            	}, 2000);
+		            }
+		            else
+		            {
+		            	for (var i = 0; i < data.inputerror.length; i++) 
+		            	{
+		                    $('[name="'+data.inputerror[i]+'"]').next().addClass('has-error'); //select parent twice to select div form-group class and add has-error class
+		                    $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]); //select span help-block class set text error string
+		                }
+		            }   
+		             //set input/textarea/select event when change value, remove class error and remove text help block 
+		             $("input").keyup(function(){
+		             	$(this).parent().parent().removeClass('has-error');
+		             	$(this).next().empty();
+		             });
+
+
+		         },
+		         error: function (jqXHR, textStatus, errorThrown)
+		         {
+		         	alert('Error adding / update data');
+        	 //set input/textarea/select event when change value, remove class error and remove text help block 
+        	 $("input").keyup(function(){
+        	 	$(this).parent().parent().removeClass('has-error');
+        	 	$(this).next().empty();
+        	 });
+
+
+        	}
+        });
+			return false;
+		});
+
+		    //set input/textarea/select event when change value, remove class error and remove text help block 
+		    $("input").keyup(function(){
+		    	$(this).parent().parent().removeClass('has-error');
+		    	$(this).next().empty();
+		    });
+
+		});
+	</script>
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+		$('#user_file').change(function(e) {   
+			e.preventDefault();   
    var oFile = document.getElementById("user_file").files[0]; // <input type="file" id="fileUpload" accept=".jpg,.png,.gif,.jpeg"/>
             if (oFile.size > 25097152) // 25 mb for bytes.
             {
@@ -249,10 +340,10 @@
 
         });
 
-	$('#mute_mic').click(function(){
-		if($(this).parent('li').hasClass("btn-success")){
-			$(this).parent('li').removeClass("btn-success").addClass('btn-danger');
-			$('#incoming').prop('muted', true);   
+		$('#mute_mic').click(function(){
+			if($(this).parent('li').hasClass("btn-success")){
+				$(this).parent('li').removeClass("btn-success").addClass('btn-danger');
+				$('#incoming').prop('muted', true);   
       // console.log('muted');
   }else{
   	$(this).parent('li').removeClass("btn-danger").addClass('btn-success');
@@ -260,48 +351,51 @@
       // console.log('unmuted');
   }
 });  
-	(function($){
-		$(window).on("load",function(){
-			$(".chat-box-right .chat-box.slimscrollleft, .chat-box-left .chat-user-list.slimscrollleft").mCustomScrollbar({
-				theme:"minimal"
-			});			
-		});
-	})(jQuery);
-</script>
+		(function($){
+			$(window).on("load",function(){
+				$(".chat-box-right .chat-box.slimscrollleft, .chat-box-left .chat-user-list.slimscrollleft").mCustomScrollbar({
+					theme:"minimal"
+				});			
+			});
+		})(jQuery);
+	</script>
 
-<input type="hidden" id="role" value="<?php echo $this->session->userdata('role'); ?>">
-<!-- <script src="<?php echo base_url()."assets/" ?>js/chosen.js"></script> -->
-<?php if($this->uri->segment(1) == 'dashboard' || $this->uri->segment(2) =='dashboard#_=_' || $this->uri->segment(2) == 'dashboard'){ ?> 
-<script type="text/javascript" src="<?php echo base_url()."assets/" ?>js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url()."assets/" ?>js/dataTables.bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url()."assets/" ?>css/chosen.css">
-<link href="<?php echo base_url()."assets/" ?>css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css">
-<script src="<?php echo base_url()."assets/" ?>js/cropper.min.js"></script>
-<script src="<?php echo base_url()."assets/" ?>js/main.js"></script>
-<script src="<?php echo base_url()."assets/" ?>js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-	$('#mentor_job_from_year').datetimepicker({        
-		maxDate: moment().subtract(0, 'y'),
-		format: "YYYY"      
-	});
-	$('#mentor_job_to_year').datetimepicker({
-		format: "YYYY"   
-	});
-	$("#mentor_job_from_year").on("dp.change", function (e) {      
-		$('#mentor_job_to_year').data("DateTimePicker").minDate(e.date);
-	});
-	$("#mentor_job_to_year").on("dp.change", function (e) {
-		$('#mentor_job_from_year').data("DateTimePicker").maxDate(e.date);           
-	});
-</script>
-<script type="text/javascript">
-	$(document).ready(function(){
-		var role = $('#role').val();
-		if(role == 0){
-			var url = "<?php echo site_url('user/get_applicant_payment')?>";
-		}else{
-			var url = "<?php echo site_url('user/get_gurus_payment')?>";
-		}
+	<input type="hidden" id="role" value="<?php echo $this->session->userdata('role'); ?>">
+	<!-- <script src="<?php echo base_url()."assets/" ?>js/chosen.js"></script> -->
+	<?php if($this->uri->segment(1) == 'dashboard' || $this->uri->segment(2) =='dashboard#_=_' || $this->uri->segment(2) == 'dashboard' || $this->uri->segment(2)){ ?> 
+	<script type="text/javascript" src="<?php echo base_url()."assets/" ?>js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url()."assets/" ?>js/dataTables.bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url()."assets/" ?>css/chosen.css">
+	<link href="<?php echo base_url()."assets/" ?>css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css">
+	<script src="<?php echo base_url()."assets/" ?>js/cropper.min.js"></script>
+	<script src="<?php echo base_url()."assets/" ?>js/main.js"></script>
+	<script src="<?php echo base_url()."assets/" ?>js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$('#mentor_job_from_year').datetimepicker({        
+			maxDate: moment().subtract(0, 'y'),
+			format: "YYYY"      
+		});
+		$('#mentor_job_to_year').datetimepicker({
+			format: "YYYY"   
+		});
+		$("#mentor_job_from_year").on("dp.change", function (e) {      
+			$('#mentor_job_to_year').data("DateTimePicker").minDate(e.date);
+		});
+		$("#mentor_job_to_year").on("dp.change", function (e) {
+			$('#mentor_job_from_year').data("DateTimePicker").maxDate(e.date);           
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+
+			$('#call_log').DataTable();
+			var role = $('#role').val();
+			if(role == 0){
+				var url = "<?php echo site_url('user/get_applicant_payment')?>";
+			}else{
+				var url = "<?php echo site_url('user/get_gurus_payment')?>";
+			}
 
  //datatables
  var  table = $('#datatable').DataTable({

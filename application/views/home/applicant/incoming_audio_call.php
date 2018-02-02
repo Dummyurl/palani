@@ -13,11 +13,6 @@
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/responsive.css" type="text/css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/jquery.mCustomScrollbar.min.css" type="text/css">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css">
-
-  
-  
-  
-
   <script> var base_url = '<?php echo base_url(); ?>'; </script>
   <script src="<?php echo base_url()."assets/" ?>js/jquery-3.2.1.min.js" type="text/javascript"></script>
   <script src="<?php echo base_url()."assets/" ?>js/sinch.min.js"></script>
@@ -26,84 +21,60 @@
   <script src='<?php echo base_url()."assets/" ?>js/moment.js'></script>
   <script src="<?php echo base_url()."assets/" ?>js/bootstrap-notify.js"></script>
   <script src='<?php echo base_url()."assets/" ?>js/jquery.mCustomScrollbar.concat.min.js'></script>
-  <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>
-  
-
+  <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>  
 </head>
 <body>
   <div class="overlay">
     <div id="loading-img"></div>
   </div>
-
-
   <!-- video call alert notification  -->
-
   <div class="new_call form-group"></div>
   <div class="notification alert alert-danger"></div>
-
-
-
 <?php 
-
   // Session Usre Data 
 $currentuser = get_userdata(); 
-
-
 $profile_img = '';
-if(isset($currentuser['profile_img'])&&!empty($currentuser['profile_img']))
-{
+if(isset($currentuser['profile_img'])&&!empty($currentuser['profile_img'])){
   $profile_img = $currentuser['profile_img'];
-}  
-$social_profile_img = '';
-if(isset($currentuser['picture_url'])&&!empty($currentuser['picture_url']))
-{
-  $social_profile_img = $currentuser['picture_url'];
-
-}  
-$img1 = '';
-if($social_profile_img != '')
-{
-  $img1 = $social_profile_img;
-
 }
-if($profile_img != '')
-{
+
+$social_profile_img = '';
+if(isset($currentuser['picture_url'])&&!empty($currentuser['picture_url'])){
+  $social_profile_img = $currentuser['picture_url'];
+}
+
+$img1 = '';
+if($social_profile_img != ''){
+  $img1 = $social_profile_img;
+}
+
+if($profile_img != ''){
   $file_to_check = FCPATH . '/assets/images/' . $profile_img;
   if (file_exists($file_to_check)) {
     $img1 = base_url() . 'assets/images/'.$profile_img;
   }
 }
+
 $img = ($img1 != '') ? $img1 : base_url() . 'assets/images/default-avatar.png';
-
 // Receiver Userdata 
-
 $receiver_id =  base64_decode($this->uri->segment(5));
 $receiver =get_all_datas($receiver_id);
-
-
-
-
 $profile_imge = '';
-if(isset($receiver['profile_img'])&&!empty($receiver['profile_img']))
-{
-  $profile_imge = $receiver['profile_img'];
-}  
 
+if(isset($receiver['profile_img'])&&!empty($receiver['profile_img'])){
+  $profile_imge = $receiver['profile_img'];
+}
 
 $social_profile_imge = '';
-if(isset($receiver['picture_url'])&&!empty($receiver['picture_url']))
-{
+if(isset($receiver['picture_url'])&&!empty($receiver['picture_url'])){
   $social_profile_imge = $receiver['picture_url'];
-
 }  
-$imge1 = '';
-if($social_profile_imge != '')
-{
-  $imge1 = $social_profile_imge;
 
+$imge1 = '';
+if($social_profile_imge != ''){
+  $imge1 = $social_profile_imge;
 }
-if($profile_imge != '')
-{
+if($profile_imge != ''){
   $file_to_check = FCPATH . '/assets/images/' . $profile_imge;
   if (file_exists($file_to_check)) {
     $imge1 = base_url() . 'assets/images/'.$profile_imge;
@@ -683,7 +654,8 @@ function join_call(){
     call_to:call_to,
     channel : channel,
     invite_id : invite_id,
-    url:url
+    url:url,
+    type:'audio'
   },function(res){
    // console.log(res);
    $('#call_id').val(res);

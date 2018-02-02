@@ -12,14 +12,12 @@
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/responsive.css" type="text/css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/jquery.mCustomScrollbar.min.css" type="text/css">
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css">
-
-  
-  
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css"> 
   
 
   <script> var base_url = '<?php echo base_url(); ?>'; </script>
   <script src="<?php echo base_url()."assets/" ?>js/jquery-3.2.1.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script src="<?php echo base_url()."assets/" ?>js/sinch.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>
   <script src="<?php echo base_url()."assets/" ?>js/bootstrap.min.js"></script>
@@ -34,15 +32,9 @@
   <div class="overlay">
     <div id="loading-img"></div>
   </div>
-
-
   <!-- video call alert notification  -->
-
   <div class="new_call form-group"></div>
   <div class="notification alert alert-danger"></div>
-
-
-
 <?php 
 
   // Session Usre Data 
@@ -159,15 +151,7 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
         <a class="vcvideop active" href="#">Video</a>
         <a class="vcend" href="#" id="cut" onclick="window.close();">Call End</a>
       </div>
-
     </div>
-
-    <!--   <div class="vcactions">
-        <a class="vccall" href="#" onclick="window.location.reload();"><img src="<?php echo base_url();?>assets/images/call-vc-icon.png"></a>
-        <a class="vcmike" href="#"><img src="<?php echo base_url();?>assets/images/mike-vc-icon.png"></a>
-        <a class="vcend" href="#" id="cut" onclick="window.close();"><img src="<?php echo base_url();?>assets/images/end-vc-icon.png"></a>
-      </div> -->
-
       <div class="vcmsg">         
         <!--Chat Container Starts Here-->
         <div id="chat-box" class="chat-box slimscrollleft">
@@ -178,14 +162,10 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
        </div>
        <div class="chats" id="ajax"></div> <!-- chat ajax  -->
      </div>
-     <!--Chat Container Ends Here-->          
-
+     <!--Chat Container Ends Here-->      
    </div>   
    <div>
-
-
     <input type="hidden" name="sender_id" id="sender_id" value="<?php echo $this->session->userdata('applicant_id'); ?>"> 
-
     <form name="chat_form" id="chat_form" onsubmit="return false;">
       <div class="message-bar">
         <div class="message-inner">
@@ -1097,5 +1077,3 @@ messageClient.addEventListener(myListenerObj);
 
  </script>
 
- </body>
- </html> 

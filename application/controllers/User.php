@@ -52,48 +52,123 @@ Class User extends CI_Controller
  //      echo '<pre>';
  //      print_r($result);
 
-  
+
 
 
  // }
 
-
- 
-
- public function page_404()
+ Public function change_password()
  {
-   $data['heading'] = '<center>404 Page Not Found</center>';
-   $data['message'] = '';
-   $this->load->view('errors/html/error_404',$data);
- }
+  $this->validate_password();
+  $data = array('password' =>md5($_POST['password']));
+  $where = array('id' => $this->session->userdata('applicant_id'));
+  $this->db->update('applicants',$data,$where);
+  echo json_encode(array('status'=>true)); 
+}
+
+Public function validate_password()
+{
+
+  error_reporting(1);
+  $data = array();
+  $data['error_string'] = array();
+  $data['inputerror'] = array();
+  $data['status'] = TRUE;      
 
 
- public function signup_applicant()
- {   
+
+  if(empty($_POST['current_password'])){
+
+    $data['inputerror'][] = 'current_password';
+    $data['error_string'][] = 'Enter current password';
+    $data['status'] = FALSE;
+  }
+  if(!empty($_POST['current_password'])){
+
+    $where = array('password' => md5($_POST['current_password']),'id' => $this->session->userdata('applicant_id'));
+    $count = $this->db->get_where('applicants',$where)->num_rows();
+    if($count == 0){
+      $data['inputerror'][] = 'current_password';
+      $data['error_string'][] = 'Password mismatched! Please try again!';
+      $data['status'] = FALSE;
+    }
+  }
+
+
+  if(empty($_POST['password'])){
+
+    $data['inputerror'][] = 'password';
+    $data['error_string'][] = 'Enter new password';
+    $data['status'] = FALSE;
+  }
+
+
+  if(empty($_POST['confirm_password'])){
+
+    $data['inputerror'][] = 'confirm_password';
+    $data['error_string'][] = 'Enter confirm password';
+    $data['status'] = FALSE;
+  }   
+  elseif(!empty($_POST['password']) && !empty($_POST['confirm_password'])){
+    if($_POST['password'] != $_POST['confirm_password']){
+
+      $data['inputerror'][] = 'confirm_password';
+      $data['error_string'][] = 'Password does not match';
+      $data['status'] = FALSE;
+
+    }
+  }
+
+  if($data['status'] === FALSE)
+  {
+    echo json_encode($data);
+    exit();
+  }
+
+
+
+
+
+}
+
+
+
+
+
+public function page_404()
+{
+ $data['heading'] = '<center>404 Page Not Found</center>';
+ $data['message'] = '';
+ $this->load->view('errors/html/error_404',$data);
+}
+
+
+public function signup_applicant()
+{   
   // if($this->session->userdata('type') != '' || $this->session->userdata('applicant_id') !='')
   // {
   //   redirect('dashboard');
   // }
-   $this->data['theme'] = 'applicant';
-   $this->data['module'] = 'signup';
-   $this->data['facebook_url'] = $this->facebook->signup_applicant_url();  
-   $this->data['google_url'] = $this->googleplus->signupURL();
-   $this->load->vars($this->data);
-   $this->load->view('template');
- }
+ $this->data['theme'] = 'applicant';
+ $this->data['module'] = 'signup';
+ $this->data['facebook_url'] = $this->facebook->signup_applicant_url();  
+ $this->data['google_url'] = $this->googleplus->signupURL();
+ $this->load->vars($this->data);
+ $this->load->view('template');
+}
 
- public function signup_guru()
- {          
-   if($this->session->userdata('type') != '' || $this->session->userdata('applicant_id') !='')
-   {
-    redirect('dashboard');
-  }
-  $this->data['theme'] = 'guru';
-  $this->data['module'] = 'signup';
-  $this->data['facebook_url'] = $this->facebook->signup_guru_url();  
-  $this->data['google_url'] = $this->googleplus->signupURL();
-  $this->load->vars($this->data);
-  $this->load->view('template');
+public function signup_guru()
+{          
+ if($this->session->userdata('type') != '' || $this->session->userdata('applicant_id') !='')
+ {
+  redirect('dashboard');
+}
+$this->data['theme'] = 'guru';
+$this->data['module'] = 'signup';
+$this->data['facebook_url'] = $this->facebook->signup_guru_url();  
+$this->data['google_url'] = $this->googleplus->signupURL();
+$this->load->vars($this->data);
+$this->load->view('template');
 }
 
 public function check_email()
@@ -147,21 +222,21 @@ public function save_signup()
 		$this->session->set_userdata('type',$input_values['type']);
 		$this->session->set_userdata('role',$input_values['role']);
     $this->session->set_userdata('first_name',$input_values['first_name']);
-		$this->session->set_userdata('last_name',$input_values['last_name']);
+    $this->session->set_userdata('last_name',$input_values['last_name']);
 
-		$member_headers  = "From: School Guru".'<info@dreamguys.co.in>'."\r\n";
-		$member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
-		$member_headers .= "MIME-Version: 1.0\r\n";
-		$member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
-		$member_headers .= "X-Priority: 1\r\n"; 
-		$data['result'] = $this->user_model->get_progress_bar($insert_id);
-		$html = $this->load->view('home/pages/guru_email_verification',$data,TRUE);	
+    $member_headers  = "From: School Guru".'<info@dreamguys.co.in>'."\r\n";
+    $member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
+    $member_headers .= "MIME-Version: 1.0\r\n";
+    $member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
+    $member_headers .= "X-Priority: 1\r\n"; 
+    $data['result'] = $this->user_model->get_progress_bar($insert_id);
+    $html = $this->load->view('home/pages/guru_email_verification',$data,TRUE);	
 
                 //send email
-		mail($input_values['email'], "Thank you for Registering !", $html, $member_headers);
-		$sts = 0;
-	}
-	echo $sts;
+    mail($input_values['email'], "Thank you for Registering !", $html, $member_headers);
+    $sts = 0;
+  }
+  echo $sts;
 }
 
 public function save_signup_guru()
@@ -192,19 +267,19 @@ public function save_signup_guru()
 		$this->session->set_userdata('role',$input_values['role']);
 		$this->session->set_userdata('first_name',$input_values['first_name']);
     $this->session->set_userdata('last_name',$input_values['last_name']);
-		$member_headers  = "From:".'info@dreamguys.co.in'."\r\n";
-		$member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
-		$member_headers .= "MIME-Version: 1.0\r\n";
-		$member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
-		$member_headers .= "X-Priority: 1\r\n"; 
-		$data['result'] = $this->user_model->get_progress_bar($insert_id);
-		$html = $this->load->view('home/pages/guru_email_verification',$data,TRUE);	
+    $member_headers  = "From:".'info@dreamguys.co.in'."\r\n";
+    $member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
+    $member_headers .= "MIME-Version: 1.0\r\n";
+    $member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
+    $member_headers .= "X-Priority: 1\r\n"; 
+    $data['result'] = $this->user_model->get_progress_bar($insert_id);
+    $html = $this->load->view('home/pages/guru_email_verification',$data,TRUE);	
 
                 //send email
-		mail($input_values['email'], "Thank you for Registering!", $html, $member_headers);
-		$sts = 0;
-	}
-	echo $sts;
+    mail($input_values['email'], "Thank you for Registering!", $html, $member_headers);
+    $sts = 0;
+  }
+  echo $sts;
 }
 
     //generate a username from Full name
@@ -421,59 +496,59 @@ public function dashboard()
                 }
                   // Pagination 
 
-               	$total_rows = count($this->user_model->get_dashboard_activity($applicant_id,'',''));
-               	$limit = 10;
-               	$uri_segment = 2;
-               	$current_page = $this->uri->segment($uri_segment, 0);
+                $total_rows = count($this->user_model->get_dashboard_activity($applicant_id,'',''));
+                $limit = 10;
+                $uri_segment = 2;
+                $current_page = $this->uri->segment($uri_segment, 0);
                   // pagination
-               	$this->load->library('pagination');
-               	$config = array();
-               	$config['base_url'] = base_url().'dashboard';
-               	$config['total_rows'] = $total_rows;
-               	$config['per_page'] = $limit;
-               	$config['uri_segment'] = $uri_segment;
-               	$config['full_tag_open'] = '<ul class="pagination pull-right">';        
-               	$config['full_tag_close'] = '</ul>';        
-               	$config['first_link'] = 'First';        
-               	$config['last_link'] = 'Last';        
-               	$config['first_tag_open'] = '<li>';        
-               	$config['first_tag_close'] = '</li>';        
-               	$config['prev_link'] = '&laquo';        
-               	$config['prev_tag_open'] = '<li class="prev">';        
-               	$config['prev_tag_close'] = '</li>';        
-               	$config['next_link'] = '&raquo';        
-               	$config['next_tag_open'] = '<li>';        
-               	$config['next_tag_close'] = '</li>';        
-               	$config['last_tag_open'] = '<li>';        
-               	$config['last_tag_close'] = '</li>';        
-               	$config['cur_tag_open'] = '<li class="active"><a href="#">';        
-               	$config['cur_tag_close'] = '</a></li>';        
-               	$config['num_tag_open'] = '<li>';        
-               	$config['num_tag_close'] = '</li>';
+                $this->load->library('pagination');
+                $config = array();
+                $config['base_url'] = base_url().'dashboard';
+                $config['total_rows'] = $total_rows;
+                $config['per_page'] = $limit;
+                $config['uri_segment'] = $uri_segment;
+                $config['full_tag_open'] = '<ul class="pagination pull-right">';        
+                $config['full_tag_close'] = '</ul>';        
+                $config['first_link'] = 'First';        
+                $config['last_link'] = 'Last';        
+                $config['first_tag_open'] = '<li>';        
+                $config['first_tag_close'] = '</li>';        
+                $config['prev_link'] = '&laquo';        
+                $config['prev_tag_open'] = '<li class="prev">';        
+                $config['prev_tag_close'] = '</li>';        
+                $config['next_link'] = '&raquo';        
+                $config['next_tag_open'] = '<li>';        
+                $config['next_tag_close'] = '</li>';        
+                $config['last_tag_open'] = '<li>';        
+                $config['last_tag_close'] = '</li>';        
+                $config['cur_tag_open'] = '<li class="active"><a href="#">';        
+                $config['cur_tag_close'] = '</a></li>';        
+                $config['num_tag_open'] = '<li>';        
+                $config['num_tag_close'] = '</li>';
 
-               	$this->pagination->initialize($config);
-               	$this->data['links'] = $this->pagination->create_links();
+                $this->pagination->initialize($config);
+                $this->data['links'] = $this->pagination->create_links();
 
 
-               	$this->data['result'] = $this->user_model->get_progress_bar($applicant_id); 
-               	$this->data['activity_list'] = $this->user_model->get_dashboard_activity($applicant_id,$limit,$current_page); 
-               	$this->data['applicant'] =  $this->user_model->get_applicant_details();
-               	$this->data['account'] =  $this->user_model->get_account_details();
+                $this->data['result'] = $this->user_model->get_progress_bar($applicant_id); 
+                $this->data['activity_list'] = $this->user_model->get_dashboard_activity($applicant_id,$limit,$current_page); 
+                $this->data['applicant'] =  $this->user_model->get_applicant_details();
+                $this->data['account'] =  $this->user_model->get_account_details();
 
               // echo '<pre>';print_r($this->data); exit;
-               }
+              }
                // Super Admin Dashboard
-               elseif($this->session->userdata('type') == 'superadmin' ){
-               	$this->data['gurus'] = $this->dashboard->get_gurus();              
-               	$this->data['users'] = $this->dashboard->get_users();              
-               }
+              elseif($this->session->userdata('type') == 'superadmin' ){
+                $this->data['gurus'] = $this->dashboard->get_gurus();              
+                $this->data['users'] = $this->dashboard->get_users();              
+              }
 
 
-               $this->data['module'] = 'dashboard';        
-               $this->load->vars($this->data);
-               $this->load->view('template');
+              $this->data['module'] = 'dashboard';        
+              $this->load->vars($this->data);
+              $this->load->view('template');
 
-             }else{
+            }else{
               redirect('user/login_confirmation');
             }
           }
@@ -1254,11 +1329,11 @@ $this->load->view('template');
 Public  function converToTz($time="",$toTz='',$fromTz='')
 {           
   if(!empty($fromTz)){
-     $date = new DateTime($time, new DateTimeZone($fromTz));
-     $date->setTimezone(new DateTimeZone($toTz));
-     $time= $date->format('Y-m-d H:i:s');
-     return $time;
-  }
+   $date = new DateTime($time, new DateTimeZone($fromTz));
+   $date->setTimezone(new DateTimeZone($toTz));
+   $time= $date->format('Y-m-d H:i:s');
+   return $time;
+ }
 
 }
 
@@ -1410,24 +1485,24 @@ public function render_calendar_view()
                 		$title = $start_time.'-'.$end_time.' '.$record['first_name'].' '.$record['last_name'];
 
                         // setting color here 
-                        if($record['approved'] == 0 && date('Y-m-d') > $record['invite_date']) { 
+                    if($record['approved'] == 0 && date('Y-m-d') > $record['invite_date']) { 
                         $color = '#d9534f'; // Cancelled
-                        }else{
+                      }else{
                         $color = '#5bc0de'; // Pending 
-                        } 
+                      } 
 
-                        if($record['approved'] == 1) { 
+                      if($record['approved'] == 1) { 
                         $color = '#5cb85c';  // Approved
-                        } 
-        $event_array[] = array(
-                			'id' => $record['invite_id'],
-                			'user_id' => $record['invite_to'],
-                			'title' => $title,
-                			'start' => date($record['invite_date'].' '.$record['invite_time']),
-                			'end' => date($record['invite_date'].' '.$record['invite_end_time']),
-                      'color' =>$color
-                		);
-                	}
+                      } 
+                      $event_array[] = array(
+                       'id' => $record['invite_id'],
+                       'user_id' => $record['invite_to'],
+                       'title' => $title,
+                       'start' => date($record['invite_date'].' '.$record['invite_time']),
+                       'end' => date($record['invite_date'].' '.$record['invite_end_time']),
+                       'color' =>$color
+                     );
+                    }
 
                 }elseif($user->role == 1){  // gurus 
 
@@ -1557,6 +1632,7 @@ public function gurus()
 
 public function gurus_detail($username)
 {
+
 	if($this->session->userdata('applicant_id') == '')
 	{
 		redirect('login');
@@ -1576,36 +1652,39 @@ public function gurus_detail($username)
 			$this->data['theme'] = 'applicant';
 			$this->data['gurus'] = $this->applicant_modal->applicant_detail_list_view($mentor['id']);
 			$this->data['applicant'] = $this->applicant_modal->get_progress_bar($sess_id);
-			$this->data['reviews'] = $this->user_model->review_list_view($mentor['id']);
-		}else if($this->session->userdata('role') == 1){
-			$this->data['theme'] = 'guru';
-			$this->data['gurus'] = $this->user_model->gurus_detail_list_view($mentor['id']);
-			$this->data['applicant'] = $this->user_model->get_progress_bar($sess_id);
-			$this->data['reviews'] = $this->user_model->review_list_view($mentor['id']);
-		}else{
+      $this->data['reviews'] = $this->user_model->review_list_view($mentor['id']);
+      $this->data['call_logs'] = $this->user_model->call_logs($mentor['id']);
+    }else if($this->session->userdata('role') == 1){
+     $this->data['theme'] = 'guru';
+     $this->data['gurus'] = $this->user_model->gurus_detail_list_view($mentor['id']);
+     $this->data['applicant'] = $this->user_model->get_progress_bar($sess_id);
+     $this->data['reviews'] = $this->user_model->review_list_view($mentor['id']);
+     $this->data['call_logs'] = $this->user_model->call_logs($mentor['id']);
+   }else{
 
-			$role = $mentor['role'];
-			if($role == 1){
-				$this->data['module'] = 'applicant_profile_view';
-				$this->data['gurus'] = $this->applicant_modal->applicant_detail_list_view($mentor['id']);
-				$this->data['applicant'] = $this->applicant_modal->get_progress_bar($sess_id);
-				$this->data['reviews'] = $this->user_model->review_list_view($mentor['id']);
-			}else{
-				$this->data['module'] = 'mentor_profile_view';
-				$this->data['gurus'] = $this->user_model->gurus_detail_list_view($mentor['id']);
-				$this->data['applicant'] = $this->user_model->get_progress_bar($sess_id);
-				$this->data['reviews'] = $this->user_model->review_list_view($mentor['id']);
-			}
+     $role = $mentor['role'];
+     if($role == 1){
+      $this->data['module'] = 'applicant_profile_view';
+      $this->data['gurus'] = $this->applicant_modal->applicant_detail_list_view($mentor['id']);
+      $this->data['applicant'] = $this->applicant_modal->get_progress_bar($sess_id);
+      $this->data['reviews'] = $this->user_model->review_list_view($mentor['id']);
+    }else{
+      $this->data['module'] = 'mentor_profile_view';
+      $this->data['gurus'] = $this->user_model->gurus_detail_list_view($mentor['id']);
+      $this->data['applicant'] = $this->user_model->get_progress_bar($sess_id);
+      $this->data['reviews'] = $this->user_model->review_list_view($mentor['id']);
+    }
 
+  }
+    // echo '<pre>';
+    // print_r($this->data);
+    // exit;
 
-
-		}
-
-		$this->load->vars($this->data);
-		$this->load->view('template');    
-	}else{
-		$this->page_404();
-	}
+  $this->load->vars($this->data);
+  $this->load->view('template');    
+}else{
+  $this->page_404();
+}
 
 }
 
@@ -1636,23 +1715,23 @@ else{
 $data['gurus'] = $this->db->query($query)->result_array();
 
 $query1 = "SELECT applicants.id as app_id,applicants.first_name,applicants.last_name,applicants.username,applicants.email,applicants.profile_img,applicants.is_verified,country_list.country_name,country_list.code,social_applicant_user.picture_url,(select COUNT(rating) from review_ratings where user_id=applicants.id) as rating_count,(select ROUND(AVG(rating)) from review_ratings where user_id=applicants.id) as rating_value,mentor_details.* FROM applicants 
-    LEFT JOIN mentor_details ON mentor_details.mentor_id = applicants.id 
-    LEFT JOIN `social_applicant_user` ON social_applicant_user.reference_id = applicants.id 
-    LEFT JOIN country_list ON country_list.country_id = mentor_details.country where applicants.role=1 AND applicants.profile_updated=1 AND applicants.is_verified=1  AND 
-    (`applicants`.`first_name` LIKE '%$user_name%' ESCAPE '!' 
-    OR `applicants`.`last_name` LIKE '%$user_name%'
+LEFT JOIN mentor_details ON mentor_details.mentor_id = applicants.id 
+LEFT JOIN `social_applicant_user` ON social_applicant_user.reference_id = applicants.id 
+LEFT JOIN country_list ON country_list.country_id = mentor_details.country where applicants.role=1 AND applicants.profile_updated=1 AND applicants.is_verified=1  AND 
+(`applicants`.`first_name` LIKE '%$user_name%' ESCAPE '!' 
+  OR `applicants`.`last_name` LIKE '%$user_name%'
     -- OR `mentor_details`.mentor_school LIKE '%$user_name%' 
     -- OR `mentor_details`.mentor_languages_speak LIKE '%$user_name%' 
     -- OR `mentor_details`.mentor_job_company LIKE '%$user_name%'
     -- OR `mentor_details`.mentor_personal_message LIKE '%$user_name%'
   ) ";
-$data['count'] = $this->db->query($query1)->num_rows();
+  $data['count'] = $this->db->query($query1)->num_rows();
 
-if(!empty($data['gurus'])){
-  echo $this->load->view('home/applicant/gurus_search_single_view',$data,TRUE);
-}else{
-  echo $sts;
-}
+  if(!empty($data['gurus'])){
+    echo $this->load->view('home/applicant/gurus_search_single_view',$data,TRUE);
+  }else{
+    echo $sts;
+  }
 
 }
 
@@ -1979,7 +2058,7 @@ public function messages($id = '')
 		$this->data['applicant_details'] = $this->applicant_modal->get_progress_bar($id);
 		$this->data['activity_list'] = $this->user_model->get_chat_list($id);
 	}
-  
+
   // echo '<pre>';
   // print_r($this->data);
   // exit;
@@ -2208,7 +2287,7 @@ public function get_messages()
     }
     else if($currentuser['msg']=='ENABLE_STREAM' || $currentuser['msg']=='DISABLE_STREAM'){
 
-      
+
     }else{
       $html .='<div class="chat '.$class_name.'">
       <div class="chat-avatar">
@@ -2238,8 +2317,8 @@ public function get_messages()
 $html .='<div id="ajax"></div><input type="hidden"  id="hidden_id">';
 
 if($total_chat == 0){
-    $html .='<div class="no_message">No Record Found</div>';
-  }
+  $html .='<div class="no_message">No Record Found</div>';
+}
 
 
 echo $html;
@@ -2395,9 +2474,220 @@ Public function get_customer()
 {
   \Stripe\Stripe::setApiKey("sk_test_8w0QeeKXNWn3hqKRNXzBtwRd");
   $customer = \Stripe\Customer::retrieve("cus_C67U2tOVJ219ij");
-  echo json_encode($customer);
+  
+  $data =  json_encode($customer);
+  $data =  json_decode($data);
+  // echo '<pre>';
+  // print_r($data);
 }
 
+
+Public function update_payment(){
+
+  
+
+  $where = array('invite_id'=>$_POST['invite_id'],'payment_status'=>0);
+  $data = $this->db->get_where('payments',$where)->row();
+   $amount = $data->payment_gross * 100;
+  
+  if(!empty($data)){
+
+    \Stripe\Stripe::setApiKey("sk_test_8w0QeeKXNWn3hqKRNXzBtwRd");
+          $charge = \Stripe\Charge::create(array(
+          "amount" =>$amount, // $15.00 this time
+          "currency" => "usd",
+          "customer" =>$data->stripe_customer_id
+          ));
+
+          $data =  json_encode($charge);
+          $data =  json_decode($data);                     
+
+          $update_data = array(
+            'payment_status' => $data->paid,
+            'txn_id' => $data->balance_transaction,
+            'amount' => $data->amount,
+            'source_id' => $data->id
+          );
+      return  $this->db->update('payments',$update_data,$where);
+
+  }  else{
+    return true;
+  }
+
+}
+
+
+
+Public function old_card_details()
+{
+
+  $where = array(
+    'card_id' => $_POST['card_id']);
+  $card = $this->db->get_where('card_details',$where)->row();
+
+
+  $datas = array(
+    'card' => $card->card,
+    'user_id' => $this->session->userdata('applicant_id'),
+    'customer_id' => $card->customer_id       
+  );
+  $this->db->insert('card_details',$datas);
+
+      // Payment Details       
+  $data = array(     
+   'user_id' => $this->session->userdata('applicant_id'),
+   'mentor_id' => $this->session->userdata('pay_to'),                
+   'payment_status' => 0,
+   'payment_gross' => $this->input->post('mentor_charge'),                                
+   'payment_date' => date('Y-m-d H:i:s'),
+   'currency_code' => 'USD',
+   'source' =>'stripe',   
+   'stripe_customer_id' => $card->customer_id   
+ );
+  $this->db->insert('payments',$data);
+  $payment_id = $this->db->insert_id();
+
+              // Sending notification to mentor 
+  $app_id = $this->session->userdata('pay_to');
+  $app_data = $this->user_model->gurus_detail_list_view($app_id);
+  $pay_details =$this->session->userdata('payment_details');
+
+  foreach ($pay_details as $key => $value) { 
+   $invitedata['from_date_time'] = $value->date_value.' '.$value->start_time;  
+   $invitedata['to_date_time'] = $value->date_value.' '.$value->end_time;  
+   $invitedata['invite_from'] = $this->session->userdata('applicant_id');
+   $invitedata['invite_to'] = $this->session->userdata('pay_to');
+   $invitedata['message'] = 'You have new invitation request from '.$app_data['first_name'].' '.$app_data['last_name'];
+   $invitedata['invite_date'] = $value->date_value;
+   $invitedata['invite_time'] = $value->start_time;
+   $invitedata['invite_end_time'] = $value->end_time;
+   $invitedata['paid'] = 0;
+   $invitedata['time_zone'] = $value->time_zone;
+   $this->db->insert('invite',$invitedata);
+   $insert_id = $this->db->insert_id();
+   $new_data = array('invite_id' => $insert_id);
+   $wheree = array('payment_id' => $payment_id);
+   $this->db->update('payments',$new_data,$wheree);
+   $notify_data['user_id'] = $invitedata['invite_to'];
+   $notify_data['notification_id'] = $this->session->userdata('applicant_id');
+   $notify_data['text'] = $app_data['first_name'].' '.$app_data['last_name'].' invited you with premium';
+   $notify_data['read'] = 0;
+   $notify_data['invite_id'] = $insert_id;
+   $response =   $this->db->insert('notifications',$notify_data);     
+
+ }
+
+ echo json_encode(array('status' => 200, 'success' => 'Card details stored completed.'));
+}
+
+
+
+Public function add_card_details(){
+
+  $card_last_digits = substr($_POST['card_number'], -4); 
+  try {
+
+    \Stripe\Stripe::setApiKey('sk_test_8w0QeeKXNWn3hqKRNXzBtwRd');            
+
+    $user = get_userdata();               
+
+            // Create a Customer:
+    $customer = \Stripe\Customer::create(array(
+      "email" => $user['email'],
+      "source" => $this->input->post('access_token')
+    ));
+    
+    if ($customer) {
+      $datas = array(
+        'card' => $card_last_digits,
+        'user_id' => $this->session->userdata('applicant_id'),
+        'customer_id' => $customer->id                
+      );
+      $this->db->insert('card_details',$datas);
+
+      // Payment Details 
+       // Store the Payment details 
+      $data = array(     
+       'user_id' => $this->session->userdata('applicant_id'),
+       'mentor_id' => $this->session->userdata('pay_to'),                
+       'payment_status' => 0,
+       'payment_gross' => $this->input->post('amount'),                                
+       'payment_date' => date('Y-m-d H:i:s'),
+       'currency_code' => 'USD',
+       'source' =>'stripe',
+       'stripe_token' =>$_POST['access_token'],
+       'stripe_customer_id' => $customer->id,
+       'card_last_digits' => $card_last_digits
+     );
+      $this->db->insert('payments',$data);
+      $payment_id = $this->db->insert_id();
+
+              // Sending notification to mentor 
+      $app_id = $this->session->userdata('pay_to');
+      $app_data = $this->user_model->gurus_detail_list_view($app_id);
+      $pay_details =$this->session->userdata('payment_details');
+
+      foreach ($pay_details as $key => $value) { 
+       $invitedata['from_date_time'] = $value->date_value.' '.$value->start_time;  
+       $invitedata['to_date_time'] = $value->date_value.' '.$value->end_time;  
+       $invitedata['invite_from'] = $this->session->userdata('applicant_id');
+       $invitedata['invite_to'] = $this->session->userdata('pay_to');
+       $invitedata['message'] = 'You have new invitation request from '.$app_data['first_name'].' '.$app_data['last_name'];
+       $invitedata['invite_date'] = $value->date_value;
+       $invitedata['invite_time'] = $value->start_time;
+       $invitedata['invite_end_time'] = $value->end_time;
+       $invitedata['paid'] = 0;
+       $invitedata['time_zone'] = $value->time_zone;
+
+       $this->db->insert('invite',$invitedata);
+       $insert_id = $this->db->insert_id();
+
+       $new_data = array('invite_id' => $insert_id);
+       $wheree = array('payment_id' => $payment_id);
+       $this->db->update('payments',$new_data,$wheree);
+
+       $notify_data['user_id'] = $invitedata['invite_to'];
+       $notify_data['notification_id'] = $this->session->userdata('applicant_id');
+       $notify_data['text'] = $app_data['first_name'].' '.$app_data['last_name'].' invited you with premium';
+       $notify_data['read'] = 0;
+       $notify_data['invite_id'] = $insert_id;
+       $response =   $this->db->insert('notifications',$notify_data);     
+
+     }
+
+     echo json_encode(array('status' => 200, 'success' => 'Card details stored completed.'));
+     exit();
+   } else {
+     echo json_encode(array('status' => 500, 'error' => 'Something went wrong. Try after some time.'));
+     exit();
+   }
+
+ } catch (Stripe_CardError $e) {
+  echo json_encode(array('status' => 500, 'error' => STRIPE_FAILED));
+  exit();
+} catch (Stripe_InvalidRequestError $e) {
+            // Invalid parameters were supplied to Stripe's API 
+  echo json_encode(array('status' => 500, 'error' => $e->getMessage()));
+  exit();
+} catch (Stripe_AuthenticationError $e) {
+            // Authentication with Stripe's API failed
+  echo json_encode(array('status' => 500, 'error' => AUTHENTICATION_STRIPE_FAILED));
+  exit();
+} catch (Stripe_ApiConnectionError $e) {
+            // Network communication with Stripe failed
+  echo json_encode(array('status' => 500, 'error' => NETWORK_STRIPE_FAILED));
+  exit();
+} catch (Stripe_Error $e) {
+            // Display a very generic error to the user, and maybe send
+  echo json_encode(array('status' => 500, 'error' => STRIPE_FAILED));
+  exit();
+} catch (Exception $e) {
+            // Something else happened, completely unrelated to Stripe
+  echo json_encode(array('status' => 500, 'error' => STRIPE_FAILED));
+  exit();
+}
+
+}
 
 
  // STRIPE PAYMENT PROCESS 
@@ -2405,42 +2695,43 @@ Public function get_customer()
 public function process(){  
 
 
- 
-	try {
+  $card_last_digits = substr($_POST['card_number'], -4); 
+  try {
 
-		\Stripe\Stripe::setApiKey('sk_test_8w0QeeKXNWn3hqKRNXzBtwRd');            
+    \Stripe\Stripe::setApiKey('sk_test_8w0QeeKXNWn3hqKRNXzBtwRd');            
 
-          $user = get_userdata();               
-            
+    $user = get_userdata();               
+
             // Create a Customer:
-            $customer = \Stripe\Customer::create(array(
-              "email" => $user['email'],
-              "source" => $this->input->post('access_token'),
-            ));
+    $customer = \Stripe\Customer::create(array(
+      "email" => $user['email'],
+      "source" => $this->input->post('access_token'),
+    ));
 
             // Charge the Customer instead of the card:
-            $charge = \Stripe\Charge::create(array(
-              "amount" => $this->input->post('amount').'00',
-              "currency" => "USD",
-              "customer" => $customer->id,
-              "description" => $user['first_name'].' '.$user['last_name']
-            ));
+    $charge = \Stripe\Charge::create(array(
+      "amount" => $this->input->post('amount').'00',
+      "currency" => "USD",
+      "customer" => $customer->id,
+      "description" => $user['first_name'].' '.$user['last_name']
+    ));
 
 
     // Store the Payment details 
-		$data = array(
-			'txn_id' => $charge->id,
-			'user_id' => $this->session->userdata('applicant_id'),
-			'mentor_id' => $this->session->userdata('pay_to'),                
-			'payment_status' => 1,
-			'payment_gross' => $this->input->post('amount'),                                
-			'payment_date' => date('Y-m-d H:i:s'),
-			'currency_code' => 'USD',
-			'source' =>'stripe',
-      'stripe_token' =>$_POST['access_token'],
-      'stripe_customer_id' => $customer->id
-		);
-		$this->db->insert('payments',$data);
+    $data = array(
+     'txn_id' => $charge->id,
+     'user_id' => $this->session->userdata('applicant_id'),
+     'mentor_id' => $this->session->userdata('pay_to'),                
+     'payment_status' => 1,
+     'payment_gross' => $this->input->post('amount'),                                
+     'payment_date' => date('Y-m-d H:i:s'),
+     'currency_code' => 'USD',
+     'source' =>'stripe',
+     'stripe_token' =>$_POST['access_token'],
+     'stripe_customer_id' => $customer->id,
+     'card_last_digits' => $card_last_digits
+   );
+    $this->db->insert('payments',$data);
     $payment_id = $this->db->insert_id();
 
               // Sending notification to mentor 
@@ -2461,6 +2752,7 @@ public function process(){
      $invitedata['time_zone'] = $value->time_zone;
      $this->db->insert('invite',$invitedata);
      $insert_id = $this->db->insert_id();
+     
      $new_data = array('invite_id' => $insert_id);
      $wheree = array('payment_id' => $payment_id);
      $this->db->update('payments',$new_data,$wheree);
@@ -2634,10 +2926,10 @@ public function paypal_auto_form($product)
 					$paydata['payer_email'] = $get_ec_return['EMAIL'];
 					$paydata['payment_status'] = $do_ec_return['ec_status']; 
           $paydata['source'] ='paypal'; 
-					$paydata['paypal_token'] =$token; 
+          $paydata['paypal_token'] =$token; 
 
 
-					if($this->db->insert('payments',$paydata)){
+          if($this->db->insert('payments',$paydata)){
             $payment_id = $this->db->insert_id(); 
             $invitedata['from_date_time'] = $value->date_value.' '.$value->start_time;  
             $invitedata['to_date_time'] = $value->date_value.' '.$value->end_time;  
@@ -3189,7 +3481,7 @@ public function notify_applicants_viewed()
 
 public function delete_conversation()
 {
-  
+
 
  $selected_user = $this->input->post('sender_id');
  $session_id = $this->session->userdata('applicant_id');
@@ -3464,7 +3756,7 @@ function add_schedule_time()
    // echo '<pre>';print_r($old_datas);
 
 for ($i=0; $i <count($good_time) ; $i++) { 
-  
+
   $old_times =str_replace(':','',$good_time); 
   $old_times =str_replace('-','',$old_times); 
 }  
@@ -3472,7 +3764,7 @@ for ($i=0; $i <count($good_time) ; $i++) {
 
 
 for ($i=0; $i <count($rangeArray) ; $i++) { 
-  
+
   $new_times =str_replace(':','',$rangeArray); 
   $new_times =str_replace('-','',$new_times); 
 }
@@ -3746,14 +4038,14 @@ Public function get_call()
   $dat['html'] = '';
   $dat['status'] = false;
 
-	if(isset($result->status)==1){
+  if(isset($result->status)==1){
 
 
-		$sql = "SELECT a.first_name,a.last_name,a.profile_img,s.picture_url,a.username FROM  applicants a LEFT JOIN  social_applicant_user s ON a.id = s.reference_id WHERE a.id = '$result->call_from'";
-		$data = $this->db->query($sql)->row_array();
+    $sql = "SELECT a.first_name,a.last_name,a.profile_img,s.picture_url,a.username FROM  applicants a LEFT JOIN  social_applicant_user s ON a.id = s.reference_id WHERE a.id = '$result->call_from'";
+    $data = $this->db->query($sql)->row_array();
 
 
-		$username = base64_encode($data['username']);
+    $username = base64_encode($data['username']);
     $channel = base64_encode($result->channel);
     $call_from = base64_encode($result->call_from);
     $invite_id = base64_encode($result->invite_id);
@@ -3805,7 +4097,7 @@ Public function get_call()
   $dat['html'] = $html;
   $dat['status'] = true;
 }
-  echo json_encode($dat);
+echo json_encode($dat);
 }
 
 Public function set_call_status()
@@ -3826,6 +4118,7 @@ Public function delete_channel()
 
 Public function insert_log(){ 
 
+
   $where = array('invite_id'=>$_POST['invite_id']);
   $invite = $this->db->get_where('invite',$where)->row_array();
   $data['start_time'] =  date('H:i:s',strtotime($_POST['start_time']));  
@@ -3836,9 +4129,12 @@ Public function insert_log(){
   $data['to_id']= $_POST['to_user_id'];
   $data['from_id']= $this->session->userdata('applicant_id');
   $this->db->insert('call_logs',$data);
-  echo  $this->db->insert_id();  
+  $id =   $this->db->insert_id();  
+  $this->update_payment();
+  echo $id;
 
 }
+
 
 
 
@@ -3994,9 +4290,9 @@ Public function get_applicant_payment()
           $row[] =$g->calls.' hour';   
           $row[] =($g->earned)?'<strong>$'.$g->earned.'</strong>':'<strong>$0.00</strong>';   
 
-           $from_date_time =  $g->invite_date.' '.$g->invite_time;
+          $from_date_time =  $g->invite_date.' '.$g->invite_time;
           $from_timezone =$g->time_zone;                         
-           $to_timezone = $this->session->userdata('time_zone');
+          $to_timezone = $this->session->userdata('time_zone');
 
           
           $from_date_time  = $this->converToTz($from_date_time,$to_timezone,$from_timezone);
@@ -4028,33 +4324,33 @@ Public function get_applicant_payment()
                         }
 
 
-          
-          
-          $user_id = base64_encode($g->user_id);
-          $payment_date = base64_encode($g->payment_date);
-          $row[] = '<a class="btn btn-primary btn-xs" href="'.base_url().'user/invoice/'.$user_id.'/'.$payment_date.'"><i class="fa fa-print"></i><small> Print</small></a>';
 
-          $data[] = $row;
-        }
 
-        $output = array(
-         "draw" => $_POST['draw'],
-         "recordsTotal" => $this->user_model->count_all_g(),
-         "recordsFiltered" => $this->user_model->count_filtered_g(),
-         "data" => $data,
-       );
+                        $user_id = base64_encode($g->user_id);
+                        $payment_date = base64_encode($g->payment_date);
+                        $row[] = '<a class="btn btn-primary btn-xs" href="'.base_url().'user/invoice/'.$user_id.'/'.$payment_date.'"><i class="fa fa-print"></i><small> Print</small></a>';
+
+                        $data[] = $row;
+                      }
+
+                      $output = array(
+                       "draw" => $_POST['draw'],
+                       "recordsTotal" => $this->user_model->count_all_g(),
+                       "recordsFiltered" => $this->user_model->count_filtered_g(),
+                       "data" => $data,
+                     );
                 //output to json format
-        echo json_encode($output);
-      }
+                      echo json_encode($output);
+                    }
 
-      Public function update_notify()
-      {
-       $where = array('user_id'=>$this->session->userdata('applicant_id'));
-       $data = array('read'=>2);
-       return  $this->db->update('notifications',$data,$where);
-     }
+                    Public function update_notify()
+                    {
+                     $where = array('user_id'=>$this->session->userdata('applicant_id'));
+                     $data = array('read'=>2);
+                     return  $this->db->update('notifications',$data,$where);
+                   }
 
 
 
-   }
-   ?>
+                 }
+                 ?>

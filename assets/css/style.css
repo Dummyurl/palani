@@ -221,7 +221,7 @@ a:focus{text-decoration:none;outline:none;color:#5c65be;}
 .profile-right .control-label, .leftsidebar .control-label {color: #2c2c2c;margin-bottom: 10px; font-weight:400;}
 .profile-right .control-label > span, .leftsidebar .control-label > span {color: #f00;}
 .education-details {border-bottom: 1px solid #eaeaea;margin-bottom: 50px;padding-bottom: 40px;}
-.profile-right .form-control, .leftsidebar .form-control {border: 1px solid #e1e1e1;box-shadow: none;height: 40px;}
+.profile-right .form-control, .leftsidebar .form-control { /*border: 1px solid #e1e1e1;*/box-shadow: none;height: 40px;}
 .profile-right textarea.form-control, .leftsidebar textarea.form-control {height:120px;}
 .contact-details {border-bottom: 1px solid #eaeaea;margin-bottom: 50px;padding-bottom: 40px;}
 .bank-details {margin-bottom: 50px;}

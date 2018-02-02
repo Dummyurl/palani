@@ -122,3 +122,43 @@
 		</div>
 	</div>
 </div>
+
+<h3>Call Logs</h3> <br>
+<table class="table table-striped" id="call_log">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Start time</th>
+			<th>End time</th>
+			<th>Total time</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php 
+		foreach($call_logs as $c): 				
+			$date = date('d-m-Y',strtotime($c->invite_date));
+			$start_time = date('Y-m-d h:i:s',strtotime($c->start_time));
+			$end_time = date('Y-m-d h:i:s',strtotime($c->end_time));
+			$start_date = new DateTime($end_time);	
+			$since_start = $start_date->diff(new DateTime($start_time));
+
+								// echo $since_start->days.' days total<br>';
+								// echo $since_start->y.' years<br>';
+								// echo $since_start->m.' months<br>';
+								// echo $since_start->d.' days<br>';
+								// echo $since_start->h.' hours<br>';
+								// echo $since_start->i.' minutes<br>';
+								// echo $since_start->s.' seconds<br>';
+								// $start_time = date('d-m-Y',strtotime($c->start_time));
+								// $end_time = date('d-m-Y',strtotime($c->end_time));
+						echo '<tr>
+						<td>'.$date.'</td>
+						<td>'.date('h:i A',strtotime($date.' '.$c->start_time)).'</td>
+						<td>'.date('h:i A',strtotime($date.' '.$c->end_time)).'</td>									
+						<td>'.$since_start->i.' minutes  '.$since_start->s.' seconds'.'</td>								
+						</tr>';
+
+		endforeach;
+		?>
+	</tbody>
+</table>

@@ -696,5 +696,12 @@ where (msg.recieved_id = $selected_user AND msg.sent_id = $session_id) or  (msg.
         
         return $this->db->get_where('applicants',array('id' => $id))->row();
     }
+
+    Public function call_logs($mentor_id){
+
+        $applicant_id = $this->session->userdata('applicant_id');
+        $sql = "SELECT * FROM `call_logs` WHERE (from_id = $mentor_id AND to_id = $applicant_id) OR (from_id = $applicant_id AND to_id = $mentor_id)";
+        return $this->db->query($sql)->result();
+    }
     
 }

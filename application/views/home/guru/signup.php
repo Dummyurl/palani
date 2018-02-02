@@ -37,14 +37,14 @@
 				<div class="row row-sm">
 					<div class="col-md-6">								
 						<div class="form-group">
-						<input type="text" class="form-control" placeholder="First name" name="first_name" id="first_name" required>
-					</div>							
-				</div>
+							<input type="text" class="form-control" placeholder="First name" name="first_name" id="first_name" required>
+						</div>							
+					</div>
 					<div class="col-md-6">								
 						<div class="form-group">
-						<input type="text" class="form-control" placeholder="Last name" name="last_name" id="last_name" required>
-					</div>							
-				</div>
+							<input type="text" class="form-control" placeholder="Last name" name="last_name" id="last_name" required>
+						</div>							
+					</div>
 				</div>
 				<div class="form-group">
 					<input type="text" class="form-control" name="email" id="email" placeholder="Email Address" required  />
@@ -71,124 +71,45 @@
 					</div>						</div>
 					<div class="col-md-6">							<div class="form-group">
 						<a href="<?php echo $google_url; ?>" class="btn btn-google btn-block" onclick="return check_email();"><i class="fa fa-google" aria-hidden="true"></i> Signup with Google</a>
-					</div>						</div>
-				</div>				</div>
-			</div>
-			<div class="modal fade bs-example-modal-lg" id="signup_guru_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<form name="send_messages" id="send_messages"> 
-							<div class="modal-body">
-								<div class="cong_icon"><i class="fa fa-check" aria-hidden="true"></i></div>
-								<h2>Congratulations!</h2>
-								<h4>Your account has been created successfully.</h4>
-								<p>We are glad you decided to start helping out and make some cash. Feel free to browse around. Please complete your profile and payment information.</p>
-								<p>You will receive a verification email shortly.</p>
-								<button type="button" class="btn btn-primary" onClick="show_mobile_modal();">Continue</button>
-							</div>							
-						</form>
 					</div>
 				</div>
-			</div>
-			<div class="modal fade bs-example-modal-lg" id="verifymobile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<form name="send_messages" id="verifymobile_form">      
-							<div class="modal-header">
-								<h3>Verify your Mobile Number</h3>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="control-label">Mobile Number <span>*</span></label>
-											<input type="text" name="mobile_number" id="mobile_number" class="form-control" value="" onKeyUp="check_mobile(this.value);" required/>
-											<div id="error_msg" style="color:red;"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-primary" onClick="send_otp();">Continue</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade bs-example-modal-lg" id="verify_code" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<form name="send_messages" id="verify_code_form">      
-							<div class="modal-header">
-								<h3>Verify your Code</h3>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="control-label">Enter verification code <span>*</span></label>
-											<input type="text" name="verification_code" id="verification_code" class="form-control" value="" onKeyUp="check_code(this.value);" required/>
-											<div id="error_msg_code" style="color:red;"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-primary" onClick="send_code();">Continue</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="modal fade bs-example-modal-lg" id="verify_success" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<form name="send_messages">      
-							<div class="modal-header">
-								<h3>Congratulations!!</h3>
-							</div>
-							<div class="modal-body">
-								<p>Thank you! Your mobile number has been verified successfully.</p>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-primary" onClick="window.location='<?php echo base_url(); ?>user/dashboard'">Continue</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<!-- Modal -->
-		</section>
-		<script> var base_url = "<?php echo base_url(); ?>" </script>
-		<script src="<?php echo base_url()."assets/" ?>js/jquery-3.2.1.min.js" type="text/javascript"></script>
-		<script src="<?php echo base_url()."assets/" ?>js/jquery.password-validation.js" type="text/javascript"></script>
-		<script src="<?php echo base_url()."assets/" ?>js/bootstrap.min.js" type="text/javascript"></script>
-		<script>
-			$(document).ready(function() {
+			</div>				
+		</div>
+	</div>		
+</section>
+<script> var base_url = "<?php echo base_url(); ?>" </script>
+<script src="<?php echo base_url()."assets/" ?>js/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/" ?>js/jquery.password-validation.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/" ?>js/bootstrap.min.js" type="text/javascript"></script>
+<script>
+	$(document).ready(function() {
 
 
-				$("#password").passwordValidation({"confirmField": "#confirm_password"}, function(element, valid, match, failedCases) {
+		$("#password").passwordValidation({"confirmField": "#confirm_password"}, function(element, valid, match, failedCases) {
 
-					$("#errors").html("<pre>" + failedCases.join("\n") + "</pre>");
-						if(valid){							 
-							$('.account-btn').attr('disabled','false');
-						}
-						if(!valid){							
-							$('.account-btn').removeAttr('disabled');
-						}
+			$("#errors").html("<pre>" + failedCases.join("\n") + "</pre>");
+			if(valid){							 
+				$('.account-btn').attr('disabled','false');
+			}
+			if(!valid){							
+				$('.account-btn').removeAttr('disabled');
+			}
 
-						if(!valid || !match){							
-							$('.account-btn').attr('disabled','true');
-						}
-						if(valid && match){							
-							$('.account-btn').removeAttr('disabled');
-						}
-				});
-			});
-		</script>
+			if(!valid || !match){							
+				$('.account-btn').attr('disabled','true');
+			}
+			if(valid && match){							
+				$('.account-btn').removeAttr('disabled');
+			}
+		});
+	});
+</script>
 
 
-		<script src="<?php echo base_url()."assets/" ?>js/bootstrapValidator.js" type="text/javascript"></script>
-		<script src="<?php echo base_url()."assets/" ?>js/guru.js" type="text/javascript"></script>
-	</body>
-	</html>
+<script src="<?php echo base_url()."assets/" ?>js/sinch/videoSample.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/" ?>js/bootstrapValidator.js" type="text/javascript"></script>
+<script src="<?php echo base_url()."assets/" ?>js/guru.js" type="text/javascript"></script>
+
+
+</body>
+</html>

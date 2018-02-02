@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrapValidator.css" type="text/css">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">
+  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/responsive.css" type="text/css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/jquery.mCustomScrollbar.min.css" type="text/css">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css">
 
@@ -39,29 +39,7 @@
   <!-- video call alert notification  -->
 
   <div class="new_call form-group"></div>
-  <style type="text/css">
-  .new_call{
-   background: #f6f6f6;
-   border-radius: 6px;
-   position: fixed;
-   right: 34px;
-   z-index: 10000;
-   top: 91px;
-   display: block;    
-   border: 1px solid #e9e9e9;
-   padding: 19px 82px 30px 63px;
- }
- .new_call:empty{
-  display: none;
-}
-#disconnected:empty{
-  display: none;
-}
-#disconnected{
-  display: inline-block;
-}
-
-</style>
+  <div class="notification alert alert-danger"></div>
 
 
 
@@ -139,10 +117,8 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
 <div id="verified" style="display:none;"><?php echo $currentuser['is_verified']; ?></div>
 <input type="hidden" id="sinch_username" value="<?php echo $currentuser['username']; ?>"> <!-- session user  -->
 <input type="hidden" id="user_role" value="<?php echo $currentuser['role']; ?>"> 
-
 <input type="hidden" id="channel" value="<?php echo base64_decode($this->uri->segment(4)); ?>">  
 <input type="hidden" id="call_to" value="<?php echo base64_decode($this->uri->segment(3)); ?>">   <!-- to username -->
-
 <input type="hidden" id="url" value="<?php echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>">  
 
 
@@ -168,17 +144,17 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
       </div>
       <div class="videoinner text-center">
         <div id="disconnected" class="alert alert-danger"></div>
-        <video autoplay id="other0" style="display: inline;height: 98%;margin: auto;width: 100%;"></video>
+        <audio autoplay id="audio"></audio>
+        <!-- <video autoplay id="other0" style="display: inline;height: 98%;margin: auto;width: 100%;"></video> -->
       </div>
       <div class="vcopponentvideo">
        <div align="center" id="muted_image_me">
-        <img src="<?php echo $img ?>" class="img-circle img-responsive">
+        <img src="<?php echo $img ?>" class="img-responsive">
       </div>
       <video  autoplay id="me"></video></div>
       <div class="vcactions">
         <a class="vccall" href="#" onclick="window.location.reload();">Call</a>
-        <a class="vcmike" href="#">Mike</a>
-        <a class="vcvideop active" href="#">Video</a>
+        <a class="vcmike" href="#">Mike</a>        
         <a class="vcend" href="#" id="cut" onclick="window.close();">Call End</a>
       </div>
 
@@ -241,7 +217,7 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
 
 <script>
 
-   // Get old images from database
+   // Get old Messages from database
 
                  var to_username = $('#call_to').val(); // To username 
                  var invite_id = $('#invite_id').val(); // invite id  
@@ -320,10 +296,10 @@ function interval()
             var minutes = parseInt(diff.asMinutes()); 
             remainin_minutes_end = minutes - (days*24*60 + hours*60); //Remaning Minutes 
 
-            if(remainin_minutes_end == 1){
-              $('.new_call').html('This call will disconnect in 00:'+remainin_minutes_end+':'+seconds);
+            if(remainin_minutes_end < 1){
+              $('.notification').html('This call will disconnect in 00:0'+remainin_minutes_end+':'+seconds);
             }else{
-              $('.new_call').html('This call will disconnect in '+remainin_minutes_end+' minutes.');
+              $('.notification').html('This call will disconnect in '+remainin_minutes_end+' minutes.');
             }
             if(remainin_minutes_end == 0 && seconds < 1  ){              
               swal({ 
@@ -331,10 +307,13 @@ function interval()
                text: "Call disconnected !",
                type: "error" ,
                icon: 'error'
-             });            
-             var url = $('#url').val();      
+             });     
+             setTimeout(function() {
+              var url = $('#url').val();      
               window.open(url, '_self', ''); 
-              window.close();              
+              window.close();     
+             }, 1000);       
+                      
             }
           }
         },1000);
@@ -568,7 +547,7 @@ $('.overlay').show();
 sinchClient = new SinchClient({
   applicationKey: 'f06ae4f2-4980-40aa-89ca-9b98d80d70c4',
 
-  capabilities: {calling: true, video: true, messaging: true, multiCall: true},
+  capabilities: {calling: true, messaging: true, multiCall: true},
   supportActiveConnection: true,
   onLogMessage: function(message) {
     if(message.code == 4000)
@@ -659,27 +638,19 @@ function update_log()
 
 function format_date( date )
 {
-  if (typeof date == "string")
-  {
+  if (typeof date == "string"){
     date = new Date(date);
   }
-
   var year = date.getFullYear();
   var month = (1 + date.getMonth()).toString();
   month = month.length > 1 ? month : '0' + month;
-
   var day = date.getDate().toString();
   day = day.length > 1 ? day : '0' + day;
-
   return year+'-'+month+'-'+day;
 }
 
-
-
 function load_more(total){      
-
   var selected_user_id = $('#to_user_id').val();                  
-
   $.post(base_url+'user/get_old_messages',{selected_user_id:selected_user_id,total:total},function(res){  
     if(res){        
      $('.load-more-btn').html('<button class="btn btn-default" data-page="2"><i class="fa fa-refresh"></i> Load More</button>');               
@@ -719,52 +690,14 @@ function join_call(){
   var groupCall = callClient.callGroup(channel);
 
 
+
+
   groupCall.addEventListener({
-    onGroupRemoteCallAdded: function(call) {
-    // console.log(call);
-    // muting the mike here 
-    $('.vcmike').click(function(){
-      if($(this).hasClass('active')){
-        $(this).removeClass('active');
-        call.unmute();
-      }else{
-        $(this).addClass('active');
-        call.mute();
-      }
-    });
-
-    $('#disconnected').html('');
-    remoteCalls.push(call);
-    var callIdx = remoteCalls.indexOf(call);
-    $('video#other'+callIdx).attr('src', call.incomingStreamURL);
-    $('#disconnected').html('');
-
-      // var call_id = $('#call_id').val();
-      //    var to_user_id =$('#to_user_id').val();
-      //    var time =$('#time').val();
-
-      //    $.post('<?php echo base_url(); ?>user/delete_channel',{            
-      //      call_id:call_id,
-      //      to_user_id :to_user_id,
-      //      time :time,
-      //    },function(res){
-      //     // console.log(res);
-      //   });
-
-
-
-
-      $('#cut').click(function(){
-       call.hangup();
-     });
-
-
-
-    },
+  
     onGroupLocalMediaAdded: function(stream) {
 
 
-    // console.log(stream);
+     console.log(stream);
  // Muting the mike after connecting connected stream 
 
  $('.vcmike').click(function(){
@@ -794,17 +727,48 @@ function join_call(){
  $('.vcvideop').click(function(){         
   if($(this).hasClass('active')){
     $(this).removeClass('active');                
-    muting_video(1);        
+    stream.getVideoTracks()[0].enabled = true; 
+    $('#muted_image_me').hide();
+     muting_video(1);        
   }else{
     $(this).addClass('active');        
-    muting_video(0);
+    stream.getVideoTracks()[0].enabled = false; 
+    $('#muted_image_me').show();
+     muting_video(0);
   }
+  //console.log(stream);
 });
+
 },
+  onGroupRemoteCallAdded: function(call) {
+     //console.log(call);
+
+    // muting the mike here 
+    $('.vcmike').click(function(){
+      if($(this).hasClass('active')){
+        $(this).removeClass('active');
+        call.unmute();
+      }else{
+        $(this).addClass('active');
+        call.mute();
+      }
+    });
+    $('#disconnected').html('');
+    remoteCalls.push(call);
+    var callIdx = remoteCalls.indexOf(call);
+    $('video#other'+callIdx).attr('src', call.incomingStreamURL);
+    $('#disconnected').html('');
+      $('#cut').click(function(){
+       call.hangup();
+     });
+
+
+
+    },
 onGroupRemoteCallRemoved: function(call) {
 
     //console.log(call);
-
+    $('.vcmike').removeClass('active');
     $('#disconnected').html('Call disconnected!');
     var callIdx = remoteCalls.indexOf(call);   
     remoteCalls.splice(callIdx, 1);
@@ -840,12 +804,15 @@ onGroupRemoteCallRemoved: function(call) {
 /*** Set up callClient and define how to handle incoming calls ***/
 
 var callClient = sinchClient.getCallClient();
+var channel = $('#channel').val();
+var call = callClient.callConference(channel);
+call.addEventListener(callListeners);
 var call;
-
 callClient.addEventListener({
   onIncomingCall: function(incomingCall) {
+
     // console.log('incoming call');
-    // console.log(incomingCall);    
+     console.log(incomingCall);    
   }
 });
 
@@ -853,16 +820,20 @@ callClient.addEventListener({
 
 var callListeners = {
   onCallProgressing: function(call) {
-    $('#disconnected').html('');        
-    console.log('call progressing');
+    console.log(call);   
+    // $('#disconnected').html('');        
+    // console.log('call progressing');
   },
-  onCallEstablished: function(call) {    
+  onCallEstablished: function(call) {
+   $('audio').attr('src', call.incomingStreamURL);    
     var callDetails = call.getDetails();
-    console.log('call establish')
-    console.log(callDetails);  
+    console.log(call);   
+    // console.log('call establish')
+    // console.log(callDetails);  
 
   },
   onCallEnded: function(call) {
+    console.log(call);   
 
     $('#disconnected').html('Call disconnected!');
     var callDetails = call.getDetails();
@@ -873,10 +844,10 @@ var callListeners = {
 };
 
 
-setTimeout(function() {
-  $('#other0').hide();
-  join_call();
-}, 5000);
+// setTimeout(function() {
+//   $('#other0').hide();
+//   join_call();
+// }, 5000);
 
 
 

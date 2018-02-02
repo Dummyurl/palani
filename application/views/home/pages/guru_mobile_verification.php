@@ -21,8 +21,11 @@
             <h2>Congratulations!</h2>
             <h4>Your account has been created successfully.</h4>
             <p>We are glad you decided to start helping out and make some cash. Feel free to browse around. Please complete your profile and payment information.</p>
-            <p>You will receive a verification email shortly.</p>
+            <p>You will receive a verification email shortly.</p>            
             <button type="button" class="btn btn-primary" onclick="showMobileData();">Continue</button>
+
+            <a href="<?php echo base_url(); ?>user/logout" >Back</a>
+            
         </form>
     </div>
 </div>
@@ -332,7 +335,7 @@
 </script>
 
 <script src="<?php echo base_url()."assets/" ?>js/guru.js" type="text/javascript"></script>
-<script type = "text/javascript" >
+<script type="text/javascript" >
     history.pushState(null, null, '#');
     window.addEventListener('popstate', function(event) {
         history.pushState(null, null, '#');

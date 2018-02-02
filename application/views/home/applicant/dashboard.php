@@ -629,14 +629,14 @@ else{
                                         <div class="col-sm-6">
                                           <div class="form-group">
                                             <label class="control-label">Address Line 1</label>
-                                            <input type="text" class="form-control" name="address_line1" id="mentor_quotes" value="<?php echo $address_line1; ?>">
+                                            <input type="text" class="form-control" name="address_line1"  value="<?php echo $address_line1; ?>">
                                             <span class="help-block"></span>
                                           </div>
                                         </div>
                                         <div class="col-sm-6">
                                           <div class="form-group">
                                             <label class="control-label">Address Line 2</label>
-                                            <input type="text" class="form-control" name="address_line2" id="mentor_quotes" value="<?php echo $address_line2; ?>">
+                                            <input type="text" class="form-control" name="address_line2" value="<?php echo $address_line2; ?>">
                                             <span class="help-block"></span>
                                           </div>
                                         </div>
