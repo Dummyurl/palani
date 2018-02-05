@@ -875,7 +875,7 @@ public function dashboard()
            		$this->data['gurus'] = $this->applicant_modal->applicant_detail_list_view($id);
            		$this->data['available_data'] = $this->applicant_modal->get_guru_available_data($id);
            		$this->data['selected_date'] = date('Y-m-d');
-           	}else{
+           	}else{              
            		$this->data['theme'] = 'guru';
            		$this->data['result'] = $this->user_model->calendar_available_time($id);
            	}
@@ -1616,6 +1616,8 @@ public function gurus()
 	{
 		redirect('login');
 	}
+
+  
 	$this->data['module'] = 'gurus_list_view';
 	if($this->session->userdata('role') == 0){
 		$this->data['theme'] = 'applicant';
@@ -3849,10 +3851,67 @@ public function remove_options()
 
 public function set_booked_session()
 {
-	$sts = 1;
-	$session_data =  json_decode($this->input->post('session_data'));
-	$this->session->set_userdata('payment_details',$session_data);
-	echo $sts;
+
+
+  if($_POST['charge_type'] == 'free'){
+    
+    $session_data =  json_decode($this->input->post('session_data'));
+    $this->session->set_userdata('payment_details',$session_data);
+    $this->request_free_call();
+    echo '2';
+
+  }else{
+      $sts = 1;
+      $session_data =  json_decode($this->input->post('session_data'));
+      $this->session->set_userdata('payment_details',$session_data);
+      echo $sts;  
+  }
+	
+}
+Public function  request_free_call()
+{
+   $data = array(     
+       'user_id' => $this->session->userdata('applicant_id'),
+       'mentor_id' => $this->session->userdata('pay_to'),                
+       'payment_status' => 0,
+       'payment_gross' => 0,                                
+       'payment_date' => date('Y-m-d H:i:s'),
+       'currency_code' => 'USD'       
+     );
+      $this->db->insert('payments',$data);
+      $payment_id = $this->db->insert_id();
+
+              // Sending notification to mentor 
+      $app_id = $this->session->userdata('pay_to');
+      $app_data = $this->user_model->gurus_detail_list_view($app_id);
+      $pay_details =$this->session->userdata('payment_details');
+
+      foreach ($pay_details as $key => $value) { 
+       $invitedata['from_date_time'] = $value->date_value.' '.$value->start_time;  
+       $invitedata['to_date_time'] = $value->date_value.' '.$value->end_time;  
+       $invitedata['invite_from'] = $this->session->userdata('applicant_id');
+       $invitedata['invite_to'] = $this->session->userdata('pay_to');
+       $invitedata['message'] = 'You have new invitation request from '.$app_data['first_name'].' '.$app_data['last_name'];
+       $invitedata['invite_date'] = $value->date_value;
+       $invitedata['invite_time'] = $value->start_time;
+       $invitedata['invite_end_time'] = $value->end_time;
+       $invitedata['paid'] = 0;
+       $invitedata['time_zone'] = $value->time_zone;
+
+       $this->db->insert('invite',$invitedata);
+       $insert_id = $this->db->insert_id();
+
+       $new_data = array('invite_id' => $insert_id);
+       $wheree = array('payment_id' => $payment_id);
+       $this->db->update('payments',$new_data,$wheree);
+
+       $notify_data['user_id'] = $invitedata['invite_to'];
+       $notify_data['notification_id'] = $this->session->userdata('applicant_id');
+       $notify_data['text'] = $app_data['first_name'].' '.$app_data['last_name'].' invited you with premium';
+       $notify_data['read'] = 0;
+       $notify_data['invite_id'] = $insert_id;
+   $response =   $this->db->insert('notifications',$notify_data);  
+}
 }
 
 public function get_schedule_from_date()

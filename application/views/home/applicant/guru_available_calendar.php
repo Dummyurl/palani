@@ -292,7 +292,6 @@ function get_booked_class($availabe_days,$start_time,$end_time,$day_value,$to_ti
                             $rep_end5 = str_replace('"',"", $rep_end5);
 
 
-
                             $from_time =  $selected_date.' '.$rep_start5;
                             $to_time =  $selected_date.' '.$rep_end5;
 
@@ -412,8 +411,20 @@ function get_booked_class($availabe_days,$start_time,$end_time,$day_value,$to_ti
                           </div>
                            <input type="hidden" name="pre_date" id="pre_date" class="form-control" value="<?php echo date('Y-m-d', strtotime($selected_date."-7 day")); ?>">
                          <input type="hidden" name="next_date" id="next_date" class="form-control" value="<?php echo date('Y-m-d', strtotime($selected_date."+7 day")); ?>">
+
+                          <input type="hidden" name="charge_type" id="charge_type" value="<?php echo $gurus['charge_type'] ?>">
+                         <?php if($gurus['charge_type'] == 'charge'){?>
+
                           <div class="tmgconfirmation">
                             You have booked <strong>0 hour</strong> session <a href="javascript:void(0)" class="btn btn-primary" >Proceed to Pay <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
                           </div>
 
-                        <?php endif; ?>
+
+                        <?php   
+                                }else{
+
+                                  echo '<div class="tmgconfirmation">
+                            You have booked <strong>0 hour</strong> session <a href="javascript:void(0)" class="btn btn-primary" >Book Appoinment <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                          </div>';
+                                }  
+                                    endif;         ?>

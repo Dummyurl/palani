@@ -78,13 +78,13 @@ confirm_password: {
                                                 if(response == 0)
                                                 {
 
-                                                 setInterval(function(){
+                                                   setInterval(function(){
                                                     window.location = base_url+'welcome/applicant_success_signup';
                                                 },2000);
 
-                                             }
-                                             else
-                                             {
+                                               }
+                                               else
+                                               {
                                                 $('.preloader').html('');
                                                 $('.preloader').css('display','none');
                                                 $('#form-registeration-error').html("Error While Registering !");
@@ -99,7 +99,7 @@ confirm_password: {
 
 
 $('#applicant_login_form').bootstrapValidator({
- fields: {                
+   fields: {                
     email: {
         validators: { 
             notEmpty: {
@@ -134,12 +134,12 @@ $('#applicant_login_form').bootstrapValidator({
                                             {                                                 
                                                 if(response==0)
                                                 {   
-                                                 setInterval(function(){
+                                                   setInterval(function(){
                                                     window.location = base_url+"dashboard";
                                                 },2000);
-                                             }
-                                             else
-                                             {
+                                               }
+                                               else
+                                               {
                                                 $('.preloader').html('');
                                                 $('.preloader').css('display','none');
                                                 $('#applicant_login_error').html(" Wrong Credentials !");                                                    
@@ -212,12 +212,12 @@ $('#general_feedback').bootstrapValidator({
 
 
 $('#activity_search').bind('keypress', function(e) {
- if (e.keyCode === 13) return false;
+   if (e.keyCode === 13) return false;
 });
 
 
 $('#applicant_forgot_password_form').bootstrapValidator({
- fields: {                
+   fields: {                
     email: {
         validators: {                    
             regexp: {
@@ -267,14 +267,14 @@ $('#applicant_forgot_password_form').bootstrapValidator({
 
 
 $('#applicant_profile_form').submit(function(){    
- $.ajax({
+   $.ajax({
     url : base_url+'applicant/update_profile',
     type: "POST",
     data: $('#applicant_profile_form').serialize(),
     dataType: "JSON",
     success: function(data)
     {
-        
+
             if(data.status == true) //if success close modal and reload ajax table
             {
                 setInterval(function(){ window.location = base_url+'dashboard?notify=true'; }, 1000);
@@ -435,7 +435,7 @@ $('#applicant_profile_form').submit(function(){
 
 var check_exist_date =  base_url+'user/check_exist_date';                                  
 $('#schedule_form').bootstrapValidator({
- fields: {                
+   fields: {                
     contact_date: {
         validators: {                    
             notEmpty: {
@@ -483,7 +483,7 @@ $('#schedule_form').bootstrapValidator({
                                             data:formData,
                                             beforeSend: function()
                                             {
-                                             $.post(check_exist_date,{contact_date:$('#choosedate').val(),contact_time:$('#contact_time_start').val(),contact_time_end:$('#contact_time_end').val(),app_id:$('#app_id').val()},function(response_val){
+                                               $.post(check_exist_date,{contact_date:$('#choosedate').val(),contact_time:$('#contact_time_start').val(),contact_time_end:$('#contact_time_end').val(),app_id:$('#app_id').val()},function(response_val){
                                                 if(response_val==0)
                                                 {
                                                     bv.updateStatus('contact_time_start', 'INVALID', 'callback');
@@ -540,13 +540,13 @@ $('#schedule_form').bootstrapValidator({
     });
 
     $("#results-grid-view").click(function(){
-       $("#results-list-view").removeClass("active");
-       $(this).addClass('active');
-       var grid_url = base_url +'user/gurus_grid_view'; 
-       $.post(grid_url,function(value){
+     $("#results-list-view").removeClass("active");
+     $(this).addClass('active');
+     var grid_url = base_url +'user/gurus_grid_view'; 
+     $.post(grid_url,function(value){
         $('#guru-list').html(value);
     });
-   });                
+ });                
 
     $(document).on('click','.loadmore-a',function () {
       $(this).text('Loading...');
@@ -573,40 +573,40 @@ $('#schedule_form').bootstrapValidator({
 
 
     $(document).on('click','.loadmore-guru',function () {
-       $(this).text('Loading...');
+     $(this).text('Loading...');
 						  //console.log('loadmore');
-                        var ele = $(this).parent('div');
-                        $.ajax({
-                          url:  base_url +'user/loadmore_search_guru_home',
-                          type: 'POST',
-                          data: {
-                              keyword:$('#old_keyword').val(),page:$(this).data('page'),gender:$('#gender').val(),admitted_school:$('#admitted_school').val(),school_offer:$('#school_offer').val(),school_year:$('#school_year').val()
-                          },
-                          beforeSend:function(){
-                            $('.overlay').css("display","block");
-                        },
-                        success: function(response){
-                          $('.overlay').css("display","none");
-                          if(response){
-                            ele.remove();                             
-                            $("#guru-list").append(response);
+                          var ele = $(this).parent('div');
+                          $.ajax({
+                              url:  base_url +'user/loadmore_search_guru_home',
+                              type: 'POST',
+                              data: {
+                                  keyword:$('#old_keyword').val(),page:$(this).data('page'),gender:$('#gender').val(),admitted_school:$('#admitted_school').val(),school_offer:$('#school_offer').val(),school_year:$('#school_year').val()
+                              },
+                              beforeSend:function(){
+                                $('.overlay').css("display","block");
+                            },
+                            success: function(response){
+                              $('.overlay').css("display","none");
+                              if(response){
+                                ele.remove();                             
+                                $("#guru-list").append(response);
+                            }
                         }
-                    }
-                });
                     });
+                      });
 
 
 
 
     $(document).on('keyup','.right_top_search',function(){
 
-       var gender = $('#right_top_search').val();
-       var admitted_school = $('#right_top_search').val();
-       var school_offer = $('#right_top_search').val();
-       var school_year = $('#right_top_search').val();
-       var school_year = $('#right_top_search').val();
-       var order_by = $('.ordering').val();
-       var keyword = $('#right_top_search').val();
+     var gender = $('#right_top_search').val();
+     var admitted_school = $('#right_top_search').val();
+     var school_offer = $('#right_top_search').val();
+     var school_year = $('#right_top_search').val();
+     var school_year = $('#right_top_search').val();
+     var order_by = $('.ordering').val();
+     var keyword = $('#right_top_search').val();
 
   //    if(gender == '' && admitted_school == '' && school_offer == '' && school_year == '')
   //    {
@@ -615,22 +615,22 @@ $('#schedule_form').bootstrapValidator({
   // }
   $('#search-error').html('');
   $.ajax({
-     url:  base_url +'user/search_right',
-     type: 'POST',
-     data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year,order_by:order_by,keyword:keyword},
-     beforeSend:function(){
-        $('.overlay').css("display","block");
-    },
-    success: function(response){
-        $('.overlay').css("display","none");
+   url:  base_url +'user/search_right',
+   type: 'POST',
+   data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year,order_by:order_by,keyword:keyword},
+   beforeSend:function(){
+    $('.overlay').css("display","block");
+},
+success: function(response){
+    $('.overlay').css("display","none");
     // console.log(response);
 
     if(response == 0){
-     $(".widget-title").html('0 Matches for your search');
-     $("#guru-list").html('<p>Mentors not found</p>');
- }else{
-     $("#right-search-content").html(response);
- }
+       $(".widget-title").html('0 Matches for your search');
+       $("#guru-list").html('<p>Mentors not found</p>');
+   }else{
+       $("#right-search-content").html(response);
+   }
 }
 });
 });
@@ -640,47 +640,47 @@ $('#schedule_form').bootstrapValidator({
 
     $(document).on('click','.search-left',function(){
 
-       var gender = $('#gender').val();
-       var admitted_school = $('#admitted_school').val();
-       var school_offer = $('#school_offer').val();
-       var school_year = $('#school_year').val();
-       var school_year = $('#school_year').val();
-       var order_by = $('.ordering').val();
+     var gender = $('#gender').val();
+     var admitted_school = $('#admitted_school').val();
+     var school_offer = $('#school_offer').val();
+     var school_year = $('#school_year').val();
+     var school_year = $('#school_year').val();
+     var order_by = $('.ordering').val();
 
-       if(gender == '' && admitted_school == '' && school_offer == '' && school_year == '')
-       {
-          $('#search-error').html('Please select atleast one.');
-          return false;
-      }
-      $('#search-error').html('');
-      $.ajax({
-         url:  base_url +'user/search_left',
-         type: 'POST',
-         data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year,order_by:order_by},
-         beforeSend:function(){
-            $('.overlay').css("display","block");
-        },
-        success: function(response){
-            $('.overlay').css("display","none");
-            if(response == 0){
-             $(".widget-title").html('0 Matches for your search');
-             $("#guru-list").html('<p>Mentors not found</p>');
-         }else{
-             $("#right-search-content").html(response);
-         }
-     }
- });
-  });
+     if(gender == '' && admitted_school == '' && school_offer == '' && school_year == '')
+     {
+      $('#search-error').html('Please select atleast one.');
+      return false;
+  }
+  $('#search-error').html('');
+  $.ajax({
+   url:  base_url +'user/search_left',
+   type: 'POST',
+   data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year,order_by:order_by},
+   beforeSend:function(){
+    $('.overlay').css("display","block");
+},
+success: function(response){
+    $('.overlay').css("display","none");
+    if(response == 0){
+       $(".widget-title").html('0 Matches for your search');
+       $("#guru-list").html('<p>Mentors not found</p>');
+   }else{
+       $("#right-search-content").html(response);
+   }
+}
+});
+});
 
 
     $(document).on('change','.ordering',function(){
 
-       var gender = $('#gender').val();
-       var admitted_school = $('#admitted_school').val();
-       var school_offer = $('#school_offer').val();
-       var school_year = $('#school_year').val();
-       var school_year = $('#school_year').val();
-       var order_by = $('.ordering').val();
+     var gender = $('#gender').val();
+     var admitted_school = $('#admitted_school').val();
+     var school_offer = $('#school_offer').val();
+     var school_year = $('#school_year').val();
+     var school_year = $('#school_year').val();
+     var order_by = $('.ordering').val();
 
   //    if(gender == '' && admitted_school == '' && school_offer == '' && school_year == '')
   //    {
@@ -689,21 +689,21 @@ $('#schedule_form').bootstrapValidator({
   // }
   $('#search-error').html('');
   $.ajax({
-     url:  base_url +'user/search_left',
-     type: 'POST',
-     data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year,order_by:order_by},
-     beforeSend:function(){
-        $('.overlay').css("display","block");
-    },
-    success: function(response){
-        $('.overlay').css("display","none");
-        if(response == 0){
-         $(".widget-title").html('0 Matches for your search');
-         $("#guru-list").html('<p>Mentors not found</p>');
-     }else{
-         $("#right-search-content").html(response);
-     }
- }
+   url:  base_url +'user/search_left',
+   type: 'POST',
+   data: { gender:gender,admitted_school:admitted_school,school_offer:school_offer,school_year:school_year,order_by:order_by},
+   beforeSend:function(){
+    $('.overlay').css("display","block");
+},
+success: function(response){
+    $('.overlay').css("display","none");
+    if(response == 0){
+       $(".widget-title").html('0 Matches for your search');
+       $("#guru-list").html('<p>Mentors not found</p>');
+   }else{
+       $("#right-search-content").html(response);
+   }
+}
 });
 });
 
@@ -770,14 +770,14 @@ $('#schedule_form').bootstrapValidator({
                           $('.load-more-btn').html('<button class="btn btn-default">Please wait . . </button>');
                           var total = $(this).attr('total');
                           if(total>0 || total == 0 ){                        
-                           load_more(total);   
-                           var total = total - 1;
-                           $(this).attr('total',total); 
-                       }else{
-                        $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
-                    }
+                             load_more(total);   
+                             var total = total - 1;
+                             $(this).attr('total',total); 
+                         }else{
+                            $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
+                        }
 
-                });
+                    });
 
 
                     });
@@ -786,42 +786,6 @@ $('#schedule_form').bootstrapValidator({
 
 
     $('.chat-send-btn').click(function(){
-        $('.no_message').html('');
-        var time = $('#time').val();
-        var img = $('#img').val();
-        var input_message = $.trim($('#input_message').val());
-        if(input_message!=''){
-           var content ='<div class="chat">'+
-           '<div class="chat-avatar">'+
-           '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="June Lane">'+
-           '<img  src="'+img+'" class="img-responsive img-circle">'+
-           '</a>'+
-           '</div>'+
-           '<div class="chat-body">'+
-           '<div class="chat-content">'+
-           '<p>'+input_message+
-           '</p>'+
-           '<span class="chat-time">'+time+'</span>'+
-           '</div>'+
-           '</div>'+
-           '</div>';
-           $('#ajax').append(content);               
-           $(".slimscrollleft.chats").mCustomScrollbar("update");
-           $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
-           message();
-           $('#chat_form')[0].reset();
-       }
-       return false;
-
-
-
-       return false;
-   });
-
-
-
-    // Submitting the chat form 
-    $('#chat_form').submit(function(){
         $('.no_message').html('');
         var time = $('#time').val();
         var img = $('#img').val();
@@ -846,10 +810,46 @@ $('#schedule_form').bootstrapValidator({
          $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
          message();
          $('#chat_form')[0].reset();
-
      }
      return false;
+
+
+
+     return false;
  });
+
+
+
+    // Submitting the chat form 
+    $('#chat_form').submit(function(){
+        $('.no_message').html('');
+        var time = $('#time').val();
+        var img = $('#img').val();
+        var input_message = $.trim($('#input_message').val());
+        if(input_message!=''){
+           var content ='<div class="chat">'+
+           '<div class="chat-avatar">'+
+           '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="June Lane">'+
+           '<img  src="'+img+'" class="img-responsive img-circle">'+
+           '</a>'+
+           '</div>'+
+           '<div class="chat-body">'+
+           '<div class="chat-content">'+
+           '<p>'+input_message+
+           '</p>'+
+           '<span class="chat-time">'+time+'</span>'+
+           '</div>'+
+           '</div>'+
+           '</div>';
+           $('#ajax').append(content);               
+           $(".slimscrollleft.chats").mCustomScrollbar("update");
+           $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
+           message();
+           $('#chat_form')[0].reset();
+
+       }
+       return false;
+   });
 
 
 
@@ -880,22 +880,22 @@ function load_more(total){
 
     $.post(base_url+'user/get_old_messages',{selected_user_id:selected_user_id,total:total},function(res){  
         if(res){        
-           $('.load-more-btn').html('<button class="btn btn-default" data-page="2"><i class="fa fa-refresh"></i> Load More</button>');               
-           $('#ajax_old').prepend(res);
-       }else{
-           $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
-       }
-   }); 
+         $('.load-more-btn').html('<button class="btn btn-default" data-page="2"><i class="fa fa-refresh"></i> Load More</button>');               
+         $('#ajax_old').prepend(res);
+     }else{
+         $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
+     }
+ }); 
 }
 
 function message()
 {
 
 
- var msg = $.trim($('#input_message').val());
- var to_username = $('#recipients').val();
- var sender_id = $('#sender_id').val();
- var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
+   var msg = $.trim($('#input_message').val());
+   var to_username = $('#recipients').val();
+   var sender_id = $('#sender_id').val();
+   var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
         // Get the messageClient
         var messageClient = sinchClient.getMessageClient(); 
         // Create a new Message
@@ -953,13 +953,13 @@ var myListenerObj = {
               return false; 
           }
           if(message.textBody =='DISABLE_STREAM'){
-           $('#muted_image_me').hide();               
-           return false;
-       }
-   }
+             $('#muted_image_me').hide();               
+             return false;
+         }
+     }
 
 
-   if(message.direction==false){
+     if(message.direction==false){
 
       if( message.textBody =='ENABLE_STREAM'){
         $('#other0').hide();
@@ -967,16 +967,16 @@ var myListenerObj = {
         return false; 
     }
     if(message.textBody =='DISABLE_STREAM'){
-     $('#muted_image').hide();
-     $('#other0').show();
-     return false;
- }
+       $('#muted_image').hide();
+       $('#other0').show();
+       return false;
+   }
 
 
- var h_url = $('#uri_segment').val();
- var h_urls = $('#uri_segments').val();
+   var h_url = $('#uri_segment').val();
+   var h_urls = $('#uri_segments').val();
 
- if(h_url != 'messages' && h_urls !='incoming_video_call' && h_urls !='conversations' && h_urls !='conversations#'){                    
+   if(h_url != 'messages' && h_urls !='incoming_video_call' && h_urls !='conversations' && h_urls !='conversations#'){                    
     $.notify({                    
         message: message.senderId+'<br><br>'+message.textBody 
     },{                    
@@ -1000,64 +1000,64 @@ var myListenerObj = {
                 if(msg == 'file' && type == 'image'){
 
 
-                   var content ='<div class="chat chat-left">'+
-                   '<div class="chat-avatar">'+
-                   '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
-                   '<img alt="" src="'+image+'" class="img-responsive img-circle">'+
-                   '</a>'+
-                   '</div>'+
-                   '<div class="chat-body">'+
-                   '<div class="chat-content">'+
-                   '<p><img alt="" src="'+file_name+'" class="img-responsive"></p>'+
-                   '<a href="'+file_name+'" target="_blank" download>Download</a>'+
-                   '<span class="chat-time">'+time+'</span>'+
-                   '</div>'+
-                   '</div>'+
-                   '</div>';
-                   $('#ajax').append(content); 
+                 var content ='<div class="chat chat-left">'+
+                 '<div class="chat-avatar">'+
+                 '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
+                 '<img alt="" src="'+image+'" class="img-responsive img-circle">'+
+                 '</a>'+
+                 '</div>'+
+                 '<div class="chat-body">'+
+                 '<div class="chat-content">'+
+                 '<p><img alt="" src="'+file_name+'" class="img-responsive"></p>'+
+                 '<a href="'+file_name+'" target="_blank" download>Download</a>'+
+                 '<span class="chat-time">'+time+'</span>'+
+                 '</div>'+
+                 '</div>'+
+                 '</div>';
+                 $('#ajax').append(content); 
 
-                   $(".slimscrollleft.chats").mCustomScrollbar("update");
-                   $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");                    
-               }else if(msg == 'file' && type == 'others'){
+                 $(".slimscrollleft.chats").mCustomScrollbar("update");
+                 $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");                    
+             }else if(msg == 'file' && type == 'others'){
 
-                   var content ='<div class="chat chat-left">'+
-                   '<div class="chat-avatar">'+
-                   '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
-                   '<img alt="" src="'+image+'" class="img-responsive img-circle">'+
-                   '</a>'+
-                   '</div>'+
-                   '<div class="chat-body">'+
-                   '<div class="chat-content">'+
-                   '<p><img alt="" src="'+base_url+'assets/images/download.png" class="img-responsive"></p>'+
-                   '<a href="'+file_name+'" target="_blank" download>Download</a>'+
-                   '<span class="chat-time">'+time+'</span>'+
-                   '</div>'+
-                   '</div>'+
-                   '</div>';
-                   $('#ajax').append(content); 
+                 var content ='<div class="chat chat-left">'+
+                 '<div class="chat-avatar">'+
+                 '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
+                 '<img alt="" src="'+image+'" class="img-responsive img-circle">'+
+                 '</a>'+
+                 '</div>'+
+                 '<div class="chat-body">'+
+                 '<div class="chat-content">'+
+                 '<p><img alt="" src="'+base_url+'assets/images/download.png" class="img-responsive"></p>'+
+                 '<a href="'+file_name+'" target="_blank" download>Download</a>'+
+                 '<span class="chat-time">'+time+'</span>'+
+                 '</div>'+
+                 '</div>'+
+                 '</div>';
+                 $('#ajax').append(content); 
 
-                   setTimeout(function() {
-                      $(".slimscrollleft.chats").mCustomScrollbar("update");
-                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                      $(".slimscrollleft.chats").mCustomScrollbar("update");
-                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                      $(".slimscrollleft.chats").mCustomScrollbar("update");
-                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                 setTimeout(function() {
+                  $(".slimscrollleft.chats").mCustomScrollbar("update");
+                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                  $(".slimscrollleft.chats").mCustomScrollbar("update");
+                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                  $(".slimscrollleft.chats").mCustomScrollbar("update");
+                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
 
-                  }, 3000);
-                   setTimeout(function() {
-                      $(".slimscrollleft.chats").mCustomScrollbar("update");
-                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                      $(".slimscrollleft.chats").mCustomScrollbar("update");
-                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
-                      $(".slimscrollleft.chats").mCustomScrollbar("update");
-                      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+              }, 3000);
+                 setTimeout(function() {
+                  $(".slimscrollleft.chats").mCustomScrollbar("update");
+                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                  $(".slimscrollleft.chats").mCustomScrollbar("update");
+                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+                  $(".slimscrollleft.chats").mCustomScrollbar("update");
+                  $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
 
-                  }, 1000);                  
-               }
+              }, 1000);                  
+             }
 
 
-               else{
+             else{
 
 
                 var content ='<div class="chat chat-left">'+
@@ -1118,7 +1118,7 @@ var myListenerObj = {
 
 }else{
 
- $.post(base_url+'user/get_new_message_count',{selected_user:message.senderId},function(res){ 
+   $.post(base_url+'user/get_new_message_count',{selected_user:message.senderId},function(res){ 
     $('#'+message.senderId).text(res);
 
 });
@@ -1176,14 +1176,14 @@ $(document).on('click','.chatclick_search',function(){
                           $('.load-more-btn').html('<button class="btn btn-default">Please wait . . </button>');
                           var total = $(this).attr('total');
                           if(total>0 || total == 0 ){                        
-                           load_more(total);   
-                           var total = total - 1;
-                           $(this).attr('total',total); 
-                       }else{
-                        $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
-                    }
+                             load_more(total);   
+                             var total = total - 1;
+                             $(this).attr('total',total); 
+                         }else{
+                            $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
+                        }
 
-                });
+                    });
 
 
 
@@ -1192,18 +1192,18 @@ $(document).on('click','.chatclick_search',function(){
 
 
 $(document).on('click','#second_verify',function(){
-   $.get(base_url+'user/second_verification',function(response){
+ $.get(base_url+'user/second_verification',function(response){
     if(response==1)
     {
-     $('#send_second_verify > .modal-body').html('<div style="color:green;">Please wait...</div>');
-     $('#send_second_verify > .modal-footer').html(''); 
-     setInterval(function(){
-         $('#send_second_verify > .modal-body').html('<div style="color:green;">Email was sent.Please check your mail..!</div>');
-     },3000);
-     setInterval(function(){
+       $('#send_second_verify > .modal-body').html('<div style="color:green;">Please wait...</div>');
+       $('#send_second_verify > .modal-footer').html(''); 
+       setInterval(function(){
+           $('#send_second_verify > .modal-body').html('<div style="color:green;">Email was sent.Please check your mail..!</div>');
+       },3000);
+       setInterval(function(){
         location.reload(); 
     },7000);
- }else{
+   }else{
     $('#send_second_verify > .modal-body').html('<div style="color:#5c65be;">Error while submitting email....!Please try again.</div>');
     $('#send_message-form-error').css('display','block');
     setInterval(function(){
@@ -1231,7 +1231,7 @@ $(document).on('click','#second_verify',function(){
                                 // count over bell every 5 seconds 
 
                                 setInterval(function(){
-                                 $(".redcircle").load(base_url+'user/notify_applicants', function(response) {
+                                   $(".redcircle").load(base_url+'user/notify_applicants', function(response) {
                                     if(response > 0){
 
                                         $(".redcircle").css('display','block');
@@ -1239,10 +1239,10 @@ $(document).on('click','#second_verify',function(){
                                         $('.topnotification').addClass('animate');
                                     }                                                             
                                     setTimeout(function() {
-                                     $('.topnotification').removeClass('animate');
-                                 }, 2000);
+                                       $('.topnotification').removeClass('animate');
+                                   }, 2000);
                                 });
-                             }, 5000);
+                               }, 5000);
 
 
                                  // redirect to dashboard onclick notificaiton msg 
@@ -1254,9 +1254,9 @@ $(document).on('click','#second_verify',function(){
                                  $('.topnotification').on('click',function(){
                                     $('.topnotification').addClass('animate');
                                     $.get(base_url+'user/notify_applicants_viewed', function(response) {
-                                     $(".redcircle").css('display','none');
-                                     $('.topnotification').addClass('animate');
-                                 });
+                                       $(".redcircle").css('display','none');
+                                       $('.topnotification').addClass('animate');
+                                   });
                                     $('.topnotification').removeClass('animate');
                                     
                                 });
@@ -1264,7 +1264,7 @@ $(document).on('click','#second_verify',function(){
 
             // Check call to join every 5 seconds 
             setInterval(function(){
-               $.get(base_url+'user/get_call', function(response) {
+             $.get(base_url+'user/get_call', function(response) {
 
                 var json = jQuery.parseJSON(response);
                 if(json.status == true){
@@ -1296,14 +1296,14 @@ $(document).on('click','#second_verify',function(){
 
 
                 }else{
-                 $('.new_call').html('');                
-                 $('audio#ringtone').trigger("pause");
+                   $('.new_call').html('');                
+                   $('audio#ringtone').trigger("pause");
 
-             }
+               }
 
 
-         });
-           }, 5000);
+           });
+         }, 5000);
 
 
             
@@ -1311,14 +1311,14 @@ $(document).on('click','#second_verify',function(){
             
             
             $(document).on('keyup','#activity_search',function(){
-               var search_value = $(this).val();                 
+             var search_value = $(this).val();                 
 
-               $.post(base_url+'user/search_activity_list',{search_value:search_value},function(activity_response){                     
-                   $('.jlist').html(activity_response);
-               });
+             $.post(base_url+'user/search_activity_list',{search_value:search_value},function(activity_response){                     
+                 $('.jlist').html(activity_response);
+             });
 
 
-           });
+         });
 
             $(document).on('click','.selectday',function(){
 
@@ -1333,11 +1333,12 @@ $(document).on('click','#second_verify',function(){
                 if(selected_count == 0){
                     $('.tmgconfirmation a').addClass('disabled');
                 }else{
-                   $('.tmgconfirmation a').removeClass('disabled');
-               }
+                 $('.tmgconfirmation a').removeClass('disabled');
+             }
 
-           });
+         });
             $('.tmgconfirmation a').addClass('disabled');
+
             $(document).on('click','.tmgconfirmation a',function(){
                 $('.tmgconfirmation a').addClass('disabled');
                 var selected_count = $('.tmgselected').length;
@@ -1356,11 +1357,27 @@ $(document).on('click','#second_verify',function(){
                 });
                 var jsonOb = JSON.stringify(session_data);
                // console.log(jsonOb);
-               $.post(base_url+'user/set_booked_session',{session_data:jsonOb},function(session_response){
+               $.post(base_url+'user/set_booked_session',{session_data:jsonOb,charge_type:$('#charge_type').val()},function(session_response){
                // console.log(session_response);
                if(session_response == 1)
                {
                 setTimeout(function(){ window.location=base_url+'user/pay/'+mentor_id ; },1000);
+            }else{
+
+                swal({ 
+
+                  title: "Success!",      
+                  type: "success" ,
+                  icon: 'success',
+                  showConfirmButton:false,
+                  html:'<p>Appoinment request sent successfully! <br>Now you can chat with our guru.</p><p><a href="'+base_url+'messages" class="btn btn-primary">Go to Messages</a></p>',
+              });
+                setTimeout(function() {
+                        window.location.href="<?php echo base_url();?>messages";
+                    }, 3000);
+
+
+
             }
         });
 
@@ -1659,14 +1676,14 @@ $(document).on('click','a.conv_messages',function(){
                           $('.load-more-btn').html('<button class="btn btn-default">Please wait . . </button>');
                           var total = $(this).attr('total');
                           if(total>0 || total == 0 ){                        
-                           load_more(total);   
-                           var total = total - 1;
-                           $(this).attr('total',total); 
-                       }else{
-                        $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
-                    }
+                             load_more(total);   
+                             var total = total - 1;
+                             $(this).attr('total',total); 
+                         }else{
+                            $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
+                        }
 
-                });
+                    });
 
 
                     });
@@ -1691,12 +1708,12 @@ $(document).on('click', '.star', function() {
            });
 
 $(document).on('click','#send_rating',function(){
-   var rating_value = $('#rating_value').val();
-   var mentor_id = $('#mentor_id').val();
-   var rating_comment = $('#rating_comment').val();
-   var invite_id = $('#invite_id').val();
+ var rating_value = $('#rating_value').val();
+ var mentor_id = $('#mentor_id').val();
+ var rating_comment = $('#rating_comment').val();
+ var invite_id = $('#invite_id').val();
 
-   $.post(base_url+'user/save_rating',{
+ $.post(base_url+'user/save_rating',{
     rating_value:rating_value,
     invite_id:invite_id,
     mentor_id:mentor_id,
@@ -1707,7 +1724,7 @@ $(document).on('click','#send_rating',function(){
         $('#li'+invite_id).remove();
     }
 });
-   $('#rating_modal').modal('hide');
+ $('#rating_modal').modal('hide');
 });
 });
 
@@ -1732,7 +1749,7 @@ function getSchedule(id)
 $('#schedule_date_error').html('');
 var mentor_id = $('#mentor_id').val();
 $.post(base_url+'user/get_schedule_from_date',{selected_date:selected_date,mentor_id:mentor_id},function(response){
-   $('.tmgschedule').html(response);
+ $('.tmgschedule').html(response);
 });
 }
 
@@ -1744,31 +1761,31 @@ function convertDatevalue(d){
 
 function showVerifyModal()
 {
-   $("#verify_info").modal({
-     backdrop: 'static',
-     keyboard: false  
- }); 
+ $("#verify_info").modal({
+   backdrop: 'static',
+   keyboard: false  
+}); 
 }
 
 function showSchedule()
 {
-   $("#choosedatetime").modal({
-     backdrop: 'static',
-     keyboard: false  
- }); 
+ $("#choosedatetime").modal({
+   backdrop: 'static',
+   keyboard: false  
+}); 
 }
 
 //Starts the AJAX request.
 function searchSuggest() {
-   var chat_user = $('#search_suggest').val();
-   $.post(base_url+'user/search_chat_users',{keyword:chat_user},function(response){
-       $('.chat-body-left').html(response);
-   });
+ var chat_user = $('#search_suggest').val();
+ $.post(base_url+'user/search_chat_users',{keyword:chat_user},function(response){
+     $('.chat-body-left').html(response);
+ });
 }
 function CheckSession() {
   $.get(base_url+'welcome/check_session',function(response){
-     return response;
- });
+   return response;
+});
 }
 
 function delete_conversation()
@@ -1791,11 +1808,11 @@ function delete_conversation()
         $('.chats').html('<img src="'+base_url+'assets/images/loading.gif" class="loading">');
         var sender_id = $('#receiver_id').val();
         $.post(base_url+'user/delete_conversation',{sender_id:sender_id},function(response){
-           if(response == 1)
-           {
-               $('.chats').html('<div class="no_message">No Record Found</div><div id="ajax"></div><input type="hidden"  id="hidden_id">');
-           }
-       });
+         if(response == 1)
+         {
+             $('.chats').html('<div class="no_message">No Record Found</div><div id="ajax"></div><input type="hidden"  id="hidden_id">');
+         }
+     });
     }
 });
 
@@ -1821,11 +1838,11 @@ function delete_conversation1()
         $('.chats').html('<img src="'+base_url+'assets/images/loading.gif" class="loading">');
         var sender_id = $('#to_user_id').val();
         $.post(base_url+'user/delete_conversation',{sender_id:sender_id},function(response){
-           if(response == 1)
-           {
-               $('.chats').html('<div class="no_message">No Record Found</div><div id="ajax"></div><input type="hidden"  id="hidden_id">');
-           }
-       });
+         if(response == 1)
+         {
+             $('.chats').html('<div class="no_message">No Record Found</div><div id="ajax"></div><input type="hidden"  id="hidden_id">');
+         }
+     });
     }
 });
 
@@ -1834,8 +1851,8 @@ function delete_conversation1()
 function more_details(id)
 {
   $.post(base_url+'user/more_details',{invite_id:id},function(response){
-   $('.moredetails').html(response);
-});
+     $('.moredetails').html(response);
+ });
 }
 
 //  function fillStarOnPercent(star, percent)
@@ -1874,14 +1891,14 @@ callClient.addEventListener({
 
 function fillStars(rating){
 
-   for (var i =1; i <= 5; i++) {
-     $('#st_'+i).find($(".fa")).css('color','#D3D3D3');
+ for (var i =1; i <= 5; i++) {
+   $('#st_'+i).find($(".fa")).css('color','#D3D3D3');
 
- }
+}
 
- for (var i =1; i <= rating; i++) {
-     $('#st_'+i).find($(".fa")).css('color','#ffc513');       
- }
+for (var i =1; i <= rating; i++) {
+   $('#st_'+i).find($(".fa")).css('color','#ffc513');       
+}
 }
 
 function validateSearch()

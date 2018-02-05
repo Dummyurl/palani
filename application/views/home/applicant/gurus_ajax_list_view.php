@@ -9,7 +9,22 @@
                                         <div class="guru-img"><img src="<?php echo ($guru_list['profile_img'] != '') ? base_url() . 'assets/images/'.$guru_list['profile_img'] : base_url() . 'assets/images/avatar-01.jpg'; ?>" height="100" width="100" alt="Guru" class="img-circle"></div>
                                         <div class="guru-name"><?php echo $guru_list['first_name']." ".$guru_list['last_name']; ?></div>
                                         <div class="guru-country"><?php echo $city.$countryname; ?></div>
-                                        <div class="price"><span class="currency">$</span> <span class="amount"><?php echo ($guru_list['mentor_charge'] != '') ? $guru_list['mentor_charge'] : '0.00'; ?></span>/hour</div>
+
+
+                                          <?php 
+
+                                     if($guru_list['charge_type'] == 'charge' ){ 
+                                        ?>
+                                        <div class="price">
+                                            <span class="currency">$</span>
+                                            <span class="amount"><?php echo ($guru_list['mentor_charge'] != '') ? $guru_list['mentor_charge'] : '0.00'; ?></span>/hour
+                                        </div>
+                                        <?php  }else{  ?>
+                                        <div class="price">
+                                            <button class="btn btn-primary btn-xs">Free</button>
+                                        </div>
+                                        <?php }  ?>
+                                        
                                 </div>
                         </div>
                         <div class="col-sm-9 col-xs-8">

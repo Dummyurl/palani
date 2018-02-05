@@ -190,7 +190,7 @@ public function resend_password()
             'mentor_clubs' => $_POST['mentor_clubs'],
             'mentor_undergrad_school' => $_POST['mentor_undergrad_school'],
             'mentor_executive_positions' => $_POST['mentor_executive_positions'],
-            'mentor_charge' => $_POST['mentor_charge'],
+            'charge_type' => $_POST['charge_type'],
             'mentor_job_title' => $_POST['mentor_job_title'],
             'mentor_job_company' => $_POST['mentor_job_company'],
             'mentor_job_dept' => $_POST['mentor_job_dept'],
@@ -223,6 +223,12 @@ public function resend_password()
             'city' => $_POST['city'],
             'postal_code' => $_POST['postal_code']
           );
+
+          if($_POST['charge_type'] == 'charge'){
+            $profile_details +=array('mentor_charge' => $_POST['mentor_charge']);
+          }else{
+            $profile_details +=array('mentor_charge' => '0.00');
+          }
           $mentor_id     = $this->session->userdata('applicant_id');           
           $result        = $this->user_model->update_profile($mentor_id,$profile_details);
           if($result == 0){
@@ -302,7 +308,7 @@ public function resend_password()
           $data['error_string'][] = 'Enter executive position';
           $data['status'] = FALSE;
         }
-        if(empty($_POST['mentor_charge'])){
+        if(empty($_POST['mentor_charge']) && $_POST['charge_type'] == 'charge'){
 
           $data['inputerror'][] = 'mentor_charge';
           $data['error_string'][] = 'Enter mentor charge';

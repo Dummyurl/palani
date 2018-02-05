@@ -104,9 +104,17 @@
 							</div>
 						</div>
 						<div class="row">
+							<?php
+
+							 if($gurus['charge_type'] == 'charge'){ ?>
 							<div class="col-sm-12 m-t-0 m-b-50">
 								<h4>Charging: $<?php echo ($gurus['mentor_charge'] != '' ) ? $gurus['mentor_charge'] : "0.00"; ?>/hour</h4>
 							</div>
+							<?php } else{
+								echo '<button class="btn btn-primary btn-xs">Free</button>';
+
+							} ?>
+
 						</div>
 						<div class="row">
 							<div class="col-xs-12">
@@ -184,7 +192,18 @@
 			<div class="col-sm-4 col-xs-12">
 				<div class="rightsidebar">
 					<div class="widget guru-details-widget">
+						<?php 
+						if($gurus['charge_type'] == 'charge'){ ?>
 						<div class="price text-center"><sup class="currency">$</sup> <span class="amount"><?php echo ($gurus['mentor_charge']!= '') ? $gurus['mentor_charge'] : '0.00'; ?></span>/hour</div>
+
+							<?php }else{
+									echo '<div class="price text-center">
+											<button class="btn btn-default ">FREE</button></h1>
+											</div>';
+								}
+						 	?>
+
+
 						<div class="contact-btn text-center">
 							<button class="btn btn-primary" onclick="<?php if($applicant['is_verified'] == 1){ ?>window.location='<?php echo base_url(); ?>user/schedule_guru/<?php echo $gurus['app_id']; ?>';<?php }else{ ?>showVerifyModal();<?php } ?>" title="Contact <?php echo $gurus['first_name']; ?>"><img src="<?php echo base_url();?>assets/images/contact-icon.png"> Contact <?php echo $gurus['first_name']; ?></button>
 						</div>

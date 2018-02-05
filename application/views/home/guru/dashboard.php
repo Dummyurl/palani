@@ -481,19 +481,30 @@ else{
                     </div>
                   </div>
                 </div>
+
+
                 <div class="education-details">
                   <h4>Charging</h4>
                   <div class="row">
                     <div class="col-sm-6 form-inline">
                       <div class="form-group">
-                        <label class="control-label">Charge (per hour in dollar) <span>*</span></label>
-                        <input type="text" class="form-control" name="mentor_charge" id="mentor_charge" value="<?php echo $mentor_charge; ?>" required min="1">
+                        
+                              <label class="control-label"><input type="radio" class="form-control" name="charge_type" value="free" <?php if( $result['charge_type'] == 'free'){ echo 'checked="checked"'; } ?>> Free</label>                        
                         <span class="help-block"></span>
                       </div>
                     </div>
-                    <div class="col-sm-6"></div>
+                    <div class="col-sm-6 form-inline">
+                      <div class="form-group">                        
+                        <label class="control-label">
+                          <input type="radio" class="form-control" name="charge_type" value="charge" <?php if( $result['charge_type'] == 'charge'){ echo 'checked="checked"'; } ?> > Charge (per hour in dollar)
+                        </label>
+                        <input type="text" class="form-control" name="mentor_charge" id="mentor_charge" value="<?php echo $mentor_charge; ?>" required min="1"  <?php if( $result['charge_type'] != 'charge'){ echo 'disabled'; } ?> >
+                        <span class="help-block"></span>
+                      </div>
+                    </div>
                   </div>
                 </div>
+
                 <div class="education-details">
                   <h4>What jobs did you hold between undergrad and B-school?</h4>
                   <div class="row">
@@ -1313,7 +1324,19 @@ if(!empty($_GET['account'])){
 </div>
 <script type="text/javascript">
 
+  $(document).ready(function(){    
+    $('input[name="charge_type"]').click(function(){
+          var radioValue = $("input[name='charge_type']:checked"). val();      
+          if(radioValue == 'free'){
+            $('#mentor_charge').attr('disabled',true);
+          }else{
+            $('#mentor_charge').attr('disabled',false);
+          }
 
+    });
+
+
+  });
 
  function edit_account()
  {
