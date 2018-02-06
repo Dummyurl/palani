@@ -54,6 +54,7 @@
                                 <option value="Rating">Rating</option>
                                 <option value="Popular">Popular</option>
                                 <option value="Latest">Latest</option>
+                                <option value="Free">Free</option>
                             </select>
                         </div>
                     </div>

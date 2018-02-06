@@ -224,8 +224,8 @@ public function save_signup()
     $this->session->set_userdata('first_name',$input_values['first_name']);
     $this->session->set_userdata('last_name',$input_values['last_name']);
 
-    $member_headers  = "From: School Guru".'<info@dreamguys.co.in>'."\r\n";
-    $member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
+    $member_headers  = "From: School Guru".'<info@school-guru.com>'."\r\n";
+    $member_headers .= "Reply-To: ".'info@school-guru.com'."\r\n";
     $member_headers .= "MIME-Version: 1.0\r\n";
     $member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
     $member_headers .= "X-Priority: 1\r\n"; 
@@ -267,8 +267,8 @@ public function save_signup_guru()
 		$this->session->set_userdata('role',$input_values['role']);
 		$this->session->set_userdata('first_name',$input_values['first_name']);
     $this->session->set_userdata('last_name',$input_values['last_name']);
-    $member_headers  = "From:".'info@dreamguys.co.in'."\r\n";
-    $member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
+    $member_headers  = "From:".'info@school-guru.com'."\r\n";
+    $member_headers .= "Reply-To: ".'info@school-guru.com'."\r\n";
     $member_headers .= "MIME-Version: 1.0\r\n";
     $member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
     $member_headers .= "X-Priority: 1\r\n"; 
@@ -3159,8 +3159,8 @@ public function send_invite_to_applicant()
          </td>
          </tr>
          </table>';                
-         $member_headers  = "From:".'info@dreamguys.co.in'."\r\n";
-         $member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
+         $member_headers  = "From:".'info@school-guru.com'."\r\n";
+         $member_headers .= "Reply-To: ".'info@school-guru.com'."\r\n";
          $member_headers .= "MIME-Version: 1.0\r\n";
          $member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
          $member_headers .= "X-Priority: 1\r\n"; 
@@ -3378,8 +3378,8 @@ if(count($conditions) > 0) {
   </td>
   </tr>
   </table>';                
-  $member_headers  = "From:".'info@dreamguys.co.in'."\r\n";
-  $member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
+  $member_headers  = "From:".'info@school-guru.com'."\r\n";
+  $member_headers .= "Reply-To: ".'info@school-guru.com'."\r\n";
   $member_headers .= "MIME-Version: 1.0\r\n";
   $member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
   $member_headers .= "X-Priority: 1\r\n"; 

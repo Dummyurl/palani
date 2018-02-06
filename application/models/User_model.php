@@ -417,8 +417,8 @@ LEFT JOIN country_list ON country_list.country_id = applicants_profile.country w
         </td>
     </tr>
 </table>';                
-                $member_headers  = "From:".'info@dreamguys.co.in'."\r\n";
-                $member_headers .= "Reply-To: ".'info@dreamguys.co.in'."\r\n";
+                $member_headers  = "From:".'info@school-guru.com'."\r\n";
+                $member_headers .= "Reply-To: ".'info@school-guru.com'."\r\n";
                 $member_headers .= "MIME-Version: 1.0\r\n";
                 $member_headers .= "Content-Type: text/html; charset=iso-8859-1\r\n";
                 $member_headers .= "X-Priority: 1\r\n"; 
