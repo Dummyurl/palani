@@ -948,9 +948,12 @@ else{
                 </div>
                 <div class="col-sm-6">
                   <div class="row">
-                    <div class="col-sm-6 col-md-4 spa_earned"><span>$<?php echo ($applicant->earned)?$applicant->earned:'0.00'; ?></span>Paid</div>
+                    <div class="col-sm-6 col-md-4 spa_earned"><span>$<?php 
+                    // echo '<pre>';
+                    // print_r($applicant);
+                    echo ($applicant->earned)?$applicant->earned:'0.00'; ?></span>Paid</div>
                     <div class="col-sm-6 col-md-4 spa_paid"><span>$0.00</span>Refunded</div>
-                    <!-- <div class="col-sm-4 spa_balance"><span>$2,800</span>Balance</div> -->
+                    <div class="col-sm-4 spa_balance"><span>$2,800</span>Balance</div>
                     <div class="col-md-12 spa_paynow"><a class="btn btn-primary">Refund Request</a></div>
                   </div>
                 </div>

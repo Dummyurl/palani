@@ -1782,7 +1782,11 @@ public function search_left()
       }
       if($_POST['order_by'] == 'Latest'){
         $query .=" ORDER BY app_id DESC ";
-      }       
+      }  
+
+      if($_POST['order_by'] == 'Free'){
+        $query .=" AND mentor_details.charge_type = 'free' ";
+      }        
     }
 
 

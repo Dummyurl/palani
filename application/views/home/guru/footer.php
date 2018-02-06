@@ -373,11 +373,14 @@
 	<script type="text/javascript">
 		$('#mentor_job_from_year').datetimepicker({        
 			maxDate: moment().subtract(0, 'y'),
-			format: "YYYY"      
+			format: "YYYY",
+			useCurrent: false      
 		});
 		$('#mentor_job_to_year').datetimepicker({
-			format: "YYYY"   
+			format: "YYYY",
+			useCurrent: false   
 		});
+
 		$("#mentor_job_from_year").on("dp.change", function (e) {      
 			$('#mentor_job_to_year').data("DateTimePicker").minDate(e.date);
 		});

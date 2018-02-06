@@ -103,7 +103,7 @@
 								<?php echo $gurus['mentor_job_location']; ?>						</h5>						<p><?php echo $gurus['mentor_job_desc']; ?></p>
 							</div>
 						</div>
-						<div class="row">
+					<!-- 	<div class="row">
 							<?php
 
 							 if($gurus['charge_type'] == 'charge'){ ?>
@@ -115,7 +115,7 @@
 
 							} ?>
 
-						</div>
+						</div> -->
 						<div class="row">
 							<div class="col-xs-12">
 								<h6>About yourself</h6>

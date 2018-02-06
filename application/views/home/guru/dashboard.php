@@ -617,22 +617,7 @@ else{
                         <div class="col-xs-6">
                           <div class="form-group">
                             <input type="text" name="mentor_job_to_year" class="form-control" id="mentor_job_to_year" value="<?php echo $result['mentor_job_to_year'] ?>" >
-                            <span class="help-block"></span>
-                          <!--   <select class="form-control" name="mentor_job_to_year" id="mentor_job_to_year">
-                              <option value="">Year</option>
-                              <?php
-                              $year = date("Y"); 
-                              for($i=0;$i<10;$i++)
-                              {
-                                $selected = '';
-                                if($mentor_job_to_year==($year-$i))
-                                {
-                                  $selected = 'selected';
-                                }
-                                echo "<option value='".($year-$i)."' ".$selected.">".($year-$i)."</option>";                                                                                
-                              }
-                              ?>
-                            </select> -->
+                            <span class="help-block"></span>                          
                           </div>
                         </div>
                       </div>

@@ -37,8 +37,8 @@
 			<div class="col-sm-7">
 				<div class="row">
 					<div class="col-sm-6 col-md-4 spa_earned"><span>$<?php echo ($guru->earned)?$guru->earned:'0.00'; ?></span>Earned</div>
-					<div class="col-sm-6 col-md-4 spa_paid"><span>$4,000</span>Paid</div>
-					<div class="col-sm-6 col-md-4 spa_balance"><span>$2,800</span>Balance</div>
+					<div class="col-sm-6 col-md-4 spa_paid"><span>$0.00</span>Paid</div>
+					<div class="col-sm-6 col-md-4 spa_balance"><span>$0.00</span>Balance</div>
 					<div class="col-md-12 spa_paynow"><a class="btn btn-primary">Pay Now</a></div>
 				</div>
 			</div>

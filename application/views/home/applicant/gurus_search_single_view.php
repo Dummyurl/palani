@@ -10,6 +10,7 @@
                     <?php if(!empty($_POST['order_by']) && $_POST['order_by'] == 'Rating'){ echo 'selected="selected"'; } ?> >Rating</option>
                     <option value="Popular" <?php if(!empty($_POST['order_by']) && $_POST['order_by'] == 'Popular'){ echo 'selected="selected"'; } ?> >Popular</option>
                     <option value="Latest" <?php if(!empty($_POST['order_by']) && $_POST['order_by'] == 'Latest'){ echo 'selected="selected"'; } ?> >Latest</option>
+                    <option value="Free" <?php if(!empty($_POST['order_by']) && $_POST['order_by'] == 'Free'){ echo 'selected="selected"'; } ?> >Free</option>
                 </select>
             </div>
         </div>
@@ -20,10 +21,10 @@
     </div>
 </div> 
 <div id="guru-list"> 
-    <?php if(!empty($gurus)): ?>
-        <?php 
+    <?php 
 
-        foreach($gurus as $guru_list):
+        if(!empty($gurus)): 
+            foreach($gurus as $guru_list):
             
             $profile_img = '';
             if(isset($guru_list['profile_img'])&&!empty($guru_list['profile_img'])){
