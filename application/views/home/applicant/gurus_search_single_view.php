@@ -2,7 +2,9 @@
 <div class="widget">
     <div class="widget-heading widget-default b-b-0 clearfix">
       
-        <h3 class="widget-title pull-left"><?php echo $count; ?> Matches for your search</h3>
+        <h3 class="widget-title pull-left"><?php 
+
+        echo $count; ?> Matches for your search</h3>
         <div class="sort-by pull-right">
             <div class="form-group">
                 <select class="select form-control ordering">

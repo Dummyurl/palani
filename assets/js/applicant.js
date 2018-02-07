@@ -550,12 +550,28 @@ $('#schedule_form').bootstrapValidator({
 
     $(document).on('click','.loadmore-a',function () {
       $(this).text('Loading...');
-      var ele = $(this).parent('div');
+     var ele = $(this).parent('div');
+     var order_by = $('.ordering').val();
+     var keyword = $('#right_top_search').val();
+
+
       $.ajax({
           url:  base_url +'user/loadmore_guru',
           type: 'POST',
           data: {
-              page:$(this).data('page'),mentor_gender:$('#mentor_gender_hidden').val(),mentor_school:$('#mentor_school_hidden').val(),mentor_schools_applied:$('#mentor_schools_applied_hidden').val(),mentor_current_year:$('#mentor_current_year_hidden').val(),mentor_extracurricular_activities:$('#mentor_extracurricular_activities_hidden').val(),mentor_job_company:$('#mentor_job_company_hidden').val(),mentor_job_title:$('#mentor_job_title_hidden').val(),mentor_job_from_year:$('#mentor_job_from_year_hidden').val(),mentor_about:$('#mentor_about_hidden').val(),mentor_languages_speak:$('#mentor_languages_speak_hidden').val()
+              page:$(this).data('page'),
+              mentor_gender:$('#mentor_gender_hidden').val(),
+              mentor_school:$('#mentor_school_hidden').val(),
+              mentor_schools_applied:$('#mentor_schools_applied_hidden').val(),
+              mentor_current_year:$('#mentor_current_year_hidden').val(),
+              mentor_extracurricular_activities:$('#mentor_extracurricular_activities_hidden').val(),
+              mentor_job_company:$('#mentor_job_company_hidden').val(),
+              mentor_job_title:$('#mentor_job_title_hidden').val(),
+              mentor_job_from_year:$('#mentor_job_from_year_hidden').val(),
+              mentor_about:$('#mentor_about_hidden').val(),
+              mentor_languages_speak:$('#mentor_languages_speak_hidden').val(),
+              order_by:order_by,
+              keyword:keyword
           },
           beforeSend:function(){
             $('.overlay').css("display","block");
@@ -580,7 +596,12 @@ $('#schedule_form').bootstrapValidator({
                               url:  base_url +'user/loadmore_search_guru_home',
                               type: 'POST',
                               data: {
-                                  keyword:$('#old_keyword').val(),page:$(this).data('page'),gender:$('#gender').val(),admitted_school:$('#admitted_school').val(),school_offer:$('#school_offer').val(),school_year:$('#school_year').val()
+                                  keyword:$('#old_keyword').val(),
+                                  page:$(this).data('page'),
+                                  gender:$('#gender').val(),
+                                  admitted_school:$('#admitted_school').val(),
+                                  school_offer:$('#school_offer').val(),
+                                  school_year:$('#school_year').val()
                               },
                               beforeSend:function(){
                                 $('.overlay').css("display","block");
@@ -1373,7 +1394,7 @@ $(document).on('click','#second_verify',function(){
                   html:'<p>Appoinment request sent successfully! <br>Now you can chat with our guru.</p><p><a href="'+base_url+'messages" class="btn btn-primary">Go to Messages</a></p>',
               });
                 setTimeout(function() {
-                        window.location.href="<?php echo base_url();?>messages";
+                        window.location.href=base_url+"messages";
                     }, 3000);
 
 

@@ -1752,7 +1752,7 @@ public function search_left()
 		$mentor['mentor_personal_message'] = $this->input->post('keyword');
 	}
 
-	$data['count'] = $this->applicant_modal->search_guru_left_home($mentor);
+	// $data['count'] = $this->applicant_modal->search_guru_left_home($mentor);
 
 	$fields = array('mentor_personal_message','mentor_gender', 'mentor_school', 'mentor_schools_applied', 'mentor_current_year');
 	$conditions = array();
@@ -1794,6 +1794,7 @@ public function search_left()
 
        // echo $query; exit;
     $data['gurus'] = $this->db->query($query)->result_array();
+    $data['count'] = $this->db->query($query)->num_rows();
 
     if(!empty($data['gurus'])){
     	echo $this->load->view('home/applicant/gurus_search_single_view',$data,TRUE);
@@ -1871,6 +1872,26 @@ public function loadmore_guru()
 			$operator = (count($conditions) > 1) ? ' AND ' : ' OR ';
               $query .= " AND  " . implode ($operator, $conditions); // you can change to 'OR', but I suggest to apply the filters cumulative
             }
+
+
+             if(!empty($_POST['order_by'])){
+
+       if($_POST['order_by'] == 'Rating'){
+        $query .=" ORDER BY rating_value DESC ";
+      }
+      if($_POST['order_by'] == 'Popular'){
+        $query .=" ORDER BY rating_count DESC ";
+      }
+      if($_POST['order_by'] == 'Latest'){
+        $query .=" ORDER BY app_id DESC ";
+      }  
+
+      if($_POST['order_by'] == 'Free'){
+        $query .=" AND mentor_details.charge_type = 'free' ";
+      }        
+    }
+
+
 
             if($paged > 0){
              $page_limit= $resultsPerPage * ($paged-1);
