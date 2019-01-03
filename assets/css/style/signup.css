@@ -1,0 +1,25 @@
+.becbox{ width:521px; margin:40px 25px 0; display:inline-block; background:#fff; box-shadow:0 0 20px rgba(0,0,0,0.1); position:relative; transition:all 300ms linear;}
+.becbox.mt{ margin-top:10px;}
+.becbox:hover{ box-shadow:0 0 50px rgba(0,0,0,0.3);}
+.becbox .bbimg{ overflow:hidden;}
+.becbox .bbimg img{ transition:all 300ms linear;}
+.becbox:hover .bbimg img{ transform:scale(1.1,1.1);}
+.becbox a .bbtitle{ padding:25px 0; font-size:24px; color:#5b5b5b;}
+.becbox a .bbtitle span{ font-size:36px; color:#78bd34; position:relative; top:4px;}
+.becbox .bbarrow{ width:100px; height:100px; background:#78bd34; box-shadow:0 0 20px rgba(0,0,0,0.2); position:absolute; border-radius:50%; bottom:50px; right:30px;}
+.becbox a:hover{ text-decoration:none;}
+.alert-danger:empty{display: none;}
+
+@media only screen and (max-width:767px){
+	.becbox{width: 100%;margin:0;}
+	.becbox.mt {
+	    margin-top: 10px;
+	    width: 100%;
+	    margin: 0 0 15px 0;
+	}
+}
+@media only screen and (max-width:480px){
+	.becbox{width: 100%;margin:0;}
+	.becbox.mt{margin-bottom: 15px;}
+	.becbox .bbarrow{width:50px;height:50px;bottom: 10px;}
+}

@@ -33,3 +33,9 @@
         </div>
 </div>
 </section>
+
+<style type="text/css">
+    .fc-time{
+        display: none;
+    }
+</style>

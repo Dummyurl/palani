@@ -1,0 +1,41 @@
+.media-list-linked{
+	background: #fff;
+    padding: 20px;
+    box-shadow: 1px 1px 12px 0px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+.spa_gurulist h4, .spa_applist h4{
+	margin-bottom: 20px;
+}
+.mainnav ul li {display: inline-block;margin-left: 10px;}
+.mainnav ul li a{  display:block; padding:0px;font-size: 17px; }
+.mainnav ul li a:hover{ color:#78bd34; text-decoration:none;}
+#calendar{
+	background: #fff;
+    padding: 20px;
+    box-shadow: 1px 1px 12px 0px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+.superadmin-settings{
+    background: #fff;
+    padding: 15px;
+    box-shadow: 1px 1px 12px 0px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+.superadmin-settings h4{
+	font-weight: 600;
+    margin-bottom: 25px;
+}
+@media only screen and (max-width:479px){
+	.titlerow h2{
+		margin-bottom: 20px;
+	}
+	.spa_users_list{
+		margin-bottom: 10px;
+	}
+}
+@media only screen and (max-width:767px){
+	.dataTables_length{
+		padding-top: 10px;
+	}
+}

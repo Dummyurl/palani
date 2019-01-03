@@ -2,7 +2,7 @@
     <?php foreach($gurus as $guru_list): ?>
         <a href="<?php echo base_url(); ?>user/gurus_detail/<?php echo $guru_list['app_id']; ?>" class="guru-list">
                 <div class="row">
-                        <div class="col-sm-3 col-xs-4">
+                        <div class="col-lg-2 col-md-3 col-xs-4">
                              <?php $city = ($guru_list['city'] != '') ? $guru_list['city'] : ""; ?>
                              <?php $countryname = ($guru_list['country_name'] != '' && $guru_list['city'] != '') ? ', '.$guru_list['country_name'] : $guru_list['country_name']; ?>
                                 <div class="guru-details text-center">
@@ -11,7 +11,7 @@
                                         <div class="guru-country"><?php echo $city.$countryname; ?></div>
                                 </div>
                         </div>
-                        <div class="col-sm-9 col-xs-8">
+                        <div class="col-lg-10 col-md-9 col-xs-8">
                                 <h4 class="guru-title"><?php echo $guru_list['applicant_school_apply']; ?></h4>
                                 <div class="ratings">
                                         <i class="fa fa-star"></i>

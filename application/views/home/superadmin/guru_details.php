@@ -13,59 +13,74 @@
 				}
 				$mentor_img = ($mentor_img != '') ? $mentor_img : base_url() . 'assets/images/default-avatar.png';
 		  }else if($guru->mentor_picture!=''){ // Getting profile image from social table for mentor 
-			$mentor_img = $guru->mentor_picture;
-		}else{
-			$mentor_img = base_url() . 'assets/images/default-avatar.png';
-		}  
+		  	$mentor_img = $guru->mentor_picture;
+		  }else{
+		  	$mentor_img = base_url() . 'assets/images/default-avatar.png';
+		  }  
 		  if($guru->delete_sts == 0){ // Active 
-			$status = '<span class="label label-success">Active</span>'; 
+		  	$status = '<span class="label label-success">Active</span>'; 
 		  } else if($guru->delete_sts == 1){ // Inactive 
-			$status= '<span class="label label-danger">Inactive</span>';
-		}
-		?>
-		<div class="row titlerow">
-			<div class="col-sm-5">
-				<div class="row">
-					<div class="col-md-6"><img src="<?php echo $mentor_img; ?>" class="img-responsive img-circle"></div>
-					<div class="col-md-6">
-						<p><span class="spa_greytext">Member Since:</span><br><?php  echo date('d-m-Y',strtotime($guru->created_date)); ?></p>
-						<p><span class="spa_greytext">Total Calls:</span><br><?php echo ($guru->calls)?$guru->calls:0; ?></p>
-						<p><span class="spa_greytext">Account Status:</span><br><?php echo $status; ?></p>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-7">
-				<div class="row">
-					<div class="col-sm-6 col-md-4 spa_earned"><span>$<?php echo ($guru->earned)?$guru->earned:'0.00'; ?></span>Earned</div>
-					<div class="col-sm-6 col-md-4 spa_paid"><span>$0.00</span>Paid</div>
-					<div class="col-sm-6 col-md-4 spa_balance"><span>$0.00</span>Balance</div>
-					<div class="col-md-12 spa_paynow"><a class="btn btn-primary">Pay Now</a></div>
-				</div>
-			</div>
-		</div>		<input type="hidden" name="user_id" id="user_id" value="<?php echo base64_decode($this->uri->segment(3)); ?>">
-		<div class="spa_conversations">			 <div class="table-responsive">
-				<table id="datatable" class="table table-striped" >
-					<thead>
-						<tr>
-							<th>Applicant Name</th>
-							<th>Date</th>
-							<th>Time</th>
-							<th>Duration</th>
-							<th>Amount</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><a href="#"><img src="<?php echo base_url(); ?>assets/images/profilepic1.png"> Sophia Amalia</a></td>
-							<td><span class="spa_greytext">13/06/2017</span></td>
-							<td>12:00 AM</td>
-							<td>2 hours</td>
-							<td><strong>$24.00</strong></td>
-							<td><span class="label label-success">Completed</span></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>		</div>
-	</div>
-</section>
+		  	$status= '<span class="label label-danger">Inactive</span>';
+		  }
+		  ?>
+
+
+		  <div class="row titlerow">
+		  	<div class="col-sm-5">
+		  		<div class="row">
+		  			<div class="col-md-6"><img src="<?php echo $mentor_img; ?>" class="img-responsive img-circle"></div>
+		  			<div class="col-md-6">					
+		  				<p><span class="spa_greytext">Total Calls:</span><br><?php echo ($guru->calls)?$guru->calls:0; ?></p>
+		  				<p><span class="spa_greytext">Account Status:</span><br><?php echo $status; ?></p>
+		  			</div>
+		  		</div>
+		  	</div>
+
+		  	<?php
+
+		  	$total_earned = (!empty($earned['earned_amount'])?$earned['earned_amount']:'0.00');
+		  	if($total_earned == '0.00'){
+		  		$class_name = 'btn btn-default';
+		  	}else{
+		  		$class_name = 'btn btn-primary request_btn';
+		  	}  
+		  	
+		  	$requested_amt = (!empty($requested['request_amount'])?$requested['request_amount']:'0.00');
+		  	if($requested_amt > 0){
+		  		$total_earned = $total_earned - $requested_amt;
+		  	}             
+
+		  	$paid_amt = $paid['paid_amount'];
+		  	$paid_amt = (!empty($paid['paid_amount'])?$paid['paid_amount']:'0.00');               
+		  	$balance_amt = $total_earned - $paid_amt;
+
+
+
+		  	?>
+		  	<div class="col-sm-7">
+		  		<div class="row">
+		  			<div class="col-sm-6 col-md-4 spa_earned"><span>$<?php echo $paid_amt; ?></span>Earned</div>
+		  			<div class="col-sm-6 col-md-4 spa_paid"><span>$<?php echo $requested_amt; ?></span>Requested</div>
+		  			<div class="col-sm-6 col-md-4 spa_balance"><span>$<?php echo $balance_amt.'.00'; ?></span>Balance</div>                  
+		  		</div>
+		  	</div>
+		  </div>	
+
+
+		  <input type="hidden" name="user_id" id="user_id" value="<?php echo base64_decode($this->uri->segment(3)); ?>">
+		  <div class="spa_conversations">			 <div class="table-responsive">
+		  	<table id="datatable" class="table table-striped" >
+		  		<thead>
+		  			<tr>
+		  				<th>Mentee Name</th>
+		  				<th>Date</th>
+		  				<th>Time</th>							
+		  				<th>Amount</th>
+		  				<th>Status</th>
+		  			</tr>
+		  		</thead>
+		  		
+		  	</table>
+		  </div>		</div>
+		</div>
+	</section>

@@ -50,7 +50,7 @@
         <div class="col-sm-3 col-xs-4 leftsidebar">
                 <div class="theiaStickySidebar">
                     
-                    <form action="<?php echo base_url(); ?>search-guru" method="post" class="form-inline" id="home_search">
+                    <form action="<?php echo base_url(); ?>search-mentor" method="post" class="form-inline" id="home_search">
                         <input class="form-control" value="<?php echo set_value('keyword',$this->input->post('keyword')); ?>" id="old_keyword" name="keyword" type="text"> 
                         <input style="height: 40px;width:80px;" type="submit" class="btn btn-primary" value="GO" onclick="return checkinner_validation();">
                         <div class="error_old"></div>						

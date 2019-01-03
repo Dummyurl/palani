@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database', 'email', 'session');
+$autoload['libraries'] = array('database', 'email', 'session','pagination','form_validation','user_agent','my_upload');
 
 /*
 | -------------------------------------------------------------------
@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url', 'file','common_helper');
+$autoload['helper'] = array('url', 'file','common_helper','custom_helper','text','security','date');
 
 /*
 | -------------------------------------------------------------------
@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'file','common_helper');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array('tok_box','stripe','facebook','google');
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,23 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array();
+$autoload['model'] = array(
+'blog/auth_model',
+'blog/settings_model',
+'blog/page_model',
+'blog/post_model',
+'blog/ad_model',
+'blog/category_model',
+'blog/tag_model',
+'blog/post_image_model',
+'blog/comment_model',
+'blog/gallery_category_model',
+'blog/gallery_image_model',
+'blog/reading_list_model',
+'blog/contact_model',
+'blog/newsletter_model',
+'blog/upload_model',
+'blog/font_options_model',
+'blog/seo_model',
+'blog/navigation_model'
+);

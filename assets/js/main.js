@@ -159,6 +159,7 @@
     },
 
     submit: function () {
+
       if (!this.$avatarSrc.val() && !this.$avatarInput.val()) {
         alert('Please choose file');
         return false;

@@ -14,7 +14,17 @@ class VoiceResponse extends TwiML {
      * VoiceResponse constructor.
      */
     public function __construct() {
-        parent::__construct('Response');
+        parent::__construct('Response', null);
+    }
+
+    /**
+     * Add Connect child.
+     * 
+     * @param array $attributes Optional attributes
+     * @return TwiML Child element.
+     */
+    public function connect($attributes = array()) {
+        return $this->nest(new Voice\Connect($attributes));
     }
 
     /**

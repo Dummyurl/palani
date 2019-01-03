@@ -1,6 +1,8 @@
 <?php
 
-
+if(empty($this->session->userdata('applicant_id')) && $this->uri->segment(1) == 'mentor-profile'){
+	$this->load->view('common_header'); 
+}
  // Super Admin 
 if($this->session->userdata('type')=='superadmin'){
 
@@ -19,6 +21,9 @@ $this->load->view('home/'.$theme.'/'.$module);
 if($this->session->userdata('applicant_id') != '' && $this->session->userdata('type') != ''){ 
 	$this->load->view('home/guru/footer'); 
 }
+
+
+
 
 
 ?>

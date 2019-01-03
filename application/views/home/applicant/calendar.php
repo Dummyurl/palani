@@ -1,8 +1,9 @@
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/calendar.css">
 <?php if($this->session->userdata('role') == 0): ?>
-
+<div class="calendar-main">
 <div class="subnav">
 <ul class="nav nav-tabs">
-     <li><a href="<?php echo base_url();?>list-view">List View</a></li>
+     <!-- <li><a href="<?php echo base_url();?>list-view">List View</a></li> -->
     <li class="active"><a href="<?php echo base_url();?>calendar">Calendar View</a></li>
 </ul>
 </div>            
@@ -30,6 +31,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <?php else: ?>
 

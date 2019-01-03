@@ -4,20 +4,21 @@
 	<meta charset="utf-8" />
 	<meta name="description" content="" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Login - SchoolGuru</title>
+	<title>Login - Mentori</title>
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url()."assets/" ?>images/favicon.png">	
 	<link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrap.min.css" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/font-awesome.min.css" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/responsive.css" type="text/css">
-	<link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrapValidator.css" type="text/css">
-	<script src="<?php echo base_url()."assets/" ?>js/sinch.min.js"></script>
+	<link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrapValidator.css" type="text/css">	
 </head>
 
 <body class="account-page">
 	<section class="mainarea account-box-area">
 		<div class="container">
-			<div class="account-box">
+			<div class="row">
+			<div class="col-md-12 ">
+				<div class="account-box">
 				<div class="preloader" style="display:none;"></div>
 				<a href="<?php echo base_url(); ?>">
 					<div class="login-logo">
@@ -55,16 +56,18 @@
 				</div>
 			</div>
 		</div>
-		
+	   </div>	
 	</section>
 	<script> var base_url = "<?php echo base_url(); ?>" </script>
 	<script src="<?php echo base_url()."assets/" ?>js/jquery-3.2.1.min.js" type="text/javascript"></script>
 	<script src="<?php echo base_url()."assets/" ?>js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="<?php echo base_url()."assets/" ?>js/sinch.min.js"></script>
+	
 	<script src="<?php echo base_url()."assets/" ?>js/chosen.js"></script>
 	<script src="<?php echo base_url()."assets/" ?>js/bootstrapValidator.js" type="text/javascript"></script>
 
-	<script src="<?php echo base_url()."assets/" ?>js/applicant.js" type="text/javascript"></script>
+	<!-- <script src="<?php echo base_url()."assets/" ?>js/sinch.min.js"></script>
+	<script src="<?php echo base_url()."assets/" ?>js/VIDEOSample.min.js"></script>
+	<script src="<?php echo base_url()."assets/" ?>js/applicant.js" type="text/javascript"></script> -->
 
 
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jstz-1.0.4.min.js"></script>   
@@ -75,9 +78,66 @@
 			var tz = jstz.determine();
 			var timezone = tz.name();
 			$.post('<?php echo base_url(); ?>user/set_timezone',{timezone:timezone},function(res){
-        // console.log(res);
-    })      
+			// console.log(res);
+		})      
 		});
-	</script>
-</body>
-</html>
+		localStorage.clear();
+
+
+		$('#applicant_login_form').bootstrapValidator({
+			fields: {                
+				email: {
+					validators: { 
+						notEmpty: {
+							message: 'The Email is required'
+						},  
+						regexp: {
+							regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+							message: 'Enter valid email address'
+						} 
+					}
+				},
+				password: {
+					validators: {
+						notEmpty: {
+							message: 'The Password is required'
+						}  
+					}
+				}              
+			}
+		}) .on('success.form.bv', function(e) {
+                                        // Prevent form submission                                        
+                                        e.preventDefault();
+                                        $('.preloader').css('display','block');
+                                        $('.preloader').html('<div class="loaderbar"></div>');
+                                        var url = base_url+"user/check_applicant";
+                                        var formData = $('#applicant_login_form').serialize(); 
+                                        $.ajax({
+                                        	type:'POST',
+                                        	url:url,
+                                        	data:formData,
+                                        	success:function(response)
+                                        	{                                                 
+                                        		if(response==0)
+                                        		{   
+                                        			setInterval(function(){
+                                        				window.location = base_url+"dashboard";
+                                        			},2000);
+                                        		}
+                                        		else
+                                        		{
+                                        			$('.preloader').html('');
+                                        			$('.preloader').css('display','none');
+                                        			$('#applicant_login_error').html(" Wrong Credentials !");                                                    
+                                        		}
+
+                                        	}
+                                        });
+
+                                    });
+
+
+
+                                </script>
+                            </body>
+                            </html>

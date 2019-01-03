@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<meta name="description" content="" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Signup - SchoolGuru</title>
+	<title>Signup - Mentori</title>
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url()."assets/" ?>images/favicon.png">
 	<link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrap.min.css" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/font-awesome.min.css" type="text/css">
@@ -16,7 +16,9 @@
 <style type="text/css">
 #errors:empty{ display: none; }
 #errors>pre:empty{ display: none; }
-
+.account-page{
+	background:url('<?php echo base_url(); ?>assets/images/mentor_bg.jpg') !important;
+}
 
 </style>
 <body class="account-page">
@@ -29,87 +31,205 @@
 				</div>
 			</a>
 			<h3 class="account-title">Signup</h3>
-			<span id="form-registeration-success" class="success" style="display: none;color:green;"></span>					
-			<span id="form-registeration-error" class="error" style="display: none;color:green;"></span> 
+			<span id="form-registeration-success" class="success" style="display: none;color:green;"></span>
+			<span id="form-registeration-error" class="error" style="display: none;color:green;"></span>
 			<form id="applicant_signup_form" method="post" autocomplete="off">
 				<input type="hidden" name="role" value="1" id="role"/>
 				<input type="hidden" name="type" value="guru" id="type"/>
 				<div class="row row-sm">
-					<div class="col-md-6">								
+					<div class="col-md-6">
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="First name" name="first_name" id="first_name" required>
-						</div>							
+							<input type="text" class="form-control text" placeholder="First name" name="first_name" id="first_name" required onkeypress="return AvoidSpace(event)" maxlength="25">
+						</div>
 					</div>
-					<div class="col-md-6">								
+					<div class="col-md-6">
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Last name" name="last_name" id="last_name" required>
-						</div>							
+							<input type="text" class="form-control text" placeholder="Last name" name="last_name" id="last_name" required onkeypress="return AvoidSpace(event)" maxlength="25">
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
 					<input type="text" class="form-control" name="email" id="email" placeholder="Email Address" required  />
 				</div>
 				<div class="form-group">
-					<input type="password" class="form-control" name="password" id="password" placeholder="Password" required />
+					<input type="password" class="form-control" name="password" id="password" placeholder="Password" required onkeypress="return AvoidSpace(event)" />
 				</div>
 				<div id="errors"></div>
 				<div class="form-group">
-					<input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required />
+					<input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required onkeypress="return AvoidSpace(event)" />
 				</div>
 				<input type="hidden" id="signup_type" name="signup_type" value="guru" />
 				<button class="btn btn-primary btn-block account-btn" type="submit">Signup</button>
 			</form>
+			<div class="text-right">
+				<a href="javascript:void(0)" class="forgot-link" onclick="history.back();">Go Back</a>
+			</div>
 			<div class="text-right"><a class="forgot-link" href="<?php echo base_url()."login"; ?>">Already have an account?</a></div>
 			<div class="login-or">
 				<hr class="hr-or">
 				<span class="span-or">or</span>
 			</div>
 			<div class="row">
-				<div class="col-md-6">							
+				<div class="col-md-6">
 					<div class="form-group">
 						<a href="<?php echo $facebook_url; ?>" class="btn btn-facebook btn-block" onclick="return check_email();"><i class="fa fa-facebook" aria-hidden="true"></i> Signup with Facebook</a>
 					</div>						</div>
-					<div class="col-md-6">							<div class="form-group">
-						<a href="<?php echo $google_url; ?>" class="btn btn-google btn-block" onclick="return check_email();"><i class="fa fa-google" aria-hidden="true"></i> Signup with Google</a>
+					<div class="col-md-6">
+						<div class="form-group">
+							<a href="<?php echo $google_url; ?>" class="btn btn-google btn-block">
+								<i class="fa fa-google" aria-hidden="true"></i> Signup with Google</a>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>				
-		</div>
-	</div>		
-</section>
-<script> var base_url = "<?php echo base_url(); ?>" </script>
-<script src="<?php echo base_url()."assets/" ?>js/jquery-3.2.1.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url()."assets/" ?>js/jquery.password-validation.js" type="text/javascript"></script>
-<script src="<?php echo base_url()."assets/" ?>js/bootstrap.min.js" type="text/javascript"></script>
-<script>
-	$(document).ready(function() {
+			</div>
+		</section>
+
+		<script> var base_url = "<?php echo base_url(); ?>" </script>
+		<script src="<?php echo base_url()."assets/" ?>js/jquery-3.2.1.min.js" type="text/javascript"></script>
+		<script src="<?php echo base_url()."assets/" ?>js/jquery.password-validation.js" type="text/javascript"></script>
+		<script src="<?php echo base_url()."assets/" ?>js/bootstrap.min.js" type="text/javascript"></script>
+		<script>
+			$(document).ready(function() {
+
+				$('.text').keypress(function (e) {        
+					var regex = new RegExp("^[\\w\\-\\/ \\b\\t]+$");
+					var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+					if (regex.test(str)) {
+						return true;
+					}
+					else {
+						e.preventDefault();
+						return false;
+					}
+				});
 
 
-		$("#password").passwordValidation({"confirmField": "#confirm_password"}, function(element, valid, match, failedCases) {
 
-			$("#errors").html("<pre>" + failedCases.join("\n") + "</pre>");
-			if(valid){							 
-				$('.account-btn').attr('disabled','false');
+
+				$("#password").passwordValidation({"confirmField": "#confirm_password"}, function(element, valid, match, failedCases) {
+
+					$("#errors").html("<pre>" + failedCases.join("\n") + "</pre>");
+					if(valid){
+						$('.account-btn').attr('disabled','false');
+					}
+					if(!valid){
+						$('.account-btn').attr('disabled','true');
+				//$('.account-btn').removeAttr('disabled');
 			}
-			if(!valid){							
-				$('.account-btn').removeAttr('disabled');
-			}
 
-			if(!valid || !match){							
+			if(!valid || !match){
 				$('.account-btn').attr('disabled','true');
 			}
-			if(valid && match){							
+			if(valid && match){
 				$('.account-btn').removeAttr('disabled');
 			}
 		});
-	});
-</script>
+			});
+		</script>
 
 
-<script src="<?php echo base_url()."assets/" ?>js/sinch/videoSample.js" type="text/javascript"></script>
-<script src="<?php echo base_url()."assets/" ?>js/bootstrapValidator.js" type="text/javascript"></script>
-<script src="<?php echo base_url()."assets/" ?>js/guru.js" type="text/javascript"></script>
+		<script src="<?php echo base_url()."assets/" ?>js/sinch/VIDEOsample.js" type="text/javascript"></script>
+		<script src="<?php echo base_url()."assets/" ?>js/bootstrapValidator.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var check_email_path = base_url+"user/check_email";
+			$('#applicant_signup_form').bootstrapValidator({
+				fields: {
+
+					first_name: {                 
+						validators: {
+							notEmpty: {
+								message: 'Enter first name'
+							},
+							regexp: {
+								regexp: /^[a-z\s]+$/i,
+								message: 'The first name can consist of alphabetical characters and spaces only'
+							}
+						}
+					},
+					last_name: {                
+						validators: {
+							notEmpty: {
+								message: 'Enter Last Name '
+							},
+							regexp: {
+								regexp: /^[a-z\s]+$/i,
+								message: 'The first name can consist of alphabetical characters and spaces only'
+							}
+						}
+					}, 
+					email: {
+						validators: {
+							notEmpty: {
+								message: 'Enter valid email address'
+							},
+							regexp: {
+								regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+								message: 'Enter valid email address'
+							},
+							remote: {
+								message: 'Email already registered',
+								url: check_email_path
+							}
+						}
+					},
+					password: {
+						validators: {
+							notEmpty: {
+								message: 'Enter valid password'
+							}           
+						}
+					},
+					confirm_password: {
+						validators: {
+							notEmpty: {
+								message: 'The Confirm Password is required'
+							},
+							identical: {
+								field: 'password',
+								message: 'The Password and its confirm are not the same'
+							}
+						}
+					}
+				}
+			}) .on('success.form.bv', function(e) {
+                                        // Prevent form submission
+                                        e.preventDefault();
+                                        $('.preloader').css('display','block');
+                                        $('.preloader').html('<div class="loaderbar"></div>');
+                                        var url = base_url + "user/save_signup_guru";
+                                        var formData = $('#applicant_signup_form').serialize();
+                                        $.ajax({
+                                        	type:'POST',
+                                        	url:url,
+                                        	data:formData,
+                                        	success:function(response)
+                                        	{
+                                        		if(response==0)
+                                        		{
+                                        			setInterval(function(){
+                                        				window.location = base_url+'welcome/profile_settings';
+                                                   // window.location = base_url+'welcome/mobile_verify';
+                                               },2000);
+
+                                        		}
+                                        		else
+                                        		{
+                                        			$('.preloader').html('');
+                                        			$('.preloader').css('display','none');
+                                        			$('#form-registeration-error').html("Error While Registering !");
+                                        			$('#form-registeration-error').css('display','block');
+                                        			$('#form-registeration-error').css('color','red');
+                                        		}
+                                        	}
+                                        });
 
 
-</body>
-</html>
+                                    });
+
+                                </script>
+                                <!-- <script src="<?php echo base_url()."assets/" ?>js/guru.js" type="text/javascript"></script> -->
+
+
+                            </body>
+                            </html>

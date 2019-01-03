@@ -1,8 +1,28 @@
  
 <?php 
 
-function get_booked_class($availabe_days,$start_time,$end_time,$day_value,$to_timezone)
+
+// echo '<pre>'; 
+// print_r($result);
+// exit;
+
+
+
+
+//error_reporting(1);
+
+ function converToTz($time="",$toTz='',$fromTz='')
+  {           
+    $date = new DateTime($time, new DateTimeZone($fromTz));
+    $date->setTimezone(new DateTimeZone($toTz));
+    $time= $date->format('Y-m-d H:i:s');
+    return $time;
+  }
+
+  
+function get_booked_class($availabe_days,$start_time,$end_time,$day_value,$to_timezone,$date)
 {
+
      $class = 'ttiming';
     if(!empty($availabe_days)){
        foreach ($availabe_days as $key => $value) {
@@ -11,14 +31,21 @@ function get_booked_class($availabe_days,$start_time,$end_time,$day_value,$to_ti
 
        $to_time = $value['invite_date'].' '.$value['invite_end_time'];
        $from_date_time  = converToTz($from_time,$to_timezone,$from_timezone);
-       $to_date_time = converToTz($to_time,$to_timezone,$from_timezone);        
-       if( date('H:i:s',strtotime($from_time)) == date('H:i:s',strtotime($start_time)) && date('H:i:s',strtotime($to_time))== date('H:i:s',strtotime($end_time)) && date('Y-m-d', strtotime($from_time)) ==date('Y-m-d', strtotime("+$day_value day"))){
+       $to_date_time = converToTz($to_time,$to_timezone,$from_timezone);     
+
+
+
+     
+       if( date('H:i:s',strtotime($from_time)) == date('H:i:s',strtotime($start_time)) && date('H:i:s',strtotime($to_time))== date('H:i:s',strtotime($end_time)) && date('Y-m-d', strtotime($from_time)) ==date('Y-m-d', strtotime($date))){
             $class = 'ttiming notavailable';
            }
        }
     }
     return $class;
 }
+
+
+// echo $selected_date;
 
 $time_zone = $this->session->userdata('time_zone');
 date_default_timezone_set($time_zone);
@@ -30,6 +57,9 @@ if($date >= $selected_date){
 }
 
 ?>
+
+
+
 <input type="hidden" name="pre_date" id="pre_date" class="form-control" value="<?php echo date('Y-m-d', strtotime($selected_date."-7 day")); ?>">
 <input type="hidden" name="next_date" id="next_date" class="form-control" value="<?php echo date('Y-m-d', strtotime($selected_date."+7 day")); ?>">
 <div class="tmgsleft <?php echo $class; ?>"  onclick="getSchedule(1)">
@@ -54,38 +84,32 @@ if($date >= $selected_date){
   <tbody>
     <tr>
       <td> 
-        <?php foreach ($result as $key => $value) { ?>
         <?php 
+        foreach ($result as $key => $value) { 
+          // $date =  date('Y-m-d');   
+          $date = $selected_date;
+         if($value['day_name'] == date('l', strtotime($selected_date."+0 day"))) {
+              $explode_1 = explode(',',$value['available']);
+                if(is_array($explode_1)){
+                    foreach ($explode_1 as $index1 => $indexvalue1) {
+                  $explode_single1 = explode('-', $indexvalue1);
+                  $rep_start1 = str_replace('["',"", $explode_single1[0]);
+                  $rep_end1 = str_replace('"]',"", $explode_single1[1]);
+                  $rep_start1 = str_replace('"',"", $rep_start1);
+                  $rep_end1 = str_replace('"',"", $rep_end1);
 
-                               // echo $value['day_name'].'<br>';
-                             //   echo date('l', strtotime($selected_date."+0 day")).'<br>';
 
-        $date =  date('Y-m-d');
+               //   echo  date('Y-m-d H:i:s',strtotime($date.' '.$rep_start1)).'<br>';
+            
+            // = delted here to hide current time in this condition 
+            if(date('Y-m-d H') <= date('Y-m-d H',strtotime($date.' '.$rep_start1))){  
 
+              $my_date = date('Y-m-d', strtotime($selected_date."+0 day"));
 
-        ?>
-        <?php if($value['day_name'] == date('l', strtotime($selected_date."+0 day"))) {
-
-         $explode_1 = explode(',',$value['available']);
-         if(is_array($explode_1)){
-           foreach ($explode_1 as $index1 => $indexvalue1) {
-            $explode_single1 = explode('-', $indexvalue1);
-            $rep_start1 = str_replace('["',"", $explode_single1[0]);
-            $rep_end1 = str_replace('"]',"", $explode_single1[1]);
-            $rep_start1 = str_replace('"',"", $rep_start1);
-            $rep_end1 = str_replace('"',"", $rep_end1);
-
-            ?>
-
-            <?php 
-                                // = delted here to hide current time in this condition 
-
+             $class =  get_booked_class($available_data,$rep_start1,$rep_end1,0,$time_zone,$my_date); ?>
 
 
 
-            if(date('Y-m-d H') <= date('Y-m-d H',strtotime($date.' '.$rep_start1))){ ?> 
-
-            <?php $class =  get_booked_class($available_data,$rep_start1,$rep_end1,0); ?>
             <div class="<?php echo $class; ?>">
               <?php if($class == 'ttiming'){ ?>
               <a href="javascript:void(0)" class="selectday" data-date="<?php echo date('Y-m-d', strtotime($selected_date."+0 day")); ?>" data-day="<?php echo $value['day_name']; ?>" data-timezone="<?php echo $value['time_zone'] ?>" data-day-id="<?php echo $value['days_id']; ?>"  data-start-time="<?php echo $rep_start1; ?>" data-end-time="<?php echo $rep_end1; ?>"><?php echo date('h:i a',strtotime($rep_start1)); ?> - <?php echo date('h:i a',strtotime($rep_end1)); ?></a>
@@ -120,7 +144,9 @@ if($date >= $selected_date){
 
             ?>
 
-            <?php $class =  get_booked_class($available_data,$rep_start2,$rep_end2,1); ?>
+            <?php 
+            $my_date = date('Y-m-d', strtotime($selected_date."+1 day"));
+            $class =  get_booked_class($available_data,$rep_start2,$rep_end2,1,$time_zone,$my_date); ?>
             <div class="<?php echo $class; ?>">
               <?php if($class == 'ttiming'){ ?>
               <a href="javascript:void(0)" class="selectday" data-date="<?php echo date('Y-m-d', strtotime($selected_date."+1 day")); ?>" data-day="<?php echo $value['day_name']; ?>"  data-timezone="<?php echo $value['time_zone'] ?>" data-day-id="<?php echo $value['days_id']; ?>"  data-start-time="<?php echo $rep_start2; ?>" data-end-time="<?php echo $rep_end2; ?>"><?php echo date('h:i a',strtotime($rep_start2)); ?> - <?php echo date('h:i a',strtotime($rep_end2)); ?></a>
@@ -151,7 +177,9 @@ if($date >= $selected_date){
                   $rep_start3 = str_replace('"',"", $rep_start3);
                   $rep_end3 = str_replace('"',"", $rep_end3);
                   ?>
-                  <?php $class =  get_booked_class($available_data,$rep_start3,$rep_end3,2); ?>
+                  <?php 
+                        $my_date = date('Y-m-d', strtotime($selected_date."+2 day"));
+                  $class =  get_booked_class($available_data,$rep_start3,$rep_end3,2,$time_zone,$my_date); ?>
                   <div class="<?php echo $class; ?>">
                     <?php if($class == 'ttiming'){ ?>
                     <a href="javascript:void(0)" class="selectday" data-date="<?php echo date('Y-m-d', strtotime($selected_date."+2 day")); ?>" data-day="<?php echo $value['day_name']; ?>"   data-timezone="<?php echo $value['time_zone'] ?>" data-day-id="<?php echo $value['days_id']; ?>"  data-start-time="<?php echo $rep_start3; ?>" data-end-time="<?php echo $rep_end3; ?>"><?php echo date('h:i a',strtotime($rep_start3)); ?> - <?php echo date('h:i a',strtotime($rep_end3)); ?></a>
@@ -176,7 +204,9 @@ if($date >= $selected_date){
                       $rep_end4 = str_replace('"',"", $rep_end4);
 
                       ?>
-                      <?php $class =  get_booked_class($available_data,$rep_start4,$rep_end4,3); ?>
+                      <?php
+                                $my_date = date('Y-m-d', strtotime($selected_date."+3 day"));
+                       $class =  get_booked_class($available_data,$rep_start4,$rep_end4,3,$time_zone,$my_date); ?>
                       <div class="<?php echo $class; ?>">
                         <?php if($class == 'ttiming'){ ?>
                         <a href="javascript:void(0)" class="selectday" data-date="<?php echo date('Y-m-d', strtotime($selected_date."+3 day")); ?>" data-day="<?php echo $value['day_name']; ?>"  data-timezone="<?php echo $value['time_zone'] ?>" data-day-id="<?php echo $value['days_id']; ?>"  data-start-time="<?php echo $rep_start4; ?>" data-end-time="<?php echo $rep_end4; ?>"><?php echo date('h:i a',strtotime($rep_start4)); ?> - <?php echo date('h:i a',strtotime($rep_end4)); ?></a>
@@ -201,7 +231,10 @@ if($date >= $selected_date){
                           $rep_end5 = str_replace('"',"", $rep_end5);
 
                           ?>
-                          <?php $class =  get_booked_class($available_data,$rep_start5,$rep_end5,4); ?>
+                          <?php 
+
+                                    $my_date = date('Y-m-d', strtotime($selected_date."+4 day"));
+                          $class =  get_booked_class($available_data,$rep_start5,$rep_end5,4,$time_zone,$my_date); ?>
                           <div class="<?php echo $class; ?>">
                             <?php if($class == 'ttiming'){ ?>
                             <a href="javascript:void(0)" class="selectday" data-date="<?php echo date('Y-m-d', strtotime($selected_date."+4 day")); ?>" data-day="<?php echo $value['day_name']; ?>"   data-timezone="<?php echo $value['time_zone'] ?>" data-day-id="<?php echo $value['days_id']; ?>"  data-start-time="<?php echo $rep_start5; ?>" data-end-time="<?php echo $rep_end5; ?>"><?php echo date('h:i a',strtotime($rep_start5)); ?> - <?php echo date('h:i a',strtotime($rep_end5)); ?></a>
@@ -225,7 +258,10 @@ if($date >= $selected_date){
                               $rep_start6 = str_replace('"',"", $rep_start6);
                               $rep_end6 = str_replace('"',"", $rep_end6);
                               ?>
-                              <?php $class =  get_booked_class($available_data,$rep_start6,$rep_end6,5); ?>
+                              <?php 
+
+                                        $my_date = date('Y-m-d', strtotime($selected_date."+5 day"));
+                              $class =  get_booked_class($available_data,$rep_start6,$rep_end6,5,$time_zone,$my_date); ?>
                               <div class="<?php echo $class; ?>">
                                 <?php if($class == 'ttiming'){ ?>
                                 <a href="javascript:void(0)" class="selectday" data-date="<?php echo date('Y-m-d', strtotime($selected_date."+5 day")); ?>" data-day="<?php echo $value['day_name']; ?>"  data-timezone="<?php echo $value['time_zone'] ?>"  data-day-id="<?php echo $value['days_id']; ?>"  data-start-time="<?php echo $rep_start6; ?>" data-end-time="<?php echo $rep_end6; ?>"><?php echo date('h:i a',strtotime($rep_start6)); ?> - <?php echo date('h:i a',strtotime($rep_end6)); ?></a>
@@ -249,7 +285,9 @@ if($date >= $selected_date){
                                   $rep_start7 = str_replace('"',"", $rep_start7);
                                   $rep_end7 = str_replace('"',"", $rep_end7);
                                   ?>
-                                  <?php $class =  get_booked_class($available_data,$rep_start7,$rep_end7,6); ?>
+                                  <?php
+                                            $my_date = date('Y-m-d', strtotime($selected_date."+6 day"));
+                                   $class =  get_booked_class($available_data,$rep_start7,$rep_end7,6,$time_zone,$my_date); ?>
                                   <div class="<?php echo $class; ?>">
                                     <?php if($class == 'ttiming'){ ?>
                                     <a href="javascript:void(0)" class="selectday" data-date="<?php echo date('Y-m-d', strtotime($selected_date."+6 day")); ?>" data-day="<?php echo $value['day_name']; ?>"  data-timezone="<?php echo $value['time_zone'] ?>" data-day-id="<?php echo $value['days_id']; ?>"  data-start-time="<?php echo $rep_start7; ?>" data-end-time="<?php echo $rep_end7; ?>"><?php echo date('h:i a',strtotime($rep_start7)); ?> - <?php echo date('g:i a',strtotime($rep_end7)); ?></a>

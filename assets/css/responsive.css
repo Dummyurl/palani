@@ -1,6 +1,4 @@
-@media only screen and (max-width:1299px){
-	.header .mainnav ul li a {font-size:14px;}
-}
+
 @media only screen and (max-width:1199px){
 	.step-arrow span.text-link {font-size: 30px;}
 	.step-left img {height: 240px;width: auto;}
@@ -11,14 +9,9 @@
 	.header .navbar-nav li a {font-size: 18px;padding: 4px 10px;}
 	.login-menu {margin-left: 10px;}
 	.work-list .media {margin-top: 30px;}
-	.mobile-header {display:block;}
-	.sidebar {display:block;}
-	.admin-header {display:none;}
 	.slide-nav-toggle .mainarea {left: 225px;}
 	.slide-nav-toggle .sidebar {margin-left: 0;}
-	.mainarea {padding-top: 100px;left: 0;position: relative;}
 	.navbar-nav .open .dropdown-menu {background-color: #fff;border: 1px solid rgba(0, 0, 0, 0.1);border-radius: 3px;box-shadow: inherit;transform-origin: left top 0;}
-	.header .mainnav ul li a {font-size:16px;}
 	.account-box-signup .step-left img {height: auto;}
 	.account-box-signup .step-arrow span.text-link {font-size: 36px;}
 	.account-box-signup .step-right .step-arrow > p {margin-top: 72px;}
@@ -43,7 +36,6 @@
 	.work-img {width:100%;height: 270px;}
 	.card {height: auto;width: 100%;}
 	.card > img {width: 100%;}
-	.header .navbar-toggle {display: block;margin-top: 25px;}
 	.header .navbar-default .navbar-toggle:hover,
 	.header .navbar-default .navbar-toggle:focus{background-color:#5c65be;border-color:#5c65be;transition:all 0.3s ease-in-out;}
 	.header .navbar-default .navbar-toggle:hover .icon-bar,
@@ -56,12 +48,6 @@
 	.login-menu {margin-left: 0;}
 	.header .navbar-nav > li:last-child {margin-left: 0;margin-right: 0 !important;}
 	.login-menu a {border: 0 none;border-radius: 0;font-size: 18px !important;text-transform: inherit;}
-	.header .navbar-collapse {border-top: 1px solid #e7e7e7;margin-top:0;}
-	.header .navbar-header {float:none;}
-	.header .navbar-collapse.collapse {display: none !important;}
-	.header .navbar-collapse.collapse.in {display: block !important;}
-	.header .navbar-right {float: none !important;margin:0 -15px;}
-	.header .navbar-nav > li {float: none;border-bottom: 1px solid #eee;}
 	.pro-img {background-size: 100% auto;height: 372px;width: 720px;}
 	.pro-img video {height: 308px;margin-top: 23px;}
 	.work-list .media {margin-top: 30px;}
@@ -72,7 +58,6 @@
 	.spa_paynow .btn-primary {font-size: 20px;}
 	.click-btn {padding: 3px 12px;}
 	.navbar-header .navbar-brand > img {width:100px;height:auto;}
-	.header .navbar-toggle {margin-bottom: 0;margin-top: 8px;}
 	.navbar-header {padding: 6px 0;min-height:60px;}
 	.banner-content {margin-top: 65px;}
 	.work-img {top: 70px;}
@@ -82,7 +67,6 @@
 	.account-box-signup .step-left .step-arrow span.text-link {font-size: 36px;margin-top: 16px;}
 	.account-box-signup .step-left .click-btn {font-size: 13px;padding: 3px 20px;}
 	.account-box-signup .step-left .step-cont {padding: 30px;width: 50%;}
-	
 	.account-box-signup .step-right > img {height: auto;}
 	.account-box-signup .step-right .step-cont {padding: 30px;width: 50%;}
 	.account-box-signup .step-right .click-btn {font-size: 13px;padding: 3px 20px;}
@@ -95,10 +79,11 @@
 	.chat-box-left {width:35%;}
 	.chat-box-right {width:65%;}
 	.keyword_result {left: calc(50% - 360px);top: 485px;width: 580px;}
-	.timingsnav .nav-tabs li {margin: 5px 10px 5px 0;}
+	.timingsnav .nav-tabs li {margin: 5px 1px 5px 0;}
 	.right_top_search {width:100%;margin: 0 0 15px;}
 	.vccontainer .vccolsmall {width:10%;}
 	.vccontainer .vccollarge {width:90%;}
+	.header .dashboard-menu ul li a i{padding-right: 5px;}
 }
 @media only screen and (max-width:767px){
 	.nav-links {margin: 0 0 10px;text-align: center;width: 100%;}
@@ -126,18 +111,18 @@
 	#activity .titlerightsearch input[type="search"]:focus {width: 100%;}
 	#activity .titlerightsearch {margin-top: 0;}
 	#activity .titlerow h2 {font-size: 26px;margin-bottom: 20px;}
-	.titlerow {margin-bottom: 30px;}
+	.titlerow {margin-bottom: 0px;}
 	.welcomerow {margin-bottom: 30px;}
 	footer .thoughts {padding: 0 0 20px;}
 	.submit-btn {text-align: center;}
 	.profile-preview {margin-bottom: 20px;}
 	.bank-details {margin-bottom: 30px;}
-	.avatar-view {height: 220px;width: 220px;}
+	.avatar-view {margin-top:15px;}
 	.img-box {margin: 0 auto 20px;width: 200px;text-align:center;}
 	.img-box > img {display: inline-block;}
 	.user-details {text-align: center;}
 	.profile-top {margin-bottom: 20px;}
-	.edit-btn {margin-bottom: 20px;text-align: center;}
+	.edit-btn {margin-bottom: 20px;text-align: center;float:none;}
 	.banner-content h1 br {display:none;}
 	.banner-content h1 {font-size: 24px;margin:30px 0 60px;min-height: 120px;}
 	.intro-section {padding-top:60px;}
@@ -252,7 +237,6 @@
 	.shinput {width: 100%;}
 	.shbtns {margin-left: 0;}
 	.shtextarea {width: 100%;}
-	.avatar-view {margin-top:0;}
 	.subnav ul li {margin: 0 6px;}
 	.header-title {font-size: 22px;}
 	.header-title.m-b-50 {margin-bottom: 30px !important;}

@@ -30,14 +30,15 @@ class RoomContext extends InstanceContext {
      * Initialize the RoomContext
      * 
      * @param \Twilio\Version $version Version that contains the resource
-     * @param string $sid The sid
+     * @param string $sid The Room Sid or name that uniquely identifies this
+     *                    resource.
      * @return \Twilio\Rest\Video\V1\RoomContext 
      */
     public function __construct(Version $version, $sid) {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('sid' => $sid);
+        $this->solution = array('sid' => $sid, );
 
         $this->uri = '/Rooms/' . rawurlencode($sid) . '';
     }
@@ -46,6 +47,7 @@ class RoomContext extends InstanceContext {
      * Fetch a RoomInstance
      * 
      * @return RoomInstance Fetched RoomInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function fetch() {
         $params = Values::of(array());
@@ -62,11 +64,12 @@ class RoomContext extends InstanceContext {
     /**
      * Update the RoomInstance
      * 
-     * @param string $status The status
+     * @param string $status Set to completed to end the Room.
      * @return RoomInstance Updated RoomInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function update($status) {
-        $data = Values::of(array('Status' => $status));
+        $data = Values::of(array('Status' => $status, ));
 
         $payload = $this->version->update(
             'POST',

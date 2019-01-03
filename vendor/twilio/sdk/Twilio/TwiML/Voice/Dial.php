@@ -30,7 +30,7 @@ class Dial extends TwiML {
      * @return TwiML Child element.
      */
     public function client($name, $attributes = array()) {
-        return $this->nest(new Voice\Client($name, $attributes));
+        return $this->nest(new Client($name, $attributes));
     }
 
     /**
@@ -41,7 +41,7 @@ class Dial extends TwiML {
      * @return TwiML Child element.
      */
     public function conference($name, $attributes = array()) {
-        return $this->nest(new Voice\Conference($name, $attributes));
+        return $this->nest(new Conference($name, $attributes));
     }
 
     /**
@@ -52,7 +52,7 @@ class Dial extends TwiML {
      * @return TwiML Child element.
      */
     public function number($phoneNumber, $attributes = array()) {
-        return $this->nest(new Voice\Number($phoneNumber, $attributes));
+        return $this->nest(new Number($phoneNumber, $attributes));
     }
 
     /**
@@ -63,7 +63,7 @@ class Dial extends TwiML {
      * @return TwiML Child element.
      */
     public function queue($name, $attributes = array()) {
-        return $this->nest(new Voice\Queue($name, $attributes));
+        return $this->nest(new Queue($name, $attributes));
     }
 
     /**
@@ -73,7 +73,7 @@ class Dial extends TwiML {
      * @return TwiML Child element.
      */
     public function sim($simSid) {
-        return $this->nest(new Voice\Sim($simSid));
+        return $this->nest(new Sim($simSid));
     }
 
     /**
@@ -84,7 +84,7 @@ class Dial extends TwiML {
      * @return TwiML Child element.
      */
     public function sip($sipUrl, $attributes = array()) {
-        return $this->nest(new Voice\Sip($sipUrl, $attributes));
+        return $this->nest(new Sip($sipUrl, $attributes));
     }
 
     /**
@@ -150,7 +150,7 @@ class Dial extends TwiML {
     /**
      * Add Record attribute.
      * 
-     * @param enum:Record $record Record the call
+     * @param dial:Enum:Record $record Record the call
      * @return TwiML $this.
      */
     public function setRecord($record) {
@@ -160,7 +160,7 @@ class Dial extends TwiML {
     /**
      * Add Trim attribute.
      * 
-     * @param enum:Trim $trim Trim the recording
+     * @param dial:Enum:Trim $trim Trim the recording
      * @return TwiML $this.
      */
     public function setTrim($trim) {
@@ -191,8 +191,9 @@ class Dial extends TwiML {
     /**
      * Add RecordingStatusCallbackEvent attribute.
      * 
-     * @param enum:RecordingEvent $recordingStatusCallbackEvent Recording status
-     *                                                          callback events
+     * @param dial:Enum:RecordingEvent $recordingStatusCallbackEvent Recording
+     *                                                               status
+     *                                                               callback events
      * @return TwiML $this.
      */
     public function setRecordingStatusCallbackEvent($recordingStatusCallbackEvent) {
@@ -213,9 +214,9 @@ class Dial extends TwiML {
     /**
      * Add RingTone attribute.
      * 
-     * @param enum:RingTone $ringTone Ringtone allows you to override the ringback
-     *                                tone that Twilio will play back to the caller
-     *                                while executing the Dial
+     * @param dial:Enum:RingTone $ringTone Ringtone allows you to override the
+     *                                     ringback tone that Twilio will play back
+     *                                     to the caller while executing the Dial
      * @return TwiML $this.
      */
     public function setRingTone($ringTone) {

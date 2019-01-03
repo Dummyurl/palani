@@ -51,7 +51,7 @@
         <div class="contentarea">
             <table cellpadding="0" cellspacing="0" border="0">
                 <tr class="tablehead">
-                    <td>Guru Name</td>
+                    <td>Mentor Name</td>
                     <td>Date</td>
                     <td>Time</td>
                     <td>Duration</td>
@@ -84,7 +84,7 @@
             </table>
         </div>
         
-        <div class="footer">Thank you for using SchoolGuru</div>
+        <div class="footer">Thank you for using Mentori</div>
         
     </div>
 </body>

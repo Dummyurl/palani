@@ -40,7 +40,7 @@ class IncomingPhoneNumberList extends ListResource {
         parent::__construct($version);
 
         // Path Solution
-        $this->solution = array('accountSid' => $accountSid);
+        $this->solution = array('accountSid' => $accountSid, );
 
         $this->uri = '/Accounts/' . rawurlencode($accountSid) . '/IncomingPhoneNumbers.json';
     }
@@ -145,6 +145,7 @@ class IncomingPhoneNumberList extends ListResource {
      * 
      * @param array|Options $options Optional Arguments
      * @return IncomingPhoneNumberInstance Newly created IncomingPhoneNumberInstance
+     * @throws TwilioException When an HTTP error occurs.
      */
     public function create($options = array()) {
         $options = new Values($options);
@@ -172,6 +173,7 @@ class IncomingPhoneNumberList extends ListResource {
             'TrunkSid' => $options['trunkSid'],
             'IdentitySid' => $options['identitySid'],
             'AddressSid' => $options['addressSid'],
+            'VoiceReceiveMode' => $options['voiceReceiveMode'],
         ));
 
         $payload = $this->version->create(

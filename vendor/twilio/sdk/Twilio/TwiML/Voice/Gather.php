@@ -18,7 +18,7 @@ class Gather extends TwiML {
      * @param array $attributes Optional attributes
      */
     public function __construct($attributes = array()) {
-        parent::__construct('Gather', $attributes);
+        parent::__construct('Gather', null, $attributes);
     }
 
     /**
@@ -29,7 +29,7 @@ class Gather extends TwiML {
      * @return TwiML Child element.
      */
     public function say($message, $attributes = array()) {
-        return $this->nest(new Voice\Say($message, $attributes));
+        return $this->nest(new Say($message, $attributes));
     }
 
     /**
@@ -39,7 +39,7 @@ class Gather extends TwiML {
      * @return TwiML Child element.
      */
     public function pause($attributes = array()) {
-        return $this->nest(new Voice\Pause($attributes));
+        return $this->nest(new Pause($attributes));
     }
 
     /**
@@ -50,13 +50,13 @@ class Gather extends TwiML {
      * @return TwiML Child element.
      */
     public function play($url = null, $attributes = array()) {
-        return $this->nest(new Voice\Play($url, $attributes));
+        return $this->nest(new Play($url, $attributes));
     }
 
     /**
      * Add Input attribute.
      * 
-     * @param enum:Input $input Input type Twilio should accept
+     * @param gather:Enum:Input $input Input type Twilio should accept
      * @return TwiML $this.
      */
     public function setInput($input) {
@@ -168,7 +168,7 @@ class Gather extends TwiML {
     /**
      * Add Language attribute.
      * 
-     * @param enum:Language $language Language to use
+     * @param gather:Enum:Language $language Language to use
      * @return TwiML $this.
      */
     public function setLanguage($language) {
@@ -193,5 +193,15 @@ class Gather extends TwiML {
      */
     public function setBargeIn($bargeIn) {
         return $this->setAttribute('bargeIn', $bargeIn);
+    }
+
+    /**
+     * Add Debug attribute.
+     * 
+     * @param boolean $debug Allow debug for gather
+     * @return TwiML $this.
+     */
+    public function setDebug($debug) {
+        return $this->setAttribute('debug', $debug);
     }
 }

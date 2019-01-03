@@ -13,6 +13,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 defined('SHOW_DEBUG_BACKTRACE') OR define('SHOW_DEBUG_BACKTRACE', TRUE);
 
+defined('GST') OR define('GST',18);
+
 /*
 |--------------------------------------------------------------------------
 | File and Directory Modes

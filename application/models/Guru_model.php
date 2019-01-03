@@ -104,11 +104,34 @@ class Guru_model extends CI_Model {
 		return $this->db->query($sql)->num_rows();
 	}
 
+
+	Public function get_total_earned()
+{
+	$id = base64_decode($this->uri->segment(3));
+    $where = array('mentor_id'=>$id,'payment_status'=>1);
+    return $this->db->select('SUM(payment_gross) as earned_amount')->get_where('payments',$where)->row_array();
+    
+}
+Public function get_total_requested()
+{
+	$id = base64_decode($this->uri->segment(3));
+    $where = array('mentor_id'=>$id,'status'=>1);
+    return $this->db->select('SUM(request_amount) as request_amount')->get_where('pay_request_details',$where)->row_array();
+    
+}
+Public function get_total_paid()
+{
+	$id = base64_decode($this->uri->segment(3));
+    $where = array('mentor_id'=>$id,'status'=>2);
+    return $this->db->select('SUM(request_amount) as paid_amount')->get_where('pay_request_details',$where)->row_array();
+    
+}
+
 	Public function get_guru_details()
 	{
 
 		$id = base64_decode($this->uri->segment(3));
-		return $this->db->query("SELECT a.*,SUM(payment_gross) as earned,COUNT(p.payment_id)	as calls,a.created_date,a.delete_sts,	 
+		return $this->db->query("SELECT a.*,COUNT(p.payment_id)	as calls,a.created_date,a.delete_sts,	 
 		a.username as mentor_user_name,		
 		a.profile_img as mentor_profile_img,
 		CONCAT(a.first_name,' ',a.last_name) AS mentor_name,		
@@ -124,11 +147,11 @@ class Guru_model extends CI_Model {
 	{	
 
 		$columns = array(
-			'a.first_name',			
-			'a.created_date',
-			'p.payment_gross',
-			'p.payment_id',
-			'a.delete_sts'			
+					'i.invite_time',
+					'i.invite_end_time',
+					'p.payment_gross',
+					'a.first_name',
+					'a.last_name'	,
 		);
 
 
@@ -141,7 +164,23 @@ class Guru_model extends CI_Model {
 		}
 
 
-		$sql ="SELECT a.*,p.payment_date,p.payment_status,SUM(payment_gross) as earned,COUNT(p.payment_id)as calls,a.delete_sts, a.username as applicant_user_name,a.profile_img as applicant_profile_img,CONCAT(a.first_name,' ',a.last_name) AS applicant_name,s.picture_url as applicant_picture FROM applicants a LEFT JOIN payments p ON a.id = p.user_id LEFT JOIN social_applicant_user s ON s.reference_id = p.user_id WHERE a.role = '0' AND p.mentor_id = '$_POST[user_id]' ";
+			$sql ="SELECT 
+			a.id,
+			a.username,
+			i.invite_date,
+			i.invite_time,
+			i.invite_end_time,
+			p.payment_gross,
+			a.first_name,
+			a.last_name,
+			a.profile_img,
+			s.picture_url,
+			p.payment_status 
+			FROM payments p 
+			LEFT JOIN invite i ON i.invite_id = p.invite_id
+			LEFT JOIN applicants a ON a.id = i.invite_from
+			LEFT JOIN social_applicant_user  s ON a.id = s.reference_id
+			WHERE i.invite_to = '$_POST[user_id]' ";
 
 
 
@@ -159,20 +198,20 @@ class Guru_model extends CI_Model {
 
 
 				 $sql .=" AND (
-				 	a.first_name LIKE '%$search_value%'				 		
-					OR a.last_name LIKE '%$search_value%'														
-					OR p.payment_date LIKE '%$search_value%'									
-					OR a.delete_sts LIKE '%$search_value%'									
-					OR p.payment_gross LIKE '%$search_value%'	
-					OR p.payment_id LIKE '%$search_value%' 
-					OR p.user_id LIKE '%$search_value%'
+						 i.invite_time  LIKE '%$search_value%' 
+						OR i.invite_end_time LIKE '%$search_value%' 
+						OR p.payment_gross LIKE '%$search_value%' 
+						OR a.first_name LIKE '%$search_value%' 
+						OR a.last_name LIKE '%$search_value%' 
+						OR a.profile_img LIKE '%$search_value%' 
+						OR s.picture_url LIKE '%$search_value%' 		 	
 												
 				 ) ";	
 					
 			} 		
 		}
 
-		$sql .=" GROUP BY p.payment_date ";
+		
 
 		if(isset($_POST['order'])) {			
 			$orde = $columns[$_POST['order']['0']['column']].' '.$_POST['order']['0']['dir'];

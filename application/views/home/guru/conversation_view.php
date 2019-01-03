@@ -1,20 +1,16 @@
-<div class="row titlerow">
-  <div class="col-sm-6">
-    <h2>Conversations</h2>
+<div class="container conversation-section">
+  <div class="row titlerow clickable">
+    <div class="col-sm-6">
+      <h2>Conversations</h2>
+    </div>
+    <div class="col-sm-6 text-right"></div>
   </div>
-  <div class="col-sm-6 text-right"></div>
+
+  <div class="conversation clickable"></div>
 </div>
-<div class="conversation"></div>
-
-
-
-
+</section>
 <!-- Chat Message  -->
-
-
-
 <div class="conv_messages_box">
-
   <!--Chat Box Starts-->
   <div class="panel-heading"> 
     <div class="user-details">
@@ -29,8 +25,6 @@
       </div>
     </div>                               
   </div>
-
-
   <div class="panel-body">
     <div class="chat-box slimscrollleft mCustomScrollbar _mCS_2 mCS-autoHide" id="chat-box" style="position: relative; overflow: visible;"><div class="mCustomScrollBox mCS-minimal mCSB_vertical mCSB_outside" id="mCSB_2" style="max-height: none;" tabindex="0"><div dir="ltr" style="position:relative; top:0; left:0;" class="mCSB_container mCS_y_hidden mCS_no_scrollbar_y" id="mCSB_2_container">
       <div class="chats"></div>    
@@ -43,8 +37,9 @@
     <form name="chat_form" id="chat_form" enctype="multipart/form-data" method="post" action="<?php echo base_url(); ?>upload/upload_files">
       <div class="message-bar">
         <div class="message-inner">
-          <a class="link attach-icon" href="javascript:void(0)"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
-          <div class="message-area">
+          <a class="link attach-icon" href="javascript:void(0)" style="position: absolute;right: 90px;
+    top: 13px;"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
+          <div class="message-area" style="position: inherit;top: 0;padding: 0px;margin: 0px;">
             <input type="text" name="input_message" id="input_message" placeholder="Type message..." class="chat-input" autocomplete="off">
             <input  type="hidden" id="recipients" value="username" >
             <!-- <input type="text" name="receiver_id" id="receiver_id" value="0"> -->
@@ -52,7 +47,13 @@
             <input type="hidden" name="time" id="time" >                                              
             <input type="file" name="userfile" id="user_file" class="hidden"> 
           </div>
-          <a class="link btn btn-default chat-send-btn" href="javascript:void(0)" id="chat-send-btn">Send</a>
+          <a class="link btn btn-default chat-send-btn" href="javascript:void(0)" id="chat-send-btn" style="
+    position: absolute;
+    top: 0px;
+    width: auto;
+    padding: 12px;
+    right: 0;
+">Send</a>
         </div>
       </div>
     </form>                                                        

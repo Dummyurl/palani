@@ -83,19 +83,21 @@ class Dashboard_model extends CI_Model {
 					OR currency_code LIKE '%$search_value%'
 					OR payer_email LIKE '%$search_value%'
 					OR payment_status LIKE '%$search_value%'
-					OR payment_date LIKE '%$search_value%'
+					OR invite_date LIKE '%$search_value%'
 				) ";		
 			} 		
 		}
 
-		if(isset($_POST['order'])) {			
-			$orde = $columns[$_POST['order']['0']['column']].' '.$_POST['order']['0']['dir'];
-			$sql .=" ORDER BY $orde";
-		}else if(isset($this->orders)){
-			$orders = $this->orders;	
-			$orde = key($orders).' '.$orders[key($orders)];	
-			$sql .=" ORDER BY $orde";
-		}
+		$sql .=" ORDER BY invite_date desc";
+
+		// if(isset($_POST['order'])) {			
+		// 	$orde = $columns[$_POST['order']['0']['column']].' '.$_POST['order']['0']['dir'];
+		// 	$sql .=" ORDER BY $orde";
+		// }else if(isset($this->orders)){
+		// 	$orders = $this->orders;	
+		// 	$orde = key($orders).' '.$orders[key($orders)];	
+		// 	$sql .=" ORDER BY $orde";
+		// }
 		return $sql;
 	}
 	function get_datatables()
@@ -125,8 +127,7 @@ class Dashboard_model extends CI_Model {
 	Public function get_gurus()
 	{
 		
-		return $this->db->query("SELECT CONCAT(a.first_name,' ',a.last_name) AS name,
-			m.mentor_job_title,s.picture_url, a.profile_img,a.id,a.username
+		return $this->db->query("SELECT CONCAT(a.first_name,' ',a.last_name) AS name,s.picture_url, a.profile_img,a.id,a.username
 			FROM applicants a
 			LEFT JOIN mentor_details m ON m.mentor_id = a.id
 			LEFT JOIN social_applicant_user s ON s.reference_id = a.id

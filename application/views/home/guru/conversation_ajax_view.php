@@ -1,4 +1,10 @@
-<?php if(!empty($today_conversation)) : 
+<?php 
+    
+//     echo $this->db->last_query();
+//     echo '<pre>';
+// print_r($today_conversation);
+// exit;
+if(!empty($today_conversation)) : 
  function converToTz($time="",$toTz='',$fromTz='')
             {   
         // timezone by php friendly values

@@ -1,0 +1,7 @@
+{
+    "require": {
+        "opentok/opentok": "2.3.x",
+        "twilio/sdk": "^5.22",
+        "facebook/graph-sdk": "^5.6"               
+    }
+}

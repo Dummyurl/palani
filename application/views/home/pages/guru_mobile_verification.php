@@ -11,9 +11,7 @@
     <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">
     <script src="<?php echo base_url()."assets/" ?>js/sinch.min.js"></script>
 </head>
-
 <body>
-
     <div class="success-signup" id="signup_applicant_modal">
      <div class="container">
         <form name="send_messages" id="send_messages">      
@@ -23,9 +21,7 @@
             <p>We are glad you decided to start helping out and make some cash. Feel free to browse around. Please complete your profile and payment information.</p>
             <p>You will receive a verification email shortly.</p>            
             <button type="button" class="btn btn-primary" onclick="showMobileData();">Continue</button>
-
-            <a href="<?php echo base_url(); ?>user/logout" >Back</a>
-            
+            <a href="<?php echo base_url(); ?>user/logout" >Back</a>            
         </form>
     </div>
 </div>
@@ -284,8 +280,13 @@
             <div id="error_msg" style="color:red;"></div>
             <div class="row">
              <div class="col-xs-12"><label class="control-label">Enter the verification code</label></div>
-             <div class="col-sm-9"><input type="text" name="verification_code" id="verification_code" class="form-control" value="" required/></div>
+             <div class="col-sm-9">
+                <input type="text" name="verification_code" id="verification_code" class="form-control" value="" required/>
+                <br>
+                <a href="javascript:void(0);" onclick="showMobileData_again()">Try alternate number?</a>
+            </div>
              <div class="col-sm-3"><button type="submit" class="btn btn-primary verify" >Verify</button></div>
+             
          </div>
      </form>
  </div>
@@ -310,6 +311,13 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css">
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>
 <script>
+    function showMobileData_again()
+{
+    $(".success-signup").css('display','none');
+    $("#mobile_first_verify").css('display','block');
+    $("#mobile_first_verify_code").css('display','none');
+
+}
     sinchClient = new SinchClient({
         applicationKey: 'f06ae4f2-4980-40aa-89ca-9b98d80d70c4',
     //applicationKey: '673983ab-4c30-4e13-8631-c7d4967e0de2',
@@ -336,10 +344,10 @@
 
 <script src="<?php echo base_url()."assets/" ?>js/guru.js" type="text/javascript"></script>
 <script type="text/javascript" >
-    history.pushState(null, null, '#');
-    window.addEventListener('popstate', function(event) {
-        history.pushState(null, null, '#');
-    });
+    // history.pushState(null, null, '#');
+    // window.addEventListener('popstate', function(event) {
+    //     history.pushState(null, null, '#');
+    // });
 </script>
 
 </body>

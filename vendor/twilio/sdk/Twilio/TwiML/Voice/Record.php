@@ -18,7 +18,7 @@ class Record extends TwiML {
      * @param array $attributes Optional attributes
      */
     public function __construct($attributes = array()) {
-        parent::__construct('Record', $attributes);
+        parent::__construct('Record', null, $attributes);
     }
 
     /**
@@ -84,7 +84,7 @@ class Record extends TwiML {
     /**
      * Add Trim attribute.
      * 
-     * @param enum:Trim $trim Trim the recording
+     * @param record:Enum:Trim $trim Trim the recording
      * @return TwiML $this.
      */
     public function setTrim($trim) {

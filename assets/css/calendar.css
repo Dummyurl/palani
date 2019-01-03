@@ -1,0 +1,25 @@
+.calendar-main{    
+	background: #fff;
+    padding: 20px;
+    box-shadow: 1px 1px 12px 0px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+@media only screen and (max-width: 767px){
+	.fc-view, .fc-toolbar .fc-center {margin-top: 5px;}
+}
+@media only screen and (max-width:480px){
+	.fc .fc-toolbar > * > * {
+    	float: none !important;
+    	margin-left: .75em;
+	}
+	#calendar .fc-toolbar .fc-left,
+	#calendar .fc-toolbar .fc-right,
+	#calendar .fc-toolbar .fc-center {
+    	float: none;
+    	text-align: center; 
+    	display: block;
+	}
+	.fc-left button.fc-corner-right{position: relative;left: 45px;}
+	.fc-left button.fc-state-disabled{position: relative;top: -11px;left: -65px;}
+	.fc-center h2, .fc-right {margin-top: 5px;}
+}

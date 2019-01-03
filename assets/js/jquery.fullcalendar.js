@@ -194,7 +194,7 @@
 
             var d = convertDate(select_date);
 
-            console.log(start)
+         //   console.log(start)
 
 
             $.post(base_url+'user/today_conversation',{date:start.start._i,timezone:start.timezone},function(response){
@@ -329,9 +329,9 @@
 
             slotDuration: '00:30:00', /* If we want to split day time each 15minutes */
 
-            minTime: '08:00:00',
+            minTime: '00:00:00',
 
-            maxTime: '19:00:00',  
+            maxTime: '23:59:00',  
 
             allDayDefault: false,
 

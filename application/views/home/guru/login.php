@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login - SchoolGuru</title>
+<title>Login - Mentori.ng</title>
 <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url()."assets/" ?>images/favicon.png">
 <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/font-awesome.min.css" type="text/css">
@@ -30,7 +30,7 @@
 						<input type="password" class="form-control" placeholder="Password" name="password" id="password" />
 					</div>
 					<button class="btn btn-primary btn-block account-btn" type="submit">Login</button>
-				</form>   
+				</form>
                                 <span class="text-center error" id="guru_login_error" ></span>
 				<div class="text-right"><a class="forgot-link" href="<?php echo base_url()."user/forgot_password" ?>">Forgot Password</a></div>
 				<div class="login-or">
@@ -58,5 +58,8 @@
 	<script src="<?php echo base_url()."assets/" ?>js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?php echo base_url()."assets/" ?>js/bootstrapValidator.js" type="text/javascript"></script>
         <script src="<?php echo base_url()."assets/" ?>js/guru.js" type="text/javascript"></script>
+        <script type="text/javascript">
+        localStorage.clear();
+        </script>
 </body>
 </html>

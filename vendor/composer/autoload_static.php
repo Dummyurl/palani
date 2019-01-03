@@ -6,10 +6,26 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit33aaaf27813dbd88683a7138ec073345
 {
+    public static $files = array (
+        'c65d09b6820da036953a371c8c73a9b1' => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook/polyfills.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
             'Twilio\\' => 7,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Component\\EventDispatcher\\' => 34,
+        ),
+        'O' => 
+        array (
+            'OpenTok\\' => 8,
+        ),
+        'F' => 
+        array (
+            'Facebook\\' => 9,
         ),
     );
 
@@ -18,6 +34,39 @@ class ComposerStaticInit33aaaf27813dbd88683a7138ec073345
         array (
             0 => __DIR__ . '/..' . '/twilio/sdk/Twilio',
         ),
+        'Symfony\\Component\\EventDispatcher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
+        ),
+        'OpenTok\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/opentok/opentok/src/OpenTok',
+        ),
+        'Facebook\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'J' => 
+        array (
+            'JohnStevenson\\JsonWorks' => 
+            array (
+                0 => __DIR__ . '/..' . '/aoberoi/json-works/src',
+            ),
+        ),
+        'G' => 
+        array (
+            'Guzzle\\Tests' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/tests',
+            ),
+            'Guzzle' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -25,6 +74,7 @@ class ComposerStaticInit33aaaf27813dbd88683a7138ec073345
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit33aaaf27813dbd88683a7138ec073345::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit33aaaf27813dbd88683a7138ec073345::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit33aaaf27813dbd88683a7138ec073345::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

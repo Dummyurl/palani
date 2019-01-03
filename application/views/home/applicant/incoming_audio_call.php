@@ -4,17 +4,20 @@
   <meta charset="utf-8" />
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Conversations - SchoolGuru</title>
+  <title>Conversations - Mentori</title>
   <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>assets/images/favicon.png"> 
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrap.min.css" type="text/css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrapValidator.css" type="text/css">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/responsive.css" type="text/css">
+  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">
+  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/responsive.css" type="text/css">
+  <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/animate.css" type="text/css">
   <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/jquery.mCustomScrollbar.min.css" type="text/css">
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css">
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sweetalert2.css"> 
   <script> var base_url = '<?php echo base_url(); ?>'; </script>
   <script src="<?php echo base_url()."assets/" ?>js/jquery-3.2.1.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script src="<?php echo base_url()."assets/" ?>js/sinch.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>
   <script src="<?php echo base_url()."assets/" ?>js/bootstrap.min.js"></script>
@@ -22,59 +25,101 @@
   <script src="<?php echo base_url()."assets/" ?>js/bootstrap-notify.js"></script>
   <script src='<?php echo base_url()."assets/" ?>js/jquery.mCustomScrollbar.concat.min.js'></script>
   <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>  
+  <!-- Tok Box  -->
+  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+  <!-- Polyfill for fetch API so that we can fetch the sessionId and token in IE11 -->
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7/dist/polyfill.min.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js" charset="utf-8"></script>
+
+  <style type="text/css">
+  @media only screen and (max-width: 767px){
+    .video-chat-wrapper .video-chat-blk{
+      width:100%;
+    }
+  }
+  .msg-count:empty{display: none;}
+</style>
 </head>
-<body>
+<body>  
+
+
   <div class="overlay">
     <div id="loading-img"></div>
   </div>
   <!-- video call alert notification  -->
-  <div class="new_call form-group"></div>
-  <div class="notification alert alert-danger"></div>
-<?php 
+  <div class="new_call form-group">
+    <div class="phonering-alo-phone phonering-alo-green phonering-alo-show" id="phonering-alo-phoneIcon">
+      <div class="phonering-alo-ph-circle"></div>
+      <div class="phonering-alo-ph-circle-fill"></div>
+      <a href="" class="pps-btn-img" id="ringing">
+       <div class="phonering-alo-ph-img-circle"></div>
+     </a>
+   </div>
+
+ </div>
+ <div class="notification alert alert-warning"></div>
+ <audio id="ringtone" src='<?php echo base_url();?>assets/css/style/ringback.wav' loop></audio>
+
+
+
+ <?php 
+
   // Session Usre Data 
-$currentuser = get_userdata(); 
-$profile_img = '';
-if(isset($currentuser['profile_img'])&&!empty($currentuser['profile_img'])){
+ $currentuser = get_userdata(); 
+
+
+ $profile_img = '';
+ if(isset($currentuser['profile_img'])&&!empty($currentuser['profile_img']))
+ {
   $profile_img = $currentuser['profile_img'];
-}
-
+}  
 $social_profile_img = '';
-if(isset($currentuser['picture_url'])&&!empty($currentuser['picture_url'])){
+if(isset($currentuser['picture_url'])&&!empty($currentuser['picture_url']))
+{
   $social_profile_img = $currentuser['picture_url'];
-}
 
+}  
 $img1 = '';
-if($social_profile_img != ''){
+if($social_profile_img != '')
+{
   $img1 = $social_profile_img;
-}
 
-if($profile_img != ''){
+}
+if($profile_img != '')
+{
   $file_to_check = FCPATH . '/assets/images/' . $profile_img;
   if (file_exists($file_to_check)) {
     $img1 = base_url() . 'assets/images/'.$profile_img;
   }
 }
-
 $img = ($img1 != '') ? $img1 : base_url() . 'assets/images/default-avatar.png';
+
 // Receiver Userdata 
+
 $receiver_id =  base64_decode($this->uri->segment(5));
 $receiver =get_all_datas($receiver_id);
+
 $profile_imge = '';
-
-if(isset($receiver['profile_img'])&&!empty($receiver['profile_img'])){
+if(isset($receiver['profile_img'])&&!empty($receiver['profile_img']))
+{
   $profile_imge = $receiver['profile_img'];
-}
-
-$social_profile_imge = '';
-if(isset($receiver['picture_url'])&&!empty($receiver['picture_url'])){
-  $social_profile_imge = $receiver['picture_url'];
 }  
 
+
+$social_profile_imge = '';
+if(isset($receiver['picture_url'])&&!empty($receiver['picture_url']))
+{
+  $social_profile_imge = $receiver['picture_url'];
+
+}  
 $imge1 = '';
-if($social_profile_imge != ''){
+if($social_profile_imge != '')
+{
   $imge1 = $social_profile_imge;
+
 }
-if($profile_imge != ''){
+if($profile_imge != '')
+{
   $file_to_check = FCPATH . '/assets/images/' . $profile_imge;
   if (file_exists($file_to_check)) {
     $imge1 = base_url() . 'assets/images/'.$profile_imge;
@@ -85,97 +130,204 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
 
 ?>
 
-<div id="verified" style="display:none;"><?php echo $currentuser['is_verified']; ?></div>
+<?php $to_username =  base64_decode($this->uri->segment(3)); 
+$to_user = $this->db->get_where('applicants',array('username'=>$to_username))->row_array();
+?>
+<input type="hidden" id="call_duration" value="call_duration" >
+<input type="hidden" id="call_started_at" value="call_started_at" >
+<input type="hidden" id="call_ended_at" value="call_ended_at">
 <input type="hidden" id="sinch_username" value="<?php echo $currentuser['username']; ?>"> <!-- session user  -->
 <input type="hidden" id="user_role" value="<?php echo $currentuser['role']; ?>"> 
-
 <input type="hidden" id="channel" value="<?php echo base64_decode($this->uri->segment(4)); ?>">  
 <input type="hidden" id="call_to" value="<?php echo base64_decode($this->uri->segment(3)); ?>">   <!-- to username -->
-
-<input type="hidden" id="url" value="<?php echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>">  
-
-
-<div class="container-fluid vccontainer">
-  <div class="vcfullscreen">Fullscreen</div>
-  <div class="vcheader">
-    <div class="row">
-     <!--  <div class="col-sm-4"><a href="#"><img src="images/logo-small.png" alt="SchoolGuru"></a></div> -->
-     <div class="col-sm-4 text-center vchtitle">Video Call</div>
-     <!-- <div class="col-sm-4 text-right vchclose"><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a></div> -->
-   </div>
- </div>
- <div class="vcrow">
-  <div class="vccol vccolsmall">
-    <a href="#"><img src="<?php echo base_url();?>assets/images/presentation-icon.png" alt="Presentation"></a>
-    <a href="#"><img src="<?php echo base_url();?>assets/images/whiteboard-icon.png" alt="Whiteboard"></a>
+<input type="hidden" id="url" value="<?php echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>">
+<section class="video-chat-wrapper">  
+  <div align="center" id="muted_image">
+    <img src="<?php echo $imge; ?>" class="img">
+    <input type="hidden" name="" id="subscriber_image" value="<?php echo $imge ?>">
   </div>
-  <div class="vccol vccollarge">
-
-    <div class="vcvideo">
-      <div align="center" id="muted_image">
-        <img src="<?php echo $imge; ?>" class="img-circle img-responsive">
-      </div>
-      <div class="videoinner text-center">
-        <div id="disconnected" class="alert alert-danger"></div>
-        <video autoplay id="other0" style="display: inline;height: 98%;margin: auto;width: 100%;"></video>
-      </div>
-      <div class="vcopponentvideo">
-       <div align="center" id="muted_image_me">
-        <img src="<?php echo $img ?>" class="img-responsive">
-      </div>
-      <video  autoplay id="me"></video></div>
-      <div class="vcactions">
-        <a class="vccall" href="#" onclick="window.location.reload();">Call</a>
-        <a class="vcmike" href="#">Mike</a>        
-        <a class="vcend" href="#" id="cut" onclick="window.close();">Call End</a>
-      </div>
-
-    </div>
-
-    <!--   <div class="vcactions">
-        <a class="vccall" href="#" onclick="window.location.reload();"><img src="<?php echo base_url();?>assets/images/call-vc-icon.png"></a>
-        <a class="vcmike" href="#"><img src="<?php echo base_url();?>assets/images/mike-vc-icon.png"></a>
-        <a class="vcend" href="#" id="cut" onclick="window.close();"><img src="<?php echo base_url();?>assets/images/end-vc-icon.png"></a>
-      </div> -->
-
-      <div class="vcmsg">         
-        <!--Chat Container Starts Here-->
-        <div id="chat-box" class="chat-box slimscrollleft">
-         <div class="progress upload-progress hidden">
-          <div class="progress-bar progress-bar-success active progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100" style="width: 100%;">
-           Uploading...  
-         </div>
-       </div>
-       <div class="chats" id="ajax"></div> <!-- chat ajax  -->
+  <div class="video-section" id="video-background"> <!-- id="video-background" -->
+    <div class="video-chat-blk">
+     <div class="chat-contents animated showchatbox">
+      <div class="show-chat-header">
+       <button class="btn-chat-close pull-right">Hide Messsage <i class="fa fa-angle-down" aria-hidden="true"></i></button>
      </div>
-     <!--Chat Container Ends Here-->          
+     <div class="show-chat-contents chat-box slimscrollleft">
+       <div class="chats"></div>
+     </div>
+   </div>      
 
-   </div>   
-   <div>
+   <div id="disconnected" class="alert alert-danger"></div>                          
+ </div> 
+</div>
+</section>
+
+<div class="video-controls hidden-xs">
+  <div class="my-cam-control"> 
+   <div class="sd">
+    <ul class="list-unstyled list-inline text-center">
+      <li>
+        <a href="javascript:;" class="mikemute">
+          <span>
+            <img class="img img-responsive" id="mute_audio"   src="<?php echo base_url(); ?>assets/images/videochat/mute_mob.png" /> 
+            <img class="img img-responsive hidden" id="unmute_audio" src="<?php echo base_url(); ?>assets/images/videochat/mute_mob_disable.png"  /> 
+          </span></a>
+        </li>
+        <li><a href="javascript:;" class="vcend">
+          <span>   
+            <img class="img img-responsive" id="end_btn" src="<?php echo base_url(); ?>assets/images/videochat/endcall_mob.png" onclick="delete_channel()"/>
+          </span></a></li>
+          <li><a href="javascript:;" class="vcvideop " id="cut" >
+            <span>
+              <img class="img img-responsive " id="unmute_video"  src="<?php echo base_url(); ?>assets/images/videochat/videocalll_mob.png"/>
+              <img class="img img-responsive hidden" id="mute_video" src="<?php echo base_url(); ?>assets/images/videochat/videocalll_mob_disable.png" />
+            </span></a>
+          </li>
+        </ul> 
 
 
-    <input type="hidden" name="sender_id" id="sender_id" value="<?php echo $this->session->userdata('applicant_id'); ?>"> 
 
-    <form name="chat_form" id="chat_form" onsubmit="return false;">
-      <div class="message-bar">
-        <div class="message-inner">
-          <a class="link attach-icon" href="#"><i class="fa fa-paperclip" aria-hidden="true"></i></a>
-          <div class="message-area">
-            <input type="text" name="input_message" id="input_message" placeholder="Type message..." class="chat-input" autocomplete="off">
-            <input type="file" name="userfile" id="user_file" class="hidden">             
-            <input type="hidden" id="receiver_id"  name="receiver_id"> 
-            <input type="hidden" id="to_user_id" value="<?php echo base64_decode($this->uri->segment(5)); ?>" name="to_user_id">   <!-- to userid   -->
-            <input type="hidden" name="time" id="time" >
-            <input type="hidden" name="img" id="img" value="<?php echo $img; ?>"> 
+      </div>                                                
+    </div>
+    <!-- Chat Box Start -->
+    <div class="chat-option">
+     <span class="chat-control text-left">
+      <a data-toggle="collapse" data-target=".chat-blk" href="javascript:void(0)">
+        <span class="chat-box-img">
+          <img class="img img-responsive chat-icon" src="<?php echo base_url(); ?>assets/images/videochat/chat_mob.png" />
+        </span>
+        <span class="msg-count current-status"></span>
+        <input type="hidden" id="msg-count" value="0">
+      </a>
+    </span>
+    <div class="chat-blk collapse">
+      <div class="faq-wrapper-chat">                              
+        <div class="panel-group" id="chat-blk">
+          <div class="panel chat-panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">   
+                <span class="chat-show-hide custom-show-hide pull-right">
+                  <a href="javascript:void(0)" class="show-all">Show Message <span class="msg-count-span"></span></a>
+                </span>                        
+                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq-blk" href="#faq1">
+                  <div class="chat-footer">
+                    <div class="message-bar">
+                      <div class="message-inner">
+                        <div class="message-area">
+                          <span><a class="link attach-icon" href="javascript:void(0)" data-toggle="modal" data-target="#drag_files"><img src="<?php echo base_url(); ?>assets/images/attachment.png" alt=""></a></span>
+                          <img src="<?php echo base_url(); ?>assets/images/chat-leftarrow.png" class="img-responsive" alt="" id="close-hide"> 
+                          <input type="hidden" name="sender_id" id="sender_id" value="<?php echo $this->session->userdata('applicant_id'); ?>">
+                          <!-- form -->
+                          <form name="chat_form" id="chat_form" onsubmit="return false;">
+                            <div class="input-group v1-group">
+
+                             <input type="text" class="form-control" placeholder="Type message..." id="input_message" autocomplete="off">
+                             <input type="file" name="userfile" id="user_file" class="hidden">             
+                             <input type="hidden" id="receiver_id"  name="receiver_id"> 
+                             <input type="hidden" id="to_user_id" value="<?php echo base64_decode($this->uri->segment(5)); ?>" name="to_user_id">
+                             <input type="hidden" name="time" id="time" >
+                             <input type="hidden" name="img" id="img" value="<?php echo $img; ?>">
+
+                             <span class="input-group-btn chat-send-ct">
+                              <button class="btn btn-custom chat-send" type="submit">
+                                <img src="<?php echo base_url(); ?>assets/images/send.png" class="img-responsive" ></button>
+                              </span>                                                 
+                            </div>
+                          </form>
+                          <!-- form ends -->
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </h3>
+            </div>
           </div>
-          <a class="link btn btn-default chat-send-btn" href="javascript:void(0)" id="chat-send-btn">Send</a>
-        </div>
+        </div>                        
       </div>
-    </form> 
+    </div>                    
+  </div>
+  <!-- Chat Box end -->
+</div>  
+<div class="videocontrols-mob visible-xs">
+  <ul>
+    <li>
+      <a href="javascript:void();" id="mute_audio1" class="mikemute">
+        <img class="img img-responsive"   src="<?php echo base_url(); ?>assets/images/videochat/mute_mob.png" />
+      </a>
+      <a href="javascript:void();" id="unmute_audio1"  class="mikemute hidden">
+        <img class="img img-responsive"   src="<?php echo base_url(); ?>assets/images/videochat/mute_mob_disable.png" />
+      </a>
+    </li>        
+    <li onclick="delete_channel()">
+      <a href="javascript:void();" >
+        <img class="img img-responsive"   src="<?php echo base_url(); ?>assets/images/videochat/endcall_mob.png" /></a>
+      </li>
+      <li> <a href="javascript:void();" id="unmute_video1" class="vcvideop">
+        <img class="img img-responsive"   src="<?php echo base_url(); ?>assets/images/videochat/videocalll_mob.png" />
+      </a>
+      <a href="javascript:void();" id="mute_video1" class=" vcvideop hidden">
+        <img class="img img-responsive"   src="<?php echo base_url(); ?>assets/images/videochat/videocalll_mob_disable.png" /></a>
+      </li>           
+      <li class="chat_list_mob"> 
+        <a href="javascript:void();" class="mini-chat">
+          <img class="img img-responsive"   src="<?php echo base_url(); ?>assets/images/videochat/chat_mob.png" />
+        </a>
+        <span class="msg-count current-status"></span>
+      </li>
+      <ul>
+      </div> 
+      <!-- chat box mobile -->
+      <div class="chat-box-mob hidden-md hidden-lg">
+        <a class="chat-box-mob-hide hvr-icon-hang">Hide Chat <i class="fa fa-angle-double-down hvr-icon" aria-hidden="true"></i></a>
+        <div class="panel m-b-0" id="chat_box-mob">
+          <div class="panel-heading"> 
+            <div class="user-details">
+              <div class="user-info pull-left openchat"><a href="#"><?php echo $to_user['first_name'].' '.$to_user['last_name'] ?><span class="status online"></span></a></div>
+            </div>
+ <!--      <div class="pull-right chattrash">
+        <a href="javascript:void(0)" onclick="delete_conversation();" title="Delete Chat History"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+      </div>  -->
+      <div class="progress upload-progress hidden">
+        <div class="progress-bar progress-bar-success active progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100" style="width: 100%;">
+         Uploading...  
+       </div>
+     </div>                               
+   </div>
+   <div class="panel-body">
+    <div  class="chat-box-mobcon slimscrollleft chatbox-message mCustomScrollbar">      
+      <div class="chats"></div> 
+    </div>
+  </div>
+
+
+  <div class="panel-footer">
+    <form name="chat_form" id="chat_form1" onsubmit="return false;">
+      <div class="input-group mob-v1-grp">
+        <span class="mob-add-attach"><a class="link attach-icon" href="javascript:void(0)" data-toggle="modal" data-target="#drag_files"><img src="<?php echo base_url(); ?>assets/images/attachment.png" alt=""></a></span>
+        <span class="mob-user-chat">
+          <input type="text" class="form-control" placeholder="Type message..." id="input_message1" autocomplete="off">
+          <input type="file" name="userfile" id="user_file1" class="hidden">             
+          <input type="hidden" id="receiver_id1"  name="receiver_id"> 
+          <input type="hidden" id="to_user_id1" value="<?php echo base64_decode($this->uri->segment(5)); ?>" name="to_user_id">
+          <input type="hidden" name="time" id="time1" >
+          <input type="hidden" name="img" id="img1" value="<?php echo $img; ?>">
+        </span>
+        <span class="input-group-btn chat-send-ct">
+          <button class="btn btn-custom chat-send1" type="submit">
+            <img src="<?php echo base_url(); ?>assets/images/send.png" class="img-responsive" ></button>
+          </span>                                                 
+        </div>
+      </form>                              
+    </div>
   </div>
 </div>
-</div>    
-</div> 
+<!-- chat box mobile -->                                                        
+</div>
+</div>
+</div>
+
 
 <input type="hidden" name="call_id" id="call_id">
 <input type="hidden" name="invite_id" id="invite_id" value="<?php echo $invite_id ?>">
@@ -184,10 +336,79 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
 <input type="hidden" name="date" id="date" value="<?php echo $date; ?>">
 <input type="hidden" name="from_date_time" id="from_date_time" value="<?php echo $from_date_time; ?>">
 <input type="hidden" name="to_date_time" id="to_date_time" value="<?php echo $to_date_time; ?>">
+<input type="hidden" id="currentUserName" value="<?php echo $currentuser['first_name'].' '.$currentuser['last_name']; ?>">
+<div class="chat-users-new">
+  <div class="hvr-icon-forward">
+    <i class="fa fa-angle-double-right hvr-icon" aria-hidden="true"></i>
+  </div>
+  <div align="center" id="muted_image_me" class="muted-img">
+   <img src="<?php echo $img ?>" class="img-responsive">
+   <input type="hidden" name="" id="publisher_image" value="<?php echo $img ?>">
+ </div>         
+ <div class="chat-user-window pull-right" id="outgoing" style="height:250px;width: 350px;">
+ </div>           
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>       
 
 
 
-<script>
+<script type="text/javascript">
+  $(document).ready(function () {
+   
+
+
+   $('.show-all,.mini-chat').click(function(){
+    
+      $('.msg-count-span,.msg-count').html('');
+      $('#msg-count').val(0);
+    
+    
+   });
+
+
+   $(".chat-box-img").click(function(){
+     $(".chat-icon").hide(500);
+   });
+   $("#close-hide").click(function(){
+     $(".chat-blk").collapse("hide").slow;
+     $('.chat-icon').show(500);
+   });
+   //  $("#input_message").focus(function(){
+   //   $(".chat-contents").show();
+   //   $(".chat-show-hide").hide();
+   // });
+   $(".chat-show-hide").click(function(){
+     $(".chat-contents").show();
+     $(".chat-show-hide").addClass('hidden');
+   }); 
+
+   $(".btn-chat-close").click(function(){
+     $(".chat-contents").hide();
+     $(".chat-show-hide").removeClass('hidden');
+   });
+   $('.fa-angle-double-right').click(function () {
+    $(this).toggleClass('fa-angle-double-right fa-angle-double-left');
+  });
+   $('.user-list-icon').on('click', function(event) {        
+    $('.chat-user-list').toggle('show');
+  });
+   $(".chat_list_mob").click(function(){
+    $(".chat-box-mob").removeClass('hidden');
+    $(".chat-box-mob").show('hidden');
+  });
+   $(".chat-box-mob-hide").click(function(){    
+    $(".chat-box-mob").addClass('hidden');
+    $(".chat-box-mob").hide('hidden');
+  });
+   $('.fa-angle-double-right').click(function() {
+    $('.chat-user-window').toggle('1000');
+    $("i", this).toggleClass("fa-angle-double-right fa-angle-double-left");
+  });
+ });
 
    // Get old Messages from database
 
@@ -205,10 +426,10 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
                      icon: 'error'
                    });           
                    setTimeout(function() {
-                   window.location.href="<?php echo base_url();?>user/logout";
+                     window.location.href="<?php echo base_url();?>user/logout";
                    }, 1000);                  
                    
-                    return false;                                  
+                   return false;                                  
                  }
 
 
@@ -229,15 +450,13 @@ $imge = ($imge1 != '') ? $imge1 : base_url() . 'assets/images/default-avatar.png
                   }
 
                 });
-                interval();
+                  interval();
                 });
 
 
+       function interval(){
 
-
-function interval()
-{
-      // Call Validate here 
+              // Call Validate here 
 
                 setInterval(function(){
 
@@ -250,9 +469,6 @@ function interval()
         var after_fifteen_minutes = new Date('<?php echo date("Y-m-d H:i:s",strtotime("+15 minutes",strtotime($to_date_time))); ?>'); 
 
 
-        // console.log(before_fifteen_minutes);
-         //console.log(after_fifteen_minutes);
-        // console.log(current_date_time);
 
           if(current_date_time > to_date_time){  // Nofity before fifteen minutes             
 
@@ -263,7 +479,7 @@ function interval()
             var seconds = parseInt(diff.asSeconds());
             var days = parseInt(diff.asDays());  // Remaining days 
             var hours = parseInt(diff.asHours()); 
-              var seconds = diff._data.seconds;
+            var seconds = diff._data.seconds;
             hours = hours - days*24;  // Remaining Hours 
             var minutes = parseInt(diff.asMinutes()); 
             remainin_minutes_end = minutes - (days*24*60 + hours*60); //Remaning Minutes 
@@ -280,59 +496,56 @@ function interval()
                type: "error" ,
                icon: 'error'
              });     
-             setTimeout(function() {
-              var url = $('#url').val();      
-              window.open(url, '_self', ''); 
-              window.close();     
-             }, 1000);       
-                      
+              setTimeout(function() {
+                var url = $('#url').val();      
+                window.open(url, '_self', ''); 
+                window.close();     
+              }, 1000);       
+
             }
           }
         },1000);
-}
+    }
 
 
 
 
-       
+    $(".vcfullscreen").click(function(){
+      $(".vcheader, .vcmsg, .vccolsmall, .message-bar").toggle();
+      $(".vccollarge").toggleClass("vccollargefull");
+      $(this).toggleClass("vcfullscreenalt");
+      if($(".vccollarge").hasClass("vccollargefull")){
+        $(".vccollarge").css('height',$(window).height());
+      } else{
+        $(".vccollarge").css('height','auto');
+      }
+    });
+
+
+    // $(".video-background").click(function(){
+    //   $(this).toggleClass("video-backgroundalt");
+    // });
+    $('.attach-icon').click(function(){
+      $('#user_file').click();
+    });
 
 
 
-                 
+
+
 
  // Fetching Time 
  function clock() {
   var time = new Date();
 
   time = time.toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true });
-  $('#time').val(time);
+  $('#time,#time1').val(time);
   setTimeout('clock()',1000);
 }
 clock();
 
 
-// Full screen on click 
 
-$(".vcfullscreen").click(function(){
-  $(".vcheader, .vcmsg, .vccolsmall, .message-bar").toggle();
-  $(".vccollarge").toggleClass("vccollargefull");
-  $(this).toggleClass("vcfullscreenalt");
-  if($(".vccollarge").hasClass("vccollargefull")){
-    $(".vccollarge").css('height',$(window).height());
-  } else{
-    $(".vccollarge").css('height','auto');
-  }
-});
-
-
-
-
-$(".videoinner").click(function(){
-  $(this).toggleClass("videoinneralt");
-});
-$('.attach-icon').click(function(){
-  $('#user_file').click();
-});
 
   // Onchange file upload 
 
@@ -392,7 +605,116 @@ $('.attach-icon').click(function(){
           '</div>'+
           '</div>'+
           '</div>';
-          $('#ajax').append(content); 
+          $('.new_ajax').append(content); 
+
+          $(".slimscrollleft.chats").mCustomScrollbar("update");
+          $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
+
+
+          // Get the messageClient
+          var messageClient = sinchClient.getMessageClient(); 
+          // Create a new Message
+          var message = messageClient.newMessage(to_username,'file');
+          // Send it
+          messageClient.send(message); 
+          $(".slimscrollleft.chats").mCustomScrollbar("update");
+          $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
+          setTimeout(function() {
+            $(".slimscrollleft.chats").mCustomScrollbar("update");
+            $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+            $(".slimscrollleft.chats").mCustomScrollbar("update");
+            $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+            $(".slimscrollleft.chats").mCustomScrollbar("update");
+            $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+
+          }, 3000);
+          setTimeout(function() {
+            $(".slimscrollleft.chats").mCustomScrollbar("update");
+            $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+            $(".slimscrollleft.chats").mCustomScrollbar("update");
+            $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+            $(".slimscrollleft.chats").mCustomScrollbar("update");
+            $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom");  
+
+          }, 1000);
+
+
+        },
+        error: function(data){
+
+          alert('error');
+
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+
+      }); 
+            return false; 
+
+
+
+          }); 
+
+           // Onchange file upload 
+
+           $('#user_file1').change(function(e) {   
+             e.preventDefault();   
+   var oFile = document.getElementById("user_file1").files[0]; // <input type="file" id="fileUpload" accept=".jpg,.png,.gif,.jpeg"/>
+            if (oFile.size > 25097152) // 25 mb for bytes.
+            {
+              swal(
+                'Warning!',
+                'File size must under 25MB!',
+                'warning'
+                );
+
+              return false;
+            }
+            var formData = new FormData($('#chat_form1')[0]);
+            $.ajax({
+              url: '<?php echo base_url();?>upload/upload_files',
+              type: 'POST',
+              data: formData,
+              beforeSend :function(){
+               $('.progress').removeClass('hidden');
+               $('.progress').css('display','block');
+             }, 
+
+             success: function(res) {  
+
+              $('.progress').addClass('hidden'); 
+              var obj = jQuery.parseJSON(res);
+              if(obj.error){
+               swal(
+                'Warning!',
+                obj.error,
+                'warning'
+                );
+               $('#user_file1').val('');
+               return false;
+             }                 
+          // $("#progress-bar").width('0%');                  
+          var to_username = $('#call_to1').val();
+          var img = $('#img1').val();
+          var time = $('#time1').val();
+
+
+          var content ='<div class="chat chat-left">'+
+          '<div class="chat-avatar">'+
+          '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="">'+
+          '<img alt="" src="'+img+'" class="img-responsive img-circle">'+
+          '</a>'+
+          '</div>'+
+          '<div class="chat-body">'+
+          '<div class="chat-content">'+
+          '<p><img alt="" src="'+base_url+'/'+obj.img+'" class="img-responsive"></p>'+
+          '<a href="'+base_url+'/'+obj.img+'" target="_blank" download>Download</a>'+
+          '<span class="chat-time">'+time+'</span>'+
+          '</div>'+
+          '</div>'+
+          '</div>';
+          $('.new_ajax').append(content); 
 
           $(".slimscrollleft.chats").mCustomScrollbar("update");
           $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
@@ -446,14 +768,77 @@ $('.attach-icon').click(function(){
 
 
 
+           $('.chat-send1').click(function(){
 
-  $(".chat-box.slimscrollleft").mCustomScrollbar({
+             var time = $('#time1').val();
+             var img = $('#img1').val();
+             var input_message = $.trim($('#input_message1').val());
 
-    theme:"minimal"
+             if(input_message!=''){
+               var content ='<div class="chat">'+
+               '<div class="chat-avatar">'+
+               '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="June Lane">'+
+               '<img  src="'+img+'" class="img-responsive img-circle">'+
+               '</a>'+
+               '</div>'+
+               '<div class="chat-body">'+
+               '<div class="chat-content">'+
+               '<p>'+input_message+
+               '</p>'+
+               '<span class="chat-time">'+time+'</span>'+
+               '</div>'+
+               '</div>'+
+               '</div>';
+               $('.new_ajax').append(content);               
+               $(".slimscrollleft.chats").mCustomScrollbar("update");
+               $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
+               message1();
+               $('#chat_form1')[0].reset();
+             }
+             return false;   
+           });
 
-  });     
 
-  $('.chat-send-btn').click(function(){
+  // Submitting the chat form 
+  $('#chat_form1').submit(function(){
+
+    var time = $('#time1').val();
+    var img = $('#img1').val();
+    var input_message = $.trim($('#input_message1').val());
+    if(input_message!=''){
+     var content ='<div class="chat">'+
+     '<div class="chat-avatar">'+
+     '<a title="" data-placement="right" href="#" data-toggle="tooltip" class="avatar" data-original-title="June Lane">'+
+     '<img  src="'+img+'" class="img-responsive img-circle">'+
+     '</a>'+
+     '</div>'+
+     '<div class="chat-body">'+
+     '<div class="chat-content">'+
+     '<p>'+input_message+
+     '</p>'+
+     '<span class="chat-time">'+time+'</span>'+
+     '</div>'+
+     '</div>'+
+     '</div>';
+     $('.new_ajax').append(content);               
+     $(".slimscrollleft.chats").mCustomScrollbar("update");
+     $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
+     message1();
+     $('#chat_form1')[0].reset();
+
+   }
+   return false;
+ });
+
+
+
+
+
+
+
+
+
+  $('.chat-send').click(function(){
 
    var time = $('#time').val();
    var img = $('#img').val();
@@ -474,7 +859,7 @@ $('.attach-icon').click(function(){
      '</div>'+
      '</div>'+
      '</div>';
-     $('#ajax').append(content);               
+     $('.new_ajax').append(content);               
      $(".slimscrollleft.chats").mCustomScrollbar("update");
      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
      message();
@@ -505,7 +890,7 @@ $('.attach-icon').click(function(){
      '</div>'+
      '</div>'+
      '</div>';
-     $('#ajax').append(content);               
+     $('.new_ajax').append(content);               
      $(".slimscrollleft.chats").mCustomScrollbar("update");
      $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
      message();
@@ -515,64 +900,77 @@ $('.attach-icon').click(function(){
    return false;
  });
 
-$('.overlay').show();
-sinchClient = new SinchClient({
-  applicationKey: 'f06ae4f2-4980-40aa-89ca-9b98d80d70c4',
 
-  capabilities: {calling: true, messaging: true, multiCall: true},
-  supportActiveConnection: true,
-  onLogMessage: function(message) {
-    if(message.code == 4000)
-    {
-      var signInObj = {};
-      signInObj.username = $('#sinch_username').val();
-      signInObj.password = $('#sinch_username').val();
-      sinchClient.start(signInObj, function() {
-        global_username = signInObj.username;
-        localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
+
+
+
+  $(".chat-box.slimscrollleft").mCustomScrollbar({
+
+    theme:"minimal"
+
+  });  
+
+
+  // $('.overlay').show();
+  sinchClient = new SinchClient({
+    applicationKey: 'f06ae4f2-4980-40aa-89ca-9b98d80d70c4',
+
+    capabilities: {calling: true, video: true, messaging: true, multiCall: true},
+    supportActiveConnection: true,
+    onLogMessage: function(message) {
+      if(message.code == 4000)
+      {
+        var signInObj = {};
+        signInObj.username = $('#sinch_username').val();
+        signInObj.password = $('#sinch_username').val();
+        sinchClient.start(signInObj, function() {
+          global_username = signInObj.username;
+          localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
                     //window.location = base_url+"dashboard?notify=true";
                   }).fail(handleError);
-    }
-
-   // $('.new_call').html(message.message);
+      }
+    //$('.new_call').html(message.message);
     var status = message.message;
 
 
     if(status == 'Injecting ICE candidate directly' || status == 'Call established'){        
-      $('.new_call').addClass('alert').addClass('alert-success').html('Connected');
+      // $('.new_call').addClass('alert').addClass('alert-success').html('Connected');
       $('.overlay').hide();
-      update_log();
+      setTimeout(function() {
+        update_log();
+      }, 2000);
+      
     }
     if(status == 'Successfully started SinchClient'){
-       $('.new_call').html('Connecting...');
+     // $('.new_call').html('Connecting...');
 
-       $('.overlay').hide();
-     }else if(status == 'Call ended'){
-       $('.new_call').removeClass('alert').removeClass('alert-success').html('');
+     $('.overlay').hide();
+   }else if(status == 'Call ended'){
+     // $('.new_call').removeClass('alert').removeClass('alert-success').html('');
          // window.location.reload();
        }
 
 
 
      },onLogMxpMessage: function(message) {
-      $('.new_call').html(message.message);
+      // $('.new_call').html(message.message);
     }
   });
 
-if(typeof localStorage[sessionName] == 'undefined'){
-  
+  if(typeof localStorage[sessionName] == 'undefined'){
+
    sinchClient.startActiveConnection();
-}
+ }
 
 
-/*** Name of session, can be anything. ***/
+ /*** Name of session, can be anything. ***/
 
-var sessionName = 'sinchSessionVIDEO-' + sinchClient.applicationKey;
+ var sessionName = 'sinchSessionVIDEO-' + sinchClient.applicationKey;
 
-/*** Check for valid session. NOTE: Deactivated by default to allow multiple browser-tabs with different users. ***/
+ /*** Check for valid session. NOTE: Deactivated by default to allow multiple browser-tabs with different users. ***/
 
-var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
-if(sessionObj.userId) { 
+ var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
+ if(sessionObj.userId) { 
   sinchClient.start(sessionObj)
   .then(function() {
     global_username = sessionObj.userId;    
@@ -593,17 +991,31 @@ else {
   }).fail(handleError);
 }
 
+
+
 function update_log()
 {
-  var invite_id = $('#invite_id').val();
-  var to_user_id =$('#to_user_id').val();
-  var time =$('#time').val();
 
-  $.post('<?php echo base_url(); ?>user/delete_channel',{            
-   invite_id:invite_id,
-   to_user_id :to_user_id,
-   time :time,
- },function(res){
+  var d = new Date(); // for now
+var h = d.getHours(); // => 9
+var m  = d.getMinutes(); // =>  30
+var s = d.getSeconds(); // => 51
+
+
+var call_ended_at = h+':'+m+':'+s;   
+
+var invite_id = $('#invite_id').val();
+var to_user_id =$('#to_user_id').val();
+var time =$('#time').val();
+var start_time = $('#call_started_at').val();
+
+$.post('<?php echo base_url(); ?>user/delete_channel',{            
+ invite_id:invite_id,
+ to_user_id :to_user_id,
+ start_time : start_time,
+ end_time:call_ended_at,
+ call_status : 0
+},function(res){
   $('.new_call').removeClass('alert').removeClass('alert-success').html('');  
 }); 
 }
@@ -634,7 +1046,7 @@ function load_more(total){
   $.post(base_url+'user/get_old_messages',{selected_user_id:selected_user_id,total:total},function(res){  
     if(res){        
      $('.load-more-btn').html('<button class="btn btn-default" data-page="2"><i class="fa fa-refresh"></i> Load More</button>');               
-     $('#ajax_old').prepend(res);
+     $('.ajax_old').prepend(res);
    }else{
      $('.load-more-btn').html('<button class="btn btn-default">Thats all!</button>');
    }
@@ -642,12 +1054,25 @@ function load_more(total){
 }
 
 
-function join_call(){
-
-
+function delete_channel(){
+  var invite_id = $('#invite_id').val();
+  $.post('<?php echo base_url(); ?>chat/delete_channel',{invite_id:invite_id},function(res){
+    window.close();
+  });
+}
+function update_channel(){
+  $('#call_btn,#unmute_audio1,#mute_video1').addClass('hidden');
+  $('#end_btn,.new_call,#unmute_video1').removeClass('hidden');
+  
+  
+  // $('.new_call').html('Ringing..');
+  $('audio#ringtone').trigger("play");
+  $('.vccall').addClass('hidden');
   var call_to = $('#call_to').val();
   var channel = $('#channel').val();
+  var invite_id = $('#invite_id').val();
   var url = $('#url').val();
+
   var invite_id = $('#invite_id').val();
   $.post('<?php echo base_url(); ?>chat/update_channel',
   {            
@@ -655,209 +1080,268 @@ function join_call(){
     channel : channel,
     invite_id : invite_id,
     url:url,
-    type:'audio'
+    status:1,
+    type:'audio'   
   },function(res){
-   // console.log(res);
-   $('#call_id').val(res);
- });
+    console.log(res);  
+  });
 
-
-
-
-  $('#disconnected').html('');
-  var channel = $('#channel').val();
-  var remoteCalls = []; 
-  var callClient = sinchClient.getCallClient();
-  var groupCall = callClient.callGroup(channel);
-
-
-
-
-  groupCall.addEventListener({
-  
-    onGroupLocalMediaAdded: function(stream) {
-
-
-     console.log(stream);
- // Muting the mike after connecting connected stream 
-
- $('.vcmike').click(function(){
-  if($(this).hasClass('active')){
-    $(this).removeClass('active');        
-  }else{
-    $(this).addClass('active');
-  }
-});
-
-
- $('#disconnected').html('');
- $('video#me').attr('src', window.URL.createObjectURL(stream));
- $("video#me").prop("volume", 0);
-
- $('.vcmike').click(function(){
-  if($(this).hasClass('active')){
-    $(this).removeClass('active');
-    stream.getAudioTracks()[0].enabled = false; 
-  }else{
-    $(this).addClass('active');
-    stream.getAudioTracks()[0].enabled = true; 
-
-  }
-});
-
- $('.vcvideop').click(function(){         
-  if($(this).hasClass('active')){
-    $(this).removeClass('active');                
-    stream.getVideoTracks()[0].enabled = true; 
-    $('#muted_image_me').hide();
-     muting_video(1);        
-  }else{
-    $(this).addClass('active');        
-    stream.getVideoTracks()[0].enabled = false; 
-    $('#muted_image_me').show();
-     muting_video(0);
-  }
-  //console.log(stream);
-});
-
-},
-  onGroupRemoteCallAdded: function(call) {
-     //console.log(call);
-
-    // muting the mike here 
-    $('.vcmike').click(function(){
-      if($(this).hasClass('active')){
-        $(this).removeClass('active');
-        call.unmute();
-      }else{
-        $(this).addClass('active');
-        call.mute();
-      }
-    });
-    $('#disconnected').html('');
-    remoteCalls.push(call);
-    var callIdx = remoteCalls.indexOf(call);
-    $('video#other'+callIdx).attr('src', call.incomingStreamURL);
-    $('#disconnected').html('');
-      $('#cut').click(function(){
-       call.hangup();
-     });
-
-
-
-    },
-onGroupRemoteCallRemoved: function(call) {
-
-    //console.log(call);
-    $('.vcmike').removeClass('active');
-    $('#disconnected').html('Call disconnected!');
-    var callIdx = remoteCalls.indexOf(call);   
-    remoteCalls.splice(callIdx, 1);
-    $('video[id^=other]').attr('src', function(index) {
-      $('video#other'+index).attr('src', (remoteCalls[index] || {}).incomingStreamURL || '');
-    });   
-    var invite_id = $('#invite_id').val();
-    var to_user_id =$('#to_user_id').val();      
-    var start_time = call.timeEstablished;
-    var end_time = call.timeEnded;
-    var start_time = new Date(start_time);
-    var end_time = new Date(end_time);
-    var start_time = start_time.toLocaleString();
-    var end_time = end_time.toLocaleString();   
-
-
-
-    $.post('<?php echo base_url() ?>user/insert_log',{
-      invite_id :invite_id,
-      to_user_id :to_user_id,
-      start_time :start_time,
-      end_time :end_time 
-    },function(res){
-
-    });
-  },
-});
 
 }
 
 
+function join_call(){
 
-/*** Set up callClient and define how to handle incoming calls ***/
+  //return false;
+  var call_to = $('#call_to').val();
+  var channel = $('#channel').val();
+  var url = $('#url').val();
 
-var callClient = sinchClient.getCallClient();
+  var invite_id = $('#invite_id').val();
+  $.post('<?php echo base_url(); ?>chat/update_channel',
+  {            
+    call_to:call_to,
+    channel : channel,
+    invite_id : invite_id,
+    url:url,
+    type:'audio'    
+  },function(res){
+    var obj = jQuery.parseJSON(res);
+    if(obj.error){
+      swal({ 
+       title: "Oops!",
+       text: "User already in call!",
+       type: "error" ,
+       icon: 'error'
+     });     
+
+      setTimeout(function() {
+        var url = $('#url').val();      
+        window.open(url, '_self', ''); 
+        window.close();     
+      }, 2000); 
+      return false;
+    }
+
+    if(obj.new_call == true){      
+
+      $('.new_call').removeClass('hidden');
+      $('audio#ringtone').trigger("play");
+    }
 
 
-
-var call;
-
-callClient.addEventListener({
-  onIncomingCall: function(incomingCall) {
-    // console.log('incoming call');
-     console.log(incomingCall);    
-  }
-});
-
-/*** Define listener for managing calls ***/
-
-var callListeners = {
-  onCallProgressing: function(call) {
-    console.log(call);   
-    // $('#disconnected').html('');        
-    // console.log('call progressing');
-  },
-  onCallEstablished: function(call) {    
-    var callDetails = call.getDetails();
-    console.log(call);   
-    // console.log('call establish')
-    // console.log(callDetails);  
-
-  },
-  onCallEnded: function(call) {
-    console.log(call);   
-
-    $('#disconnected').html('Call disconnected!');
-    var callDetails = call.getDetails();
-   // console.log('call ended');
-   // console.log(callDetails);  
-
- }
+// start 
+var apiKey = obj.apiKey;    
+var sessionId = obj.sessionId;   
+var token = obj.token;
+var currentUserName = $('#currentUserName').val();
+var publisherOptions = {      
+  insertMode: 'append',
+  width: '100%',
+  height: '100%',      
+  name: currentUserName,
+  style: { nameDisplayMode: "on" },
+  publishVideo :false
 };
 
 
-setTimeout(function() {
-  $('#other0').hide();
-  join_call();
-}, 5000);
+var session = OT.initSession(apiKey, sessionId);
+/*Initialize the publisher*/  
+var publisher = OT.initPublisher('outgoing', publisherOptions, handleError);    
+$('.vcend,.vcvideop,.mikemute').removeClass('hidden'); 
+$('#muted_image_me,.vccall,#unmute_audio1,#unmute_video1').addClass('hidden');
+$('#mute_audio,#unmute_video,#mute_audio1,#mute_video1,#end_btn').removeClass('hidden');
 
 
+
+var publisher_image = $('#publisher_image').val();
+    // Connect to the session
+    session.connect(token, function callback(error) {
+      if (error) {
+        handleError(error);
+      } else {
+    // If the connection is successful, publish the publisher to the session
+    session.publish(publisher, handleError);
+
+    // if (publisher.stream.hasVideo) {
+    //   var imgData = publisher.getImgData();
+    //   publisher.setStyle('backgroundImageURI', publisher_image);
+    // } else {
+    //   publisher.setStyle('backgroundImageURI', publisher_image);
+    // }
+
+
+  }
+});
+
+
+     // Subscribe to a newly created stream
+     session.on('streamCreated', function streamCreated(event) {
+      var subscriberOptions = {
+        insertMode: 'append',
+        width: '100%',
+        height: '100%'
+      };
+      $('.new_call').addClass('hidden');
+      $('audio#ringtone').trigger("pause");
+      $('#muted_image').addClass('hidden');
+      $('#call_started_at').val("<?php echo date('H:i:s') ?>");
+      $('#call_btn').addClass('hidden');
+      $('#end_btn').removeClass('hidden');
+      var subscriber_image = $('#subscriber_image').val();
+      var subscriber = session.subscribe(event.stream, 'video-background', subscriberOptions, handleError);
+
+      if (subscriber.stream.hasVideo) {
+        var imgData = subscriber.getImgData();
+        subscriber.setStyle('backgroundImageURI', subscriber_image);
+      } else {
+        subscriber.setStyle('backgroundImageURI', subscriber_image);
+      }       
+      /* Update Call status */
+      $.post('<?php echo base_url(); ?>chat/update_call_status',{call_status:1},function(res){
+
+      });
+    });
+
+
+
+     session.on("streamDestroyed ", function streamDestroyed (event) {
+      //console.log(event);
+      update_log();
+
+
+      $('.vccall,#muted_image,#call_btn,#end_btn').removeClass('hidden');      
+
+    });
+
+
+     $('.vcvideop').click(function(){         
+      if($(this).hasClass('active')){
+        $('.vcvideop').removeClass('active'); 
+        $('#mute_video,#mute_video1').addClass('hidden');
+        $('#unmute_video,#unmute_video1').removeClass('hidden');                
+        publisher.publishVideo(true);         
+      }else{
+        $('.vcvideop').addClass('active'); 
+        $('#mute_video,#mute_video1').removeClass('hidden');
+        $('#unmute_video,#unmute_video1').addClass('hidden');
+        publisher.publishVideo(false);
+      }
+        //console.log(stream);
+      });  
+
+     $('.mikemute').click(function(){         
+      if($(this).hasClass('active')){
+        $('#mute_audio,#mute_audio1').removeClass('hidden');         
+        $('#unmute_audio,#unmute_audio1').addClass('hidden');
+        $('.mikemute').removeClass('active');                 
+        publisher.publishAudio(true);         
+      }else{
+        $('#mute_audio,#mute_audio1').addClass('hidden');
+        $('#unmute_audio,#unmute_audio1').removeClass('hidden');         
+        $('.mikemute').addClass('active');                                
+        publisher.publishAudio(false);
+      }
+        //console.log(stream);
+      }); 
+
+       // Stop 
+
+
+
+      // $('#call_id').val(res);
+    });
+
+
+
+ $('#disconnected').html('');
+ var channel = $('#channel').val();
+
+
+ setInterval(function() {     
+  var invite_id = $('#invite_id').val();
+  $.post('<?php echo base_url(); ?>chat/mute_ringing',
+  {           
+    invite_id : invite_id    
+  },function(res){      
+
+
+    var obj  = jQuery.parseJSON(res);    
+    if(obj.session == 1){
+      $('.new_call').html('');
+      $('audio#ringtone').trigger("pause");
+      $('.notification').html('Call not responded!');
+      $('.vccall').removeClass('hidden');
+      setTimeout(function() {
+        $('.notification').html('');
+      }, 2000);        
+    }else if(obj.session == 0 ) {
+      $('.new_call').html('');
+      $('audio#ringtone').trigger("pause");
+      $('.notification').html('Call rejected!');
+      $('.vccall').removeClass('hidden');
+      setTimeout(function() {
+        $('.notification').html('');
+      }, 2000);        
+    }        
+  });
+}, 25000);
+
+}
+
+join_call();
+
+
+$('input').keyup(function(){
+  $('.msg-count').html('');
+  $('#msg-count').val(0);
+});
 
 function muting_video(status){
 
   if(status  == 0){
-   var msg = 'ENABLE_STREAM';       
+    var msg = 'ENABLE_STREAM';       
 
- }else{
-   var msg = 'DISABLE_STREAM';
- }
+  }else{
+    var msg = 'DISABLE_STREAM';
+  }
 
 
- var to_username = $('#call_to').val();
- var sender_id = $('#sender_id').val();
- var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
+  var to_username = $('#call_to').val();
+  var sender_id = $('#sender_id').val();
+  var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
+          // Get the messageClient
+          var messageClient = sinchClient.getMessageClient(); 
+          // Create a new Message
+          var message = messageClient.newMessage(to_username, msg);
+          // Send it
+          messageClient.send(message);
+
+
+        }
+
+
+        function message()
+        {
+         var msg = $.trim($('#input_message').val());
+         var to_username = $('#call_to').val();
+         var sender_id = $('#sender_id').val();
+         var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
         // Get the messageClient
         var messageClient = sinchClient.getMessageClient(); 
         // Create a new Message
         var message = messageClient.newMessage(to_username, msg);
         // Send it
         messageClient.send(message);
+        $.post(base_url+'chat/insert_chat',{to_username:to_username,input_message:msg},function(response){
 
+        });
 
-      }
+      }  
 
-
-      function message()
+      function message1()
       {
-       var msg = $.trim($('#input_message').val());
+       var msg = $.trim($('#input_message1').val());
        var to_username = $('#call_to').val();
        var sender_id = $('#sender_id').val();
        var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
@@ -881,40 +1365,22 @@ function muting_video(status){
       },
       onIncomingMessage: function(message) {
 
-
-       if(message.direction==true){
-
-        if( message.textBody =='ENABLE_STREAM'){              
-          $('#muted_image_me').show();
-          return false; 
-        }
-        if(message.textBody =='DISABLE_STREAM'){
-         $('#muted_image_me').hide();               
-         return false;
-       }
-     }
+       
 
 
      if(message.direction==false){
 
-      if( message.textBody =='ENABLE_STREAM'){
-        $('#other0').hide();
-        $('#muted_image').show();
-        return false; 
-      }
-      if(message.textBody =='DISABLE_STREAM'){
-       $('#muted_image').hide();
-       $('#other0').show();
-       return false;
-     }
-
-
-        var to_username = $('#call_to').val();     // sender username     
-
+          var to_username = $('#call_to').val();     // sender username     
         if(to_username == message.recipientIds[0] || to_username == message.recipientIds[1]){
 
 
-
+          var msg_count = $('#msg-count').val();
+         var total_msg_count = Number(msg_count) + 1 ;  
+         if(!$('.chat-show-hide').hasClass('hidden')){ 
+         $('#msg-count').val(total_msg_count);      
+         $('.msg-count').text(total_msg_count);
+         $('.msg-count-span').text('('+total_msg_count+')');
+        }
           $.post(base_url+'chat/get_image',{to_username:message.senderId},function(res){ 
             var obj = jQuery.parseJSON(res);
             // console.log(obj);
@@ -945,7 +1411,7 @@ function muting_video(status){
              '</div>'+
              '</div>'+
              '</div>';
-             $('#ajax').append(content); 
+             $('.new_ajax').append(content); 
 
              $(".slimscrollleft.chats").mCustomScrollbar("update");
              $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
@@ -983,7 +1449,7 @@ function muting_video(status){
              '</div>'+
              '</div>'+
              '</div>';
-             $('#ajax').append(content); 
+             $('.new_ajax').append(content); 
 
              $(".slimscrollleft.chats").mCustomScrollbar("update");
              $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
@@ -1024,7 +1490,7 @@ function muting_video(status){
             '</div>'+
             '</div>'+
             '</div>';
-            $('#ajax').append(content); 
+            $('.new_ajax').append(content); 
             $(".slimscrollleft.chats").mCustomScrollbar("update");
             $(".slimscrollleft.chats").mCustomScrollbar("scrollTo", "bottom"); 
             setTimeout(function() {
@@ -1066,7 +1532,29 @@ function muting_video(status){
 };
 messageClient.addEventListener(myListenerObj);
 
- </script>
+function handleError(error){
+  console.log(error);
+}
 
- </body>
- </html> 
+</script>  
+<script>
+
+
+  $(".chat-show-hide").click(function(){
+   if ($(window).width() < 767) {
+    $("#outgoing").hide();
+  } 
+
+});
+  $(".show-chat-header").click(function(){
+   if ($(window).width() < 767) {
+    $("#outgoing").show();
+  } 
+
+});
+</script>
+<script type="text/javascript">
+
+</script>   
+</body>
+</html>

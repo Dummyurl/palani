@@ -16,19 +16,38 @@
     }
         $img = ($img1 != '') ? $img1 : base_url() . 'assets/images/default-avatar.png';
      ?>   
-<a href="<?php echo base_url(); ?>applicants-profile/<?php echo $guru_list['username']; ?>" class="guru-list">
+<a href="<?php echo base_url(); ?>mentee-profile/<?php echo $guru_list['username']; ?>" class="guru-list">
                 <div class="row">
-                        <div class="col-sm-3 col-xs-4">
-                                <div class="guru-details text-center">
-                                    <?php $city = ($guru_list['city'] != '') ? $guru_list['city'] : ""; ?>
-                                    <?php $countryname = ($guru_list['country_name'] != '' && $guru_list['city'] != '') ? ', '.$guru_list['country_name'] : $guru_list['country_name']; ?>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                                <div class="guru-details text-center">                                   
                                         <div class="guru-img"><img src="<?php echo $img; ?>" height="100" width="100" alt="Guru" class="img-circle"></div>
                                         <div class="guru-name"><?php echo $guru_list['first_name']." ".$guru_list['last_name']; ?></div>
-                                        <div class="guru-country"><?php echo $city.$countryname; ?></div>
+                                        <div class="guru-country"><?php echo $guru_list['country']; ?></div>
                                 </div>
                         </div>
-                        <div class="col-sm-9 col-xs-8">
-                                <p><?php echo $guru_list['applicant_personal_mess']; ?></p>
+                        <div class="col-lg-10 col-md-9 col-xs-8">
+                                <p><?php echo $guru_list['mentor_personal_message']; ?></p>
+                                <div class="subject">Courses :                                                              <?php 
+                                $where  = array('mentor_id'=>$guru_list['mentor_id']);
+                                $courses = $this->db
+                                                ->select('c.course')                                                
+                                                ->join('courses c','c.course_id = m.course_id')
+                                                ->join('subject s','s.subject_id = c.subject_id')
+                                                ->get_where('mentor_course_details m',$where)
+                                                ->result_array(); 
+                                                $subs=array();
+                                    if(!empty($courses)){
+                                        foreach($courses as $s){
+                                            $subs[]=$s['course'];
+                                        }
+                                        $course = implode(',',$subs);
+                                        
+                                    }else{
+                                        $course = '-';
+                                    }
+                                    echo $course;
+                                ?>
+                            </div> 
                                 <span class="read-more">Read More <i class="fa fa-angle-right" aria-hidden="true"></i></span>
                         </div>
                 </div>
@@ -39,5 +58,5 @@
            <button class="btn btn-default loadmore-applicant" data-page="<?php echo $loadcount; ?>"><i class="fa fa-refresh"></i> Load More</button>
         </div>
 <?php else: ?>
-        <div class="load-more-btn text-center">No More Applicants</div>
+        <div class="load-more-btn text-center">No More Mentees</div>
 <?php endif; ?>

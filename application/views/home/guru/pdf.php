@@ -2,7 +2,6 @@
 
 
 $this->load->library('mpdf');
-
                     $mpdf = new mPDF('P',  // mode - default ''
                          'A4',    // format - A4, for example, default ''
                          0,     // font size - default 0
@@ -15,7 +14,10 @@ $this->load->library('mpdf');
                          9,     // margin footer
                          'L');  //
 
-                    $profile_img = '';
+
+
+                    foreach($payment_details as $payments)
+                      $profile_img = '';
                     if(isset($payments['profile_img'])&&!empty($payments['profile_img'])){
                       $profile_img = $payments['profile_img'];
                     }  
@@ -35,18 +37,7 @@ $this->load->library('mpdf');
                     }
 
                     $img = ($img1 != '') ? $img1 : base_url() . 'assets/images/default-avatar.png';
-                    $invoice_no = 'I000'.$payments['payment_id'];
-                    $payment_date = date('d-m-Y',strtotime($payments['payment_date']));
-                    $payment_time = date('h:i A',strtotime($payments['payment_date']));
-                    $total = $payments['earned'];
-                    $total-- ;
-
-
-                    if($payments['calls']==1){
-                      $hours=$payments['calls'].' hour'; 
-                    }else{
-                      $hours=$payments['calls'].' hours'; 
-                    }
+                    $invoice_no = $payments['invoice_no'];
 
 
 
@@ -61,15 +52,15 @@ $this->load->library('mpdf');
                     <style type="text/css">
                     @font-face {
                       font-family: "lato";
-                      src: url("http://school-guru.com/assets/fonts/lato-regular-webfont.woff2") format("woff2"),
-                      url("http://school-guru.com/assets/fonts/lato-regular-webfont.woff") format("woff");
+                      src: url("'.base_url().'assets/fonts/lato-regular-webfont.woff2") format("woff2"),
+                      url("'.base_url().'assets/fonts/lato-regular-webfont.woff") format("woff");
                       font-weight: 400;
                       font-style: normal;
                     }
                     @font-face {
                       font-family:"lato";
-                      src: url("http://school-guru.com/assets/fonts/lato-semibold-webfont.woff2") format("woff2"),
-                      url("http://school-guru.com/assets/fonts/lato-semibold-webfont.woff") format("woff");
+                      src: url("'.base_url().'assets/fonts/lato-semibold-webfont.woff2") format("woff2"),
+                      url("'.base_url().'assets/fonts/lato-semibold-webfont.woff") format("woff");
                       font-weight: 600;
                       font-style: normal;
                     }
@@ -92,7 +83,7 @@ $this->load->library('mpdf');
                     <td><h2 style="font-family:lato;font-size:24px; color:#4f4f4f; line-height:24px; margin:0 0 10px; padding:0; font-weight:400;">#'.$invoice_no.'</h2></td>
                     </tr>
                     <tr>
-                    <td><h3 style="font-family:lato;font-size:13px; color:#808080; line-height:13px; margin:0 0 5px; padding:0; font-weight:400;">Date: 17-11-2017</h3></td>
+                    <td><h3 style="font-family:lato;font-size:13px; color:#808080; line-height:13px; margin:0 0 5px; padding:0; font-weight:400;">Date: '.date('d-m-Y').'</h3></td>
                     </tr>
                     </table>
                     </td>
@@ -100,55 +91,73 @@ $this->load->library('mpdf');
                     <td style="padding:70px;"></td>
                     <td style="padding:70px;"></td>        
                     <td style="padding:40px;"></td>        
-                    <td><img src="https://www.dreamguys.co.in/display/schoolguruhtml/images/schoolguru-logo-emailtemplate.png" style=" float:right;"></td>
+                    <td><img src="'.base_url().'assets/images/mentori-logo-emailtemplate.png" style=" float:right;"></td>
                     </tr>
                     </table>           
+                    </div>';
 
-                    </div>
-                    <div class="contentarea" style="padding:40px 0px 0px 0px">
+                    $html .='<div class="contentarea" style="padding:40px 0px 0px 0px">
                     <table style="font-family:lato;border-spacing: 0px;">
-                    <tr style="background:#5c65be;">
-                    <td style="color:white;border-right:none;"><b>Applicant Name</b></td>
+                    <tr style="background:#78bd34;">
+                    <td style="color:white;border-right:none;"><b>Mentee Name</b></td>
                     <td style="color:white;border-right:none;"><b>Date</b></td>
-                    <td style="color:white;border-right:none;"><b>Time</b></td>
-                    <td style="color:white;border-right:none;"><b>Duration</b></td>
+                    <td style="color:white;border-right:none;"><b>Time</b></td>                    
+                    <td style="color:white;border-right:none;"><b>Remarks</b></td>
                     <td style="color:white;border-right:none;"><b>Amount</b></td>
-                    </tr>
-                    <tr>
-                    <td valign="middle" style="border-bottom:1px solid #bfc0cd;color:#808080;"><img src="'.$img.'" style="width:40px; height:40px; border-radius: 50%; position:relative; vertical-align:middle;"/> '.$payments['user_name'].'</td>
-                    <td valign="middle" style="border-bottom:1px solid #bfc0cd;color:#808080;!important">'.$payment_date.'</td>
-                    <td valign="middle" style="border-bottom:1px solid #bfc0cd;color:#808080;!important">'.$payment_time.'</td>
-                    <td valign="middle" style="border-bottom:1px solid #bfc0cd;color:#808080;!important">'.$hours.'</td>
-                    <td valign="middle" style="border-bottom:1px solid #bfc0cd;color:#808080;!important">$ '.$payments['earned'].'</td>
-                    </tr>
-                    <tr >
-                    <td colspan="4" align="right" style="padding:10px 15px;color:#808080;">Sub Total:</td>
-                    <td align="right" style="padding:10px 15px;color:#808080;">$ '.$payments['earned'].'</td>
-                    </tr>
-                    <tr>
-                    <td colspan="4" align="right" style="padding:10px 15px;color:#808080;">Portal Commision (10%):</td>
-                    <td align="right" style="padding:10px 15px;color:#808080;">$ 1.00</td>
-                    </tr>
-                    <tr>
-                    <td colspan="4" align="right" style="padding:10px 15px;color:#808080;" >Total Tax:</td>
-                    <td align="right" style="padding:10px 15px;color:#808080;" >$ 0.00</td>
-                    </tr>
-                    <tr>
-                    <td colspan="3">&nbsp;</td>
-                    <td align="right" class="greybg" style="background:#4f4f4f; color:#fff; font-size:20px;">Total:</td>
-                    <td align="right" class="greybg" style="background:#4f4f4f; color:#fff; font-size:20px;">$ '.$total.'.00</td>
-                    </tr>
-                    </table>
+                    
+                    </tr>';
+
+                    foreach($payment_details as $payments):
+
+
+
+
+                        $payment_date = date('d-m-Y',strtotime($payments['payment_date']));
+                        $payment_time = date('h:i A',strtotime($payments['payment_date']));
+
+
+
+                      $border = '';
+
+                     if($payments['transaction_type'] == 'CREDIT' && $payments['role_type'] == 'mentee'){
+
+                      
+                      $amount =($payments['per_hour_charge'])?'<strong>+ $'.number_format($payments['per_hour_charge'],2).'</strong>':'<strong>$0.00</strong>';
+                      $content='
+                      <td style="'.$border.'color:#808080;!important"><img src="'.$img.'" style="width:40px; height:40px; border-radius: 50%; position:relative; vertical-align:middle;"/> '.$payments['user_name'].'</td>
+                    <td style="'.$border.'color:#808080;!important">'.$payment_date.'</td>
+                    <td style="'.$border.'color:#808080;!important">'.$payment_time.'</td>
+                    <td style="'.$border.'color:#808080;!important">'.$payments['remarks'].'</td>';
+
+                    }elseif($payments['transaction_type'] == 'DEBIT'){
+                      $border = 'border-bottom:1px solid #bfc0cd;';
+                      $amount =($payments['handling_charge'])?'<strong>- $'.number_format($payments['handling_charge'],2).'</strong>':'<strong>$0.00</strong>';
+                      $content='<td></td><td></td><td></td>
+                      <td style="'.$border.'color:#808080;!important">'.$payments['remarks'].'</td>';
+
+                    }elseif($payments['transaction_type'] == 'CREDIT' && $payments['role_type'] == 'mentor'){
+                      $border = 'border-bottom:1px solid #bfc0cd;';
+                      $amount =($payments['payable_charge'])?'<strong> $'.number_format($payments['payable_charge'],2).'</strong>':'<strong>$0.00</strong>';
+                      $content='<td></td><td></td><td></td>
+                      <td style="'.$border.'color:#808080;!important"><b>Total</b> ('.$payments['remarks'].' ) </td>';
+
+                    }
+                    $html .='<tr>'.$content.'                                 
+                    <td align="right" style="'.$border.'color:#808080;!important">'.$amount.'</td> 
+                    </tr>';
+                     endforeach;
+
+                    $html .='</table>
                     </div>
-                    <div class="footer" style="text-align:center; padding:22px; clear:both;width:100%; overflow:hidden;color:#808080;">Thank you for using SchoolGuru</div>
+                    <div class="footer" style="text-align:center; padding:22px; clear:both;width:100%; overflow:hidden;color:#808080;">Thank you for using Mentori</div>
                     </div>
                     </body>
                     </html>
                     ';
+                 
 
-
-                 // echo $html;   
-                    $pdf = 'invoice_'.$invoice_no.'.pdf';
+                  //echo $html;   
+                  $pdf = 'invoice_'.$invoice_no.'.pdf';
 
                     $mpdf->writeHTML($html);  
                     $mpdf->Output($pdf, 'D'); 

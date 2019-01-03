@@ -35,6 +35,9 @@ use Twilio\VersionInfo;
  * @property \Twilio\Rest\Messaging messaging
  * @property \Twilio\Rest\Wireless wireless
  * @property \Twilio\Rest\Sync sync
+ * @property \Twilio\Rest\Studio studio
+ * @property \Twilio\Rest\Verify verify
+ * @property \Twilio\Rest\Voice voice
  * @property \Twilio\Rest\Api\V2010\AccountInstance account
  * @property \Twilio\Rest\Api\V2010\Account\AddressList addresses
  * @property \Twilio\Rest\Api\V2010\Account\ApplicationList applications
@@ -105,6 +108,9 @@ class Client {
     protected $_messaging = null;
     protected $_wireless = null;
     protected $_sync = null;
+    protected $_studio = null;
+    protected $_verify = null;
+    protected $_voice = null;
 
     /**
      * Initializes the Twilio Client
@@ -509,7 +515,7 @@ class Client {
     }
 
     /**
-     * @param string $sid Fetch by unique recording Sid
+     * @param string $sid Fetch by unique recording SID
      * @return \Twilio\Rest\Api\V2010\Account\RecordingContext 
      */
     protected function contextRecordings($sid) {
@@ -568,7 +574,7 @@ class Client {
     }
 
     /**
-     * @param string $sid Fetch by unique transcription Sid
+     * @param string $sid Fetch by unique transcription SID
      * @return \Twilio\Rest\Api\V2010\Account\TranscriptionContext 
      */
     protected function contextTranscriptions($sid) {
@@ -770,6 +776,42 @@ class Client {
     }
 
     /**
+     * Access the Studio Twilio Domain
+     * 
+     * @return \Twilio\Rest\Studio Studio Twilio Domain
+     */
+    protected function getStudio() {
+        if (!$this->_studio) {
+            $this->_studio = new Studio($this);
+        }
+        return $this->_studio;
+    }
+
+    /**
+     * Access the Verify Twilio Domain
+     * 
+     * @return \Twilio\Rest\Verify Verify Twilio Domain
+     */
+    protected function getVerify() {
+        if (!$this->_verify) {
+            $this->_verify = new Verify($this);
+        }
+        return $this->_verify;
+    }
+
+    /**
+     * Access the Voice Twilio Domain
+     * 
+     * @return \Twilio\Rest\Voice Voice Twilio Domain
+     */
+    protected function getVoice() {
+        if (!$this->_voice) {
+            $this->_voice = new Voice($this);
+        }
+        return $this->_voice;
+    }
+
+    /**
      * Magic getter to lazy load domains
      * 
      * @param string $name Domain to return
@@ -809,5 +851,19 @@ class Client {
      */
     public function __toString() {
         return '[Client ' . $this->getAccountSid() . ']';
+    }
+
+    /**
+     * Validates connection to new SSL certificate endpoint
+     * 
+     * @param CurlClient $client 
+     * @throws TwilioException if request fails
+     */
+    public function validateSslCertificate($client) {
+        $response = $client->request('GET', 'https://api.twilio.com:8443');
+
+        if ($response->getStatusCode() < 200 || $response->getStatusCode() > 300) {
+            throw new TwilioException("Failed to validate SSL certificate");
+        }
     }
 }

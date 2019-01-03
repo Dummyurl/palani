@@ -83,7 +83,7 @@ class Upload extends CI_Controller {
 				$this->db->insert('chat_deleted_details',$datas);
 			}
 
-			echo  json_encode(array('img'=>$path.'/'.$file_name,'type'=>$type));
+			echo  json_encode(array('img'=>$path.'/'.$file_name,'type'=>$type,'file_name' => $file_name));
 		}else{
 			echo  json_encode(array('error'=>$this->upload->display_errors()));
 		}

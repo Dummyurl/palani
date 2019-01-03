@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Forgot Password - SchoolGuru</title>
+<title>Forgot Password - Mentori</title>
 <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url()."assets/" ?>images/favicon.png">
 <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="<?php echo base_url()."assets/" ?>css/style.css" type="text/css">

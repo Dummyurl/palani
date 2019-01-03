@@ -1,7 +1,11 @@
 
-<?php if(!empty($gurus)): ?>
+<?php
+
+    // echo $this->db->last_query();
+    
+ if(!empty($gurus)): ?>
     <?php foreach($gurus as $guru_list): ?>     
-<a href="<?php echo base_url(); ?>guru-profile/<?php echo $guru_list['username']; ?>" class="guru-list">
+<a href="<?php echo base_url(); ?>mentor-profile/<?php echo $guru_list['username']; ?>" class="guru-list">
                 <div class="row">
                     <?php 
     $img1 = '';
@@ -55,5 +59,5 @@
            <button class="btn btn-default loadmore-guru" data-page="<?php echo $loadcount; ?>"><i class="fa fa-refresh"></i> Load More</button>
         </div>
 <?php else: ?>
-        <div class="load-more-btn text-center">No More Gurus</div>
+        <div class="load-more-btn text-center">No More Mentors</div>
 <?php endif; ?>

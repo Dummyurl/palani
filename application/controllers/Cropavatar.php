@@ -43,6 +43,19 @@ class CropAvatar extends CI_Controller{
     if ($errorCode === UPLOAD_ERR_OK) {
       $type = exif_imagetype($file['tmp_name']);
 
+
+
+      $imageInformation = getimagesize($file['tmp_name']);
+      $imageWidth = $imageInformation[0]; //Contains the Width of the Image
+      $imageHeight = $imageInformation[1]; //Contains the Height of the Image
+      
+
+if($imageWidth < 256 && $imageHeight < 256)
+{
+   $this -> msg = 'Please upload more than 256 X 256 resolution';
+    
+}else{
+
       if ($type) {
         $extension = image_type_to_extension($type);
         $src = FCPATH.'assets/images/' . date('YmdHis') . '.original' . $extension;
@@ -69,6 +82,12 @@ class CropAvatar extends CI_Controller{
       } else {
         $this -> msg = 'Please upload image file';
       }
+    }
+
+
+
+
+
     } else {
       $this -> msg = $this -> codeToMessage($errorCode);
     }
@@ -80,7 +99,7 @@ class CropAvatar extends CI_Controller{
     $this->db->where('id',$this->session->userdata('applicant_id'));
     $this->db->update('applicants',array('profile_img'=> $matches[0]));
   }
- 
+
   private function crop($src, $dst, $data) {
     if (!empty($src) && !empty($dst) && !empty($data)) {
       switch ($this -> type) {

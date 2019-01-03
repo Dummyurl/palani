@@ -356,6 +356,7 @@
         }];
 
 
+//https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://mentori.ng
 
         var $this = this;
 
@@ -363,9 +364,9 @@
 
             slotDuration: '00:30:00', /* If we want to split day time each 15minutes */
 
-            minTime: '08:00:00',
+            minTime: '00:00:00',
 
-            maxTime: '19:00:00',  
+            maxTime: '23:59:00',  
 
             allDayDefault: false,
 

@@ -55,17 +55,19 @@
  */
 //	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
-switch($_SERVER["HTTP_HOST"]){
-	case "localhost":
-	define('ENVIRONMENT', 'development');
+switch($_SERVER["HTTP_HOST"]){	
+	case "https://dreamguys.co.in":
+	define('ENVIRONMENT', 'testing');
+	break;
+	case "https://mentori.ng":
+	define('ENVIRONMENT', 'production');
 	break;
 	default:
-	define('ENVIRONMENT', 'production');
+	define('ENVIRONMENT', 'development');
 	break;
 }
 
-
-
+// define('ENVIRONMENT', 'development');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
@@ -80,8 +82,11 @@ switch (ENVIRONMENT)
 		error_reporting(-1);
 		ini_set('display_errors', 1);
 	break;
-
 	case 'testing':
+	error_reporting(-1);
+	ini_set('display_errors', 1);
+	break;
+
 	case 'production':
 		ini_set('display_errors', 0);
 		if (version_compare(PHP_VERSION, '5.3', '>='))
